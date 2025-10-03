@@ -5,6 +5,7 @@ public class PlayerController {
 	private static final int MAX_LIVES = 3;
 	
 	private int score;
+	private int lives;
 	//HighScoreController highScoreController;
 	//Paddle paddle;
 	
@@ -23,12 +24,12 @@ public class PlayerController {
 		} 
 	}
 	
-	public int getScore() {
-		return score;
-	}
-	
-	public void setScore(int newScore) {
-		score = newScore;
+	public boolean isPlayerDead() {
+		if (lives <= 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/*
@@ -38,5 +39,21 @@ public class PlayerController {
 		}
 	}
 	*/
+	
+	public int getLives() {
+		return lives;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+	
+	public void setScore(int newScore) {
+		score = newScore;
+	}
+	
+	public void setLives(int newLives) {
+		lives = newLives;
+	}
 	
 }
