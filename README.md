@@ -1,3 +1,3 @@
 # breakout
-![UML Design](./Breakout UML.png)
+![UML Design](./Breakout_UML.png)
 
