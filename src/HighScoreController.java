@@ -5,30 +5,30 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Scanner;       
-public class HighScoreController {
-	public HighScoreController() {
-		 this.scoreFile = new File("src\\scoreFile.txt"); 
-		 createScoreFile();
-		 writeScores(this.highScores);
-		 
-		 writeScore(12);
-		 readScore();
-		
-	}
+import java.util.Scanner;
+
+public class HighScoreController { 
 	
+	//Constructor
+	public HighScoreController() {
+		 this.scoreFile = new File(this.filePath); 
+		
+		}
+		
+		
+	
+	//Class Variables
 	private int highScore = 0;
 	private File scoreFile;
-	private int[] highScores = new int[10];
+	private String[] highScores = new String[10];
 	private int scoreLimit = 10;
-	//name,score1
-	//name,score2
-	//name,score3
+	private String filePath = "scoreFile.txt";
 	
 	
 	
 	
 	
+	//Creates the score file titled scoreFile.txt
 	public void createScoreFile() {
 		
 		 try {
@@ -37,68 +37,57 @@ public class HighScoreController {
 			
 		 }
 	}
-	
+	//Boolean to see if scoreFile.txt exists
 	public boolean doesExist() {
 		return(this.scoreFile.exists());
 	}
 	
 	
-	
-	public int readScore() {
+	//Prints the scores using the "Name: point_total" format
+	public void printScore() {
 		try {
 		Scanner scnr = new Scanner(this.scoreFile);
 		if(!doesExist()) {
-			createScoreFile();
-			return 0;
+			createScoreFile();	
 		}
-		
 		for(int i = 0; i< findCurrentNumberOfScores();i++) {
-			
-			this.highScore = Integer.parseInt(scnr.next());
+			String scoreAndName = scnr.next();
+			String name = splitNameAndScore(scoreAndName, "Name");
+			String score = splitNameAndScore(scoreAndName, "Score");
+			System.out.println(name +": " + score);
 			
 		}
-		
-		return this.highScore;
 	
-		
 		}
-		catch (FileNotFoundException fnfe) {
-			return -1;
-		}
-			
+		catch (FileNotFoundException fnfe) {	
+		}	
 	}
 	
 	
+	//Adds an inputed name,score to the array highScores
+	public void addToHighScores(String score) {
+		for(int i = 0;i<this.highScores.length;i++) {
+			if(this.highScores[i] == null) {
+				this.highScores[i] = score;
+				break;
+			}
+		}
+		writeScores();
+		
+	}
 	
-	public void writeScore(int score) {
+	//Writes the array of highScores to the scoreFile.txt file
+	public void writeScores() {
 		if(underOrAtScoreLimit()) {
 		try {
-		String file = "src\\scoreFile.txt";
-		FileWriter fWriter = new FileWriter(file);
+		String file = this.filePath;
+		FileWriter fWriter = new FileWriter(filePath);
 		
-		 
-		 
-		 fWriter.write(Integer.toString(score) + "\n");
-		 fWriter.close();
-		 }
-		 catch(IOException e) {
-			 
-		 }
-		}
-		
-	}
-	
-	
-	public void writeScores(int[] highScores) {
-		try {
-		String file = "src\\scoreFile.txt";
-		FileWriter fWriter = new FileWriter(file);
-			
-		for(int i=0;i<this.scoreLimit;i++) {
-			if(highScores[i] == 0) {
+		for(int i=0;i<this.highScores.length;i++) {
+			if(this.highScores[i] == null) {
 				continue;
 			}
-			fWriter.write(highScores[i] + "\n");
+			fWriter.write(this.highScores[i] + "\n");
 			
 		}
 		fWriter.close();
@@ -107,9 +96,10 @@ public class HighScoreController {
 		}
 		catch(IOException e) {
 			 
-		 }
+		 }}
 	}
 	
+	//checks to see if the recorded number of scores is under the preset scoreLimit
 	public boolean underOrAtScoreLimit() {
 		
 		if(findCurrentNumberOfScores() <= this.scoreLimit) {
@@ -117,8 +107,10 @@ public class HighScoreController {
 		}
 		return false;
 	}
+	
+	//Finds the current number of scores in the scoreFile.txt file
 	public int findCurrentNumberOfScores() {
-		Scanner scnr = new Scanner("src\\scoreFile.txt");
+		Scanner scnr = new Scanner(this.filePath);
 		
 		int count = 0;
 		while(scnr.hasNext()) {
@@ -129,8 +121,14 @@ public class HighScoreController {
 		return count;
 	}
 	
-	public String splitNameAndScore(String nameAndScore) {
+	//splits the format name,score so that we can single out the name of the person or the score that person got
+	public String splitNameAndScore(String nameAndScore, String requestedData) {
 		String[] nameAndScoreArr = nameAndScore.split(",");
+		if(requestedData == "Name") {
+			return(nameAndScoreArr[0]);
+		}
+		return(nameAndScoreArr[1]);
+		 
 	}
-}
+	}
 	
