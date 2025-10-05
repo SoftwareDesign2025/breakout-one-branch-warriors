@@ -1,14 +1,14 @@
 package blocks;
 
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
-
 public class Block {
 	protected Rectangle rect;
 
-	public Block(int xPosition, int yPosition, int height, int width){
+	public Block(int xPosition, int yPosition, int height, int width) {
 		rect = new Rectangle(xPosition, yPosition, height, width);
 	}
 
@@ -17,30 +17,31 @@ public class Block {
 		rect.setStroke(Color.BLACK);
 	}
 
-	public Rectangle getRect() {
+	public Node getRect() {
 		return rect;
 	}
 
-	public double getX(){
+	public double getX() {
 		return rect.getX();
 	}
 
-	public double getY(){
+	public double getY() {
 		return rect.getY();
 	}
 
-	public void setX(double x){
+	public void setX(double x) {
 		rect.setX(x);
 	}
 
-	public void setY(double y){
+	public void setY(double y) {
 		rect.setY(y);
 	}
 
-	//  public void checkCollisionWithBall(ArrayList<Ball> balls){
-	//    for (Ball ball : balls) {
-	//      if (rect.getBoundsInParent().intersects(object.getView().getBoundsInParent())) {
-	//        ball.bounceOffBlock();
-	//      }
-	//  }
+	// public void checkCollisionWithBall(ArrayList<Ball> balls){
+	// for (Ball ball : balls) {
+	// if
+	// (rect.getBoundsInParent().intersects(object.getView().getBoundsInParent())) {
+	// ball.bounceOffBlock();
+	// }
+	// }
 }

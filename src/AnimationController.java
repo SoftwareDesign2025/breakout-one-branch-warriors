@@ -1,14 +1,12 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
+import blocks.Block;
+import blocks.Paddle;
+import blocks.Brick;
+import java.util.List;
+import java.util.ArrayList;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 /**
  * 
@@ -21,106 +19,129 @@ import javafx.scene.shape.Shape;
 
 public class AnimationController {
 
-  public static final String BOUNCER_IMAGE = "resources/ball.gif";
-  public static final Paint MOVER_COLOR = Color.PLUM;
-  public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final int MOVER_SIZE = 50;
-  public static final int MOVER_SPEED = 15;
-  public static final int NUM_BOUNCERS = 1;
+	public static final String BOUNCER_IMAGE = "resources/ball.gif";
+	public static final Paint MOVER_COLOR = Color.ALICEBLUE;
+	public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
+	public static final int MOVER_SIZE = 50;
+	public static final int MOVER_SPEED = 15;
+	public static final int NUM_BOUNCERS = 1;
+	public static final int NUM_BRICKS = 54;
 
-  private List<Bouncer> myBouncers;
-  private Rectangle myMover;
-  private int width;
-  private int height;
+	private List<Bouncer> myBouncers;
+	private List<Block> myBlocks = new ArrayList<>();
+	private Paddle paddle;
+	//  private Brick brick;
+	private int width;
+	private int height;
 
-  public Group createRootForAnimation(int windowWidth, int windowHeight) {
-    width = windowWidth;
-    height = windowHeight;
+	public Group createRootForAnimation(int windowWidth, int windowHeight) {
+		width = windowWidth;
+		height = windowHeight;
 
-    // create one top level collection to organize the things in the scene
-    Group root = new Group();
-    // make some shapes and set their properties
-    try {
-      Image image = new Image(new FileInputStream(BOUNCER_IMAGE));
-      myBouncers = new ArrayList<>();
-      for (int k = 0; k < NUM_BOUNCERS; k++) {
-        Bouncer b = new Bouncer(image, width, height);
-        myBouncers.add(b);
-        root.getChildren().add(b.getView());
-      }
-    } catch (FileNotFoundException e) {
-    }
+		Group root = new Group();
 
-    myMover = new Rectangle(width / 2 - MOVER_SIZE / 2, height / 2 - 100, MOVER_SIZE * 2, MOVER_SIZE / 2);
-    myMover.setFill(MOVER_COLOR);
+		List<Block> myBlocks = createBrickLayout();
 
-    root.getChildren().add(myMover);
-    return root;
-  }
+		//Creates a new paddle in the center of the screen
+		paddle = new Paddle(width / 2 - MOVER_SIZE, height / 2 + 100, MOVER_SIZE * 2, MOVER_SIZE / 2);
+		paddle.setFill(MOVER_COLOR);
+		myBlocks.add(paddle);
 
-  public void step(double elapsedTime) {
-    // update "actors" attributes
-    for (Bouncer b : myBouncers) {
-      b.move(elapsedTime);
-    }
-    // myMover.setRotate(myMover.getRotate() + 1);
+		myBlocks.forEach(block -> root.getChildren().add(block.getRect()));
 
-    // check for collisions
-    // with shapes, can check precisely
-    // NOTE: Could be best to use a sphere to measure when something is hit since
-    // its more accurate.
-//     Shape intersection = Shape.intersect(myMover, myGrower);
-//     if (intersection.getBoundsInLocal().getWidth() != -1) {
-//     myMover.setFill(HIGHLIGHT);
-//     } else {
-//     myMover.setFill(MOVER_COLOR);
-//     }
+		return root;
+	}
 
-    // with images can only check bounding box
-    boolean hit = false;
-    for (Bouncer b : myBouncers) {
-      if (myMover.getBoundsInParent().intersects(b.getView().getBoundsInParent())) {
-        myMover.setFill(HIGHLIGHT);
-        b.bounceOffBlock();
-        hit = true;
-      }else {
-     myMover.setFill(MOVER_COLOR);
-     }
+	private List<Block> createBrickLayout(){
+		float currentHue = 180f; 
+		final float saturation = 0.9f; 
+		final float brightness = 1.0f;
+		List<Block> myBlocks = new ArrayList<>();
 
-    }
-    // if (!hit) {
-    // myGrower.setFill(GROWER_COLOR);
-    // }
+		int xPos = 0;
+		int yPos = height / 2 - 100;
 
-    // bounce off all the walls
-    for (Bouncer b : myBouncers) {
-      b.bounce(width, height);
-    }
-  }
+		for(int i = 0; i < NUM_BRICKS; i++) {
+			Color rectColor = Color.hsb(currentHue, saturation, brightness);
+			if(xPos == width) {
+				xPos = 0;
+				yPos -= MOVER_SIZE / 2;
+			}
+			if(yPos < 0) {
+				break;
+			}
+			Brick brick = new Brick(xPos, yPos, MOVER_SIZE * 2, MOVER_SIZE / 2);
+			brick.setFill(rectColor);
+			myBlocks.add(brick);
+			System.out.println("xPos: " + xPos);
+			System.out.println("yPos: " + yPos);
+			System.out.println("width: " + width);
+			xPos += MOVER_SIZE * 2;
+			currentHue += 5;
+		}
 
-  // public void moverMovesVertically(boolean goUp) {
-  // if (goUp)
-  // myMover.setY(myMover.getY() - MOVER_SPEED);
-  //
-  // else {
-  // myMover.setY(myMover.getY() + MOVER_SPEED);
-  // }
-  // }
+		return myBlocks;
+	}
 
-  public void moverMovesHorizontally(boolean goRight) {
-    if (goRight)
-      myMover.setX(myMover.getX() - MOVER_SPEED);
+	public void step(double elapsedTime) {
+		// update "actors" attributes
+		// for (Bouncer b : myBouncers) {
+		// b.move(elapsedTime);
+		// }
+		// myMover.setRotate(myMover.getRotate() + 1);
 
-    else {
-      myMover.setX(myMover.getX() + MOVER_SPEED);
-    }
-  }
+		// check for collisions
+		// with shapes, can check precisely
+		// NOTE: Could be best to use a sphere to measure when something is hit since
+		// its more accurate.
+		// Shape intersection = Shape.intersect(myMover, myGrower);
+		// if (intersection.getBoundsInLocal().getWidth() != -1) {
+		// myMover.setFill(HIGHLIGHT);
+		// } else {
+		// myMover.setFill(MOVER_COLOR);
+		// }
 
-//  public void handleMouseInput(double x, double y) {
-//    if (myGrower.contains(x, y)) {
-//      myGrower.setScaleX(myGrower.getScaleX() * GROWER_RATE);
-//      myGrower.setScaleY(myGrower.getScaleY() * GROWER_RATE);
-//
-//    }
-//  }
+		// with images can only check bounding box
+		// boolean hit = false;
+		// for (Bouncer b : myBouncers) {
+		// if (myMover.getBoundsInParent().intersects(b.getView().getBoundsInParent()))
+		// {
+		// myMover.setFill(HIGHLIGHT);
+		// b.bounceOffBlock();
+		// hit = true;
+		// }else {
+		// myMover.setFill(MOVER_COLOR);
+	}
+
+	// }
+	// if (!hit) {
+	// myGrower.setFill(GROWER_COLOR);
+	// }
+
+	// bounce off all the walls
+	// for (Bouncer b : myBouncers) {
+	// b.bounce(width, height);
+	// }
+	// }
+
+	// public void moverMovesVertically(boolean goUp) {
+	// if (goUp)
+	// myMover.setY(myMover.getY() - MOVER_SPEED);
+	//
+	// else {
+	// myMover.setY(myMover.getY() + MOVER_SPEED);
+	// }
+	// }
+
+	public void moverMovesHorizontally(boolean goRight) {
+		paddle.moveHorizontally(goRight);
+	}
+
+	// public void handleMouseInput(double x, double y) {
+	// if (myGrower.contains(x, y)) {
+	// myGrower.setScaleX(myGrower.getScaleX() * GROWER_RATE);
+	// myGrower.setScaleY(myGrower.getScaleY() * GROWER_RATE);
+	//
+	// }
+	// }
 }
