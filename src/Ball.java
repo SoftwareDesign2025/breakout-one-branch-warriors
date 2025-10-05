@@ -1,4 +1,5 @@
 import java.awt.geom.Point2D;
+import javafx.scene.paint.Color;
 
 public class Ball {
 	
@@ -6,14 +7,29 @@ public class Ball {
 	
 	private Double ballRadius;
 	
+	private Color color;
+	
+	public Double getRadius() {
+		return ballRadius;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	
 	public Ball() {
 		this.velocity.setLocation(10,10);
 		this.ballRadius = 5.0;
 	}
 	
-	public Ball(Point2D.Double velocity, Double ballRadius) {
+	public Ball(Point2D.Double velocity, Double ballRadius, Color color) {
 		this.velocity = velocity;
 		this.ballRadius = ballRadius;
+		this.color = color;
 	}
 	
 	/*
