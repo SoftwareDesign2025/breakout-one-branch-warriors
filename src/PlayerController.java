@@ -2,6 +2,10 @@ import javafx.scene.input.KeyCode;
 
 public class PlayerController {
 	
+	/*
+	 * This class contains logic for all player inputs and stats
+	 */
+	
 	private static final int MAX_LIVES = 3;
 	
 	private int score;
@@ -16,6 +20,10 @@ public class PlayerController {
 	}
 	*/
 	
+	/**
+	 * handles the input for moving the paddle left or right
+	 * @param keyCode
+	 */
 	public void handleKeyInput(KeyCode keyCode) {
 		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
 			//paddle.movesHorizontally(true)
@@ -24,6 +32,10 @@ public class PlayerController {
 		} 
 	}
 	
+	/**
+	 * returns true if the player has no remaining lives and false if they have at least 1 life
+	 * @return
+	 */
 	public boolean isPlayerDead() {
 		if (lives <= 0) {
 			return true;
@@ -32,6 +44,10 @@ public class PlayerController {
 		}
 	}
 	
+	/**
+	 * if the current score is higher than the current highscore, sets the new highscore
+	 * @return
+	 */
 	/*
 	private void setNewHighScore() {
 		if (score > highScoreController.getHighScore()) {
