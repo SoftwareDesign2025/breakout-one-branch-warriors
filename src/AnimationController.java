@@ -1,126 +1,122 @@
+import blocks.Block;
+import blocks.Paddle;
+import blocks.Brick;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-/**
- * 
- * @author Shannon Duvall
- * 
- *         This program animates two squares. The top is the "mover" and
- *         the bottom is the "grower".
- * 
- */
 
 public class AnimationController {
 
-  public static final String BOUNCER_IMAGE = "resources/ball.gif";
-  public static final Paint MOVER_COLOR = Color.PLUM;
-  public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final int MOVER_SIZE = 50;
-  public static final int MOVER_SPEED = 15;
-  public static final int NUM_BOUNCERS = 1;
+	public static final String PADDLE_IMAGE = "resources/paddle.gif";
+	public static final Paint MOVER_COLOR = Color.ALICEBLUE;
+	public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
+	public static final int MOVER_SIZE = 50;
+	public static final int MOVER_SPEED = 15;
+	public static final int NUM_BOUNCERS = 1;
+	public static final int NUM_BRICKS = 54;
 
-  private List<Bouncer> myBouncers;
-  private Rectangle myMover;
-  private int width;
-  private int height;
+	private List<Ball> myBouncers = new ArrayList<>();
+	private List<Block> myBlocks = new ArrayList<>();
 
-  public Group createRootForAnimation(int windowWidth, int windowHeight) {
-    width = windowWidth;
-    height = windowHeight;
+	private Paddle paddle;
 
-    // create one top level collection to organize the things in the scene
-    Group root = new Group();
-    // make some shapes and set their properties
-    try {
-      Image image = new Image(new FileInputStream(BOUNCER_IMAGE));
-      myBouncers = new ArrayList<>();
-      for (int k = 0; k < NUM_BOUNCERS; k++) {
-        Bouncer b = new Bouncer(image, width, height);
-        myBouncers.add(b);
-        root.getChildren().add(b.getView());
-      }
-    } catch (FileNotFoundException e) {
-    }
+	private int width;
+	private int height;
 
-    myMover = new Rectangle(width / 2 - MOVER_SIZE / 2, height / 2 - 100, MOVER_SIZE * 2, MOVER_SIZE / 2);
-    myMover.setFill(MOVER_COLOR);
+	public Group createRootForAnimation(int windowWidth, int windowHeight) {
+		width = windowWidth;
+		height = windowHeight;
 
-    root.getChildren().add(myMover);
-    return root;
-  }
+		Group root = new Group();
 
-  public void step(double elapsedTime) {
-    // update "actors" attributes
-    for (Bouncer b : myBouncers) {
-      b.move(elapsedTime);
-    }
-    // myMover.setRotate(myMover.getRotate() + 1);
+		Ball ball = new Ball();
+		myBouncers.add(ball);
 
-    // check for collisions
-    // with shapes, can check precisely
-    // NOTE: Could be best to use a sphere to measure when something is hit since
-    // its more accurate.
-//     Shape intersection = Shape.intersect(myMover, myGrower);
-//     if (intersection.getBoundsInLocal().getWidth() != -1) {
-//     myMover.setFill(HIGHLIGHT);
-//     } else {
-//     myMover.setFill(MOVER_COLOR);
-//     }
+		myBlocks = createBrickLayout();
 
-    // with images can only check bounding box
-    boolean hit = false;
-    for (Bouncer b : myBouncers) {
-      if (myMover.getBoundsInParent().intersects(b.getView().getBoundsInParent())) {
-        myMover.setFill(HIGHLIGHT);
-        b.bounceOffBlock();
-        hit = true;
-      }else {
-     myMover.setFill(MOVER_COLOR);
-     }
+		try {
+			Image image = new Image(new FileInputStream(PADDLE_IMAGE));
 
-    }
-    // if (!hit) {
-    // myGrower.setFill(GROWER_COLOR);
-    // }
+			paddle = new Paddle(width / 2 - MOVER_SIZE, height / 2 + 100, MOVER_SIZE * 2, MOVER_SIZE / 2, image);
+			myBlocks.add(paddle);
 
-    // bounce off all the walls
-    for (Bouncer b : myBouncers) {
-      b.bounce(width, height);
-    }
-  }
+			myBlocks.forEach(block -> root.getChildren().add(block.getView()));
+		} catch (FileNotFoundException e) {
+		}
 
-  // public void moverMovesVertically(boolean goUp) {
-  // if (goUp)
-  // myMover.setY(myMover.getY() - MOVER_SPEED);
-  //
-  // else {
-  // myMover.setY(myMover.getY() + MOVER_SPEED);
-  // }
-  // }
+		root.getChildren().add(ball.getView());
 
-  public void moverMovesHorizontally(boolean goRight) {
-    if (goRight)
-      myMover.setX(myMover.getX() - MOVER_SPEED);
+		return root;
+	}
 
-    else {
-      myMover.setX(myMover.getX() + MOVER_SPEED);
-    }
-  }
+	private List<Block> createBrickLayout(){
+		float currentHue = 180f; 
+		final float saturation = 0.9f; 
+		final float brightness = 1.0f;
+		List<Block> myBlocks = new ArrayList<>();
 
-//  public void handleMouseInput(double x, double y) {
-//    if (myGrower.contains(x, y)) {
-//      myGrower.setScaleX(myGrower.getScaleX() * GROWER_RATE);
-//      myGrower.setScaleY(myGrower.getScaleY() * GROWER_RATE);
-//
-//    }
-//  }
+		int xPos = 0;
+		int yPos = height / 2 - 100;
+
+		for(int i = 0; i < NUM_BRICKS; i++) {
+			Color rectColor = Color.hsb(currentHue, saturation, brightness);
+			if(xPos == width) {
+				xPos = 0;
+				yPos -= MOVER_SIZE / 2;
+			}
+			if(yPos < 0) {
+				break;
+			}
+			Brick brick = new Brick(xPos, yPos, MOVER_SIZE * 2, MOVER_SIZE / 2);
+			brick.setFill(rectColor);
+			myBlocks.add(brick);
+			xPos += MOVER_SIZE * 2;
+			currentHue += 5;
+		}
+
+		return myBlocks;
+	}
+
+
+	public void step(double elapsedTime) {
+		//		 update "actors" attributes
+		for (Ball b : myBouncers) {
+			b.move(elapsedTime);
+		}
+		// bounce off all the walls
+		for (Ball b : myBouncers) {
+			b.bounceOffWall(width, height);
+		}
+		// check collisions with all blocks
+		for (Ball ball : myBouncers) {
+			for (Block block : myBlocks) {
+				Shape intersection = Shape.intersect(ball.getBall(), block.getCollisionBox());
+				if(!intersection.getBoundsInLocal().isEmpty()){
+					double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+					double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+					if (intersectionWidth > intersectionHeight) {
+						ball.bounce(false, 1.0); // isReflectingXAxis is false
+					} else {
+						ball.bounce(true, 1.0); // isReflectingXAxis is true
+					}
+
+				}
+
+			}
+		}
+
+	}
+
+	public void moverMovesHorizontally(boolean goRight) {
+		paddle.moveHorizontally(goRight);
+	}
 }
