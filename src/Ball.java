@@ -12,6 +12,7 @@ public class Ball {
     private Point2D velocity;
     private Point2D position;
     private final Circle myBall; 
+    private Point2D previousLocation;
 
 
     public Ball() {
@@ -74,10 +75,12 @@ public class Ball {
     public void bounce(boolean isReflectingXAxis, double modification) {
         if (isReflectingXAxis) {
             // Create a new Point2D object for the new velocity
-            velocity = new Point2D(velocity.getX() * -modification - myBall.getRadius(), velocity.getY());
+            velocity = new Point2D(velocity.getX() * -modification, velocity.getY());
         } else {
-            velocity = new Point2D(velocity.getX(), velocity.getY() * -modification - myBall.getRadius());
+            velocity = new Point2D(velocity.getX(), velocity.getY() * -modification);
         }
+        myBall.setCenterX(previousLocation.getX() - 1);
+        myBall.setCenterY(previousLocation.getY() - 1);
     }
 
 
@@ -98,6 +101,7 @@ public class Ball {
      */
     public void move(double elapsedTime) {
     	// Calculate the new position: newPosition = oldPosition + velocity * time
+    	previousLocation = new Point2D(myBall.getCenterX(), myBall.getCenterY());
     	double newX = myBall.getCenterX() + velocity.getX() * elapsedTime;
     	double newY = myBall.getCenterY() + velocity.getY() * elapsedTime;
 

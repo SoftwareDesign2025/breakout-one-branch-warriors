@@ -69,7 +69,7 @@ public class AnimationController {
 
 		for(int i = 0; i < NUM_BRICKS; i++) {
 			Color rectColor = Color.hsb(currentHue, saturation, brightness);
-			if(xPos == width) {
+			if(xPos >= width) {
 				xPos = 0;
 				yPos -= MOVER_SIZE / 2;
 			}
@@ -104,9 +104,9 @@ public class AnimationController {
 					double intersectionWidth = intersection.getBoundsInLocal().getWidth();
 					double intersectionHeight = intersection.getBoundsInLocal().getHeight();
 					if (intersectionWidth > intersectionHeight) {
-						ball.bounce(false, 1.0); // isReflectingXAxis is false
+						ball.bounce(false, 1.015); // isReflectingXAxis is false
 					} else {
-						ball.bounce(true, 1.0); // isReflectingXAxis is true
+						ball.bounce(true, 1.015); // isReflectingXAxis is true
 					}
 
 				}
