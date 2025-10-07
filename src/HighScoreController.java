@@ -5,9 +5,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class HighScoreController { 
+	/*
+	 * This class holds the functionality of recording, obtaining and managing the overall highest scores of the game.
+	 */
+	
+	
 	
 	//Constructor
 	public HighScoreController() {
@@ -24,7 +31,10 @@ public class HighScoreController {
 	private int scoreLimit = 10;
 	private String filePath = "scoreFile.txt";
 	
-	
+	//getter
+	public String[] getHighScores() {
+		return this.highScores;
+	}
 	
 	
 	
@@ -52,8 +62,8 @@ public class HighScoreController {
 		}
 		for(int i = 0; i< findCurrentNumberOfScores();i++) {
 			String scoreAndName = scnr.next();
-			String name = splitNameAndScore(scoreAndName, "Name");
-			String score = splitNameAndScore(scoreAndName, "Score");
+			String name = splitName(scoreAndName);
+			int score = splitScore(scoreAndName);
 			System.out.println(name +": " + score);
 			
 		}
@@ -65,11 +75,27 @@ public class HighScoreController {
 	
 	
 	//Adds an inputed name,score to the array highScores
-	public void addToHighScores(String score) {
+	public void addToHighScores(int score, String name) {
 		for(int i = 0;i<this.highScores.length;i++) {
 			if(this.highScores[i] == null) {
-				this.highScores[i] = score;
+				this.highScores[i] = name + "," + score;
 				break;
+			}
+		}
+		if(this.highScores[this.highScores.length-1] != null) {
+			
+			for(int i=1;i<findCurrentNumberOfScores();i++) {
+				
+				if(score>splitScore(this.highScores[i-1])) {
+					this.highScores[this.highScores.length - 1] = "";
+					for(int j = i; j<this.highScores.length; j++) {
+						this.highScores[this.highScores.length-j-1] = this.highScores[this.highScores.length-j];
+					}
+					this.highScores[i] = name+","+score;
+				
+				}
+				
+				
 			}
 		}
 		writeScores();
@@ -122,13 +148,46 @@ public class HighScoreController {
 	}
 	
 	//splits the format name,score so that we can single out the name of the person or the score that person got
-	public String splitNameAndScore(String nameAndScore, String requestedData) {
+	public String splitName(String nameAndScore) {
 		String[] nameAndScoreArr = nameAndScore.split(",");
-		if(requestedData == "Name") {
-			return(nameAndScoreArr[0]);
-		}
-		return(nameAndScoreArr[1]);
+		 
+		return(nameAndScoreArr[0]);
+		
+		
 		 
 	}
+	public int splitScore(String nameAndScore) {
+		String[] nameAndScoreArr = nameAndScore.split(",");
+		
+			return Integer.parseInt(nameAndScoreArr[1]);
+		
+	}
+	
+	
+	//sort high score array
+	public void sortHighScores() {
+		System.out.println("enter sort");
+		int i = 1;
+		while(i != 10) {
+			if(this.highScores[i] == null) {
+				i+=1;
+				continue;
+			}
+			if(splitScore(this.highScores[i-1]) >= splitScore(this.highScores[i])) {
+				
+				
+				i+=1;
+			}
+			else {
+				String temp = this.highScores[i];
+				this.highScores[i] = this.highScores[i-1];
+				this.highScores[i-1] = temp;
+				i = 1;
+			}
+		}
+		System.out.println("leaving sort");
+			writeScores();
+		}
+		
 	}
 	
