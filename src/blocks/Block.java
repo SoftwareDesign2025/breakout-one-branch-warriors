@@ -14,6 +14,7 @@ public class Block {
 	protected ImageView sprite;  
 	protected Group view; 
 
+	// Can be used to make curved corners
 	private static final int CORNER_RADIUS = 10;
 
 	/*
@@ -33,9 +34,6 @@ public class Block {
 	public Block(Color color, int xPosition, int yPosition, int width, int height) {
 		rect = new Rectangle(width, height);
 		rect.setFill(color);
-		// Setting a curve to the corners
-		rect.setArcHeight(CORNER_RADIUS);
-		rect.setArcWidth(CORNER_RADIUS);
 		view = new Group(rect);
 		view.setLayoutX(xPosition);
 		view.setLayoutY(yPosition);

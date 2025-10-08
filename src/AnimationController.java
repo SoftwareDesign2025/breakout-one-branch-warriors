@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.ArrayList;
 
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -25,9 +26,10 @@ public class AnimationController {
 	public static final int NUM_BRICKS = 54;
 
 	private List<Ball> myBouncers = new ArrayList<>();
-	private List<Block> myBlocks = new ArrayList<>();
+	private List<Brick> myBlocks = new ArrayList<>();
 
 	private Paddle paddle;
+	private Group root;
 
 	private int width;
 	private int height;
@@ -36,9 +38,9 @@ public class AnimationController {
 		width = windowWidth;
 		height = windowHeight;
 
-		Group root = new Group();
+		root = new Group();
 
-		Ball ball = new Ball();
+		Ball ball = new Ball(width / 2, height - 120, new Point2D(50,-250), 10, Color.RED);
 		myBouncers.add(ball);
 
 		myBlocks = createBrickLayout();
@@ -46,41 +48,49 @@ public class AnimationController {
 		try {
 			Image image = new Image(new FileInputStream(PADDLE_IMAGE));
 
-			paddle = new Paddle(width / 2 - MOVER_SIZE, height / 2 + 100, MOVER_SIZE * 2, MOVER_SIZE / 2, image);
-			myBlocks.add(paddle);
+			paddle = new Paddle(width / 2 - MOVER_SIZE, height - 100, MOVER_SIZE * 2, MOVER_SIZE / 2, width, image);
 
 			myBlocks.forEach(block -> root.getChildren().add(block.getView()));
 		} catch (FileNotFoundException e) {
 		}
+		
+		
 
+		root.getChildren().add(paddle.getView());
 		root.getChildren().add(ball.getView());
 
 		return root;
 	}
 
-	private List<Block> createBrickLayout(){
+	private List<Brick> createBrickLayout(){
 		float currentHue = 180f; 
-		final float saturation = 0.9f; 
+		final float saturation = 1.0f; 
 		final float brightness = 1.0f;
-		List<Block> myBlocks = new ArrayList<>();
+		int lives = 1;
+		double powerFactor = 1.025;
+		int points = 5;
+		List<Brick> myBlocks = new ArrayList<>();
 
 		int xPos = 0;
 		int yPos = height / 2 - 100;
 
 		for(int i = 0; i < NUM_BRICKS; i++) {
-			Color rectColor = Color.hsb(currentHue, saturation, brightness);
-			if(xPos == width) {
+			if(xPos >= width) {
 				xPos = 0;
 				yPos -= MOVER_SIZE / 2;
+				currentHue += 15;
+				powerFactor += 0.010;
+				points += 5;
+				lives += 1;
 			}
-			if(yPos < 0) {
+			if(yPos < MOVER_SIZE) {
 				break;
 			}
-			Brick brick = new Brick(xPos, yPos, MOVER_SIZE * 2, MOVER_SIZE / 2);
+			Color rectColor = Color.hsb(currentHue, saturation, brightness);
+			Brick brick = new Brick(xPos, yPos, MOVER_SIZE * 2, MOVER_SIZE / 2, powerFactor, points, lives);
 			brick.setFill(rectColor);
 			myBlocks.add(brick);
 			xPos += MOVER_SIZE * 2;
-			currentHue += 5;
 		}
 
 		return myBlocks;
@@ -88,35 +98,81 @@ public class AnimationController {
 
 
 	public void step(double elapsedTime) {
-		//		 update "actors" attributes
-		for (Ball b : myBouncers) {
-			b.move(elapsedTime);
-		}
-		// bounce off all the walls
-		for (Ball b : myBouncers) {
-			b.bounceOffWall(width, height);
-		}
-		// check collisions with all blocks
 		for (Ball ball : myBouncers) {
-			for (Block block : myBlocks) {
-				Shape intersection = Shape.intersect(ball.getBall(), block.getCollisionBox());
-				if(!intersection.getBoundsInLocal().isEmpty()){
-					double intersectionWidth = intersection.getBoundsInLocal().getWidth();
-					double intersectionHeight = intersection.getBoundsInLocal().getHeight();
-					if (intersectionWidth > intersectionHeight) {
-						ball.bounce(false, 1.0); // isReflectingXAxis is false
-					} else {
-						ball.bounce(true, 1.0); // isReflectingXAxis is true
-					}
-
-				}
-
+			if(paddle.hasBeenMoved()) {
+				ball.move(elapsedTime);
+			} else {
+				ball.setX(paddle.getX() + MOVER_SIZE);
 			}
+
+			if(myBlocks.size() == 0) {
+				ball.stop();
+			}
+		}
+
+		for (Ball ball : myBouncers) {
+			ball.bounceOffWall(width, height);
+		}
+
+		for (Ball ball : myBouncers) {
+			checkCollisionWithPaddle(ball, paddle);
+		}
+
+		for(Brick brick : myBlocks) {
+			checkCollisionWithBricks(brick);
 		}
 
 	}
 
-	public void moverMovesHorizontally(boolean goRight) {
+	private void checkCollisionWithBricks(Brick brick) {
+		for (Ball ball : myBouncers) {
+
+			Shape intersection = Shape.intersect(ball.getBall(), brick.getCollisionBox());
+
+			if(!intersection.getBoundsInLocal().isEmpty()){
+				double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+				double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+
+				if (intersectionWidth > intersectionHeight) {
+					ball.bounce(false, brick.getHitForceMultiplier()); // isReflectingXAxis is false
+				} else {
+					ball.bounce(true, brick.getHitForceMultiplier()); // isReflectingXAxis is true
+				}
+
+				checkBrickHealth(brick);
+			}
+		}
+	}
+
+	private void checkCollisionWithPaddle(Ball ball, Paddle paddle) {
+		Shape intersection = Shape.intersect(ball.getBall(), paddle.getCollisionBox());
+
+		if(!intersection.getBoundsInLocal().isEmpty()){
+
+			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+
+			if (intersectionWidth > intersectionHeight) {
+				ball.bounce(false); // isReflectingXAxis is false
+			} else {
+				ball.bounce(true); // isReflectingXAxis is true
+			}
+		}
+	}
+
+
+	private void checkBrickHealth(Brick brick) {
+		if(!brick.isBroken()) {
+			brick.removeDurability();
+		} else {
+			root.getChildren().remove(brick.getView());
+			myBlocks.remove(brick);
+		}
+
+	}
+
+
+	public void paddleMovesRight(boolean goRight) {
 		paddle.moveHorizontally(goRight);
 	}
 }
