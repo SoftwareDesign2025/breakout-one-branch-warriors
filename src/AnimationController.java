@@ -1,6 +1,4 @@
-import blocks.Block;
 import blocks.Paddle;
-import blocks.Paddle.MoveState;
 import blocks.Brick;
 
 import java.io.FileInputStream;
