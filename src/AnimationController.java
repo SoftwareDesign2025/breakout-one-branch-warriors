@@ -1,5 +1,6 @@
 import blocks.Block;
 import blocks.Paddle;
+import blocks.Paddle.MoveState;
 import blocks.Brick;
 
 import java.io.FileInputStream;
@@ -87,8 +88,7 @@ public class AnimationController {
 				break;
 			}
 			Color rectColor = Color.hsb(currentHue, saturation, brightness);
-			Brick brick = new Brick(xPos, yPos, MOVER_SIZE * 2, MOVER_SIZE / 2, powerFactor, points, lives);
-			brick.setFill(rectColor);
+			Brick brick = new Brick(xPos, yPos, MOVER_SIZE * 2, MOVER_SIZE / 2, powerFactor, points, lives, rectColor);
 			myBlocks.add(brick);
 			xPos += MOVER_SIZE * 2;
 		}
@@ -153,9 +153,9 @@ public class AnimationController {
 			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
 
 			if (intersectionWidth > intersectionHeight) {
-				ball.bounce(false); // isReflectingXAxis is false
+				ball.bounce(false, paddle.getState()); // isReflectingXAxis is false
 			} else {
-				ball.bounce(true); // isReflectingXAxis is true
+				ball.bounce(true, paddle.getState()); // isReflectingXAxis is true
 			}
 		}
 	}
@@ -174,5 +174,11 @@ public class AnimationController {
 
 	public void paddleMovesRight(boolean goRight) {
 		paddle.moveHorizontally(goRight);
+	}
+
+	public void stopPaddle() {
+		paddle.stop();
+		// TODO Auto-generated method stub
+		
 	}
 }
