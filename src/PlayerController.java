@@ -10,6 +10,7 @@ public class PlayerController {
 	
 	private int score;
 	private int lives;
+	private String playerName;
 	//HighScoreController highScoreController;
 	//Paddle paddle;
 	
@@ -49,9 +50,13 @@ public class PlayerController {
 	 * @return
 	 */
 	/*
-	private void setNewHighScore() {
-		if (score > highScoreController.getHighScore()) {
-			highScoreController.setHighScore(score);
+	private void addScoreToHighScores() {
+		int[] highScores = highScoreController.getHighScores();
+		int numHighScores = highScores.length();
+	
+	
+		if (score > highScores[numHighScores - 1]) {
+			highScoreController.addToHighScores(score, playerName);
 		}
 	}
 	*/
