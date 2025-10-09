@@ -62,7 +62,7 @@ public class AnimationController {
 
 		lives = new Text(10, 20, playerController.getLives() + " lives");
 		score = new Text(60, 20, playerController.getScore() + " points");
-		highScore = new Text(120, 20, "highscore: " + highScoreController.getHighScores()[0]);
+		highScore = new Text(120, 20, "highscore: " + highScoreController.splitScore(highScoreController.getHighScores()[0]));
 
 		Ball ball = new Ball(width / 2, height - 120, new Point2D(50, -250), 10, Color.RED);
 		myBalls.add(ball);
@@ -170,7 +170,7 @@ public class AnimationController {
 			if (!gameEnded) {
 				gameEnded = true;
 				playerController.addScoreToHighScores();
-				highScore.setText("highscore: " + highScoreController.getHighScores()[0]);
+				highScore.setText("highscore: " + highScoreController.splitScore(highScoreController.getHighScores()[0]));
 			}
 		}
 

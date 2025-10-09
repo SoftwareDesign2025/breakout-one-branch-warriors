@@ -20,7 +20,7 @@ public class PlayerController {
 		this.highScoreController = highScoreController;
 		this.paddle = paddle;
 		lives = MAX_LIVES;
-		playerName = "Player 1";
+		playerName = "Player_1";
 	}
 	
 	
