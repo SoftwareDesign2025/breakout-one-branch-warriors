@@ -1,4 +1,8 @@
+/**
+ * @author Aidan Jimenez
+ */
 import blocks.Paddle;
+
 import blocks.Brick;
 
 import java.io.FileInputStream;
@@ -10,15 +14,12 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 
 public class AnimationController {
 
 	public static final String PADDLE_IMAGE = "resources/paddle.gif";
-	public static final Paint MOVER_COLOR = Color.ALICEBLUE;
-	public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
 	public static final int MOVER_SIZE = 50;
 	public static final int MOVER_SPEED = 15;
 	public static final int NUM_BOUNCERS = 1;
@@ -33,6 +34,10 @@ public class AnimationController {
 	private int width;
 	private int height;
 
+	/**
+	 * Creates the scene required for the game to start adding all assets
+	 * @return Group
+	 */
 	public Group createRootForAnimation(int windowWidth, int windowHeight) {
 		width = windowWidth;
 		height = windowHeight;
@@ -61,6 +66,11 @@ public class AnimationController {
 		return root;
 	}
 
+	/**
+	 * Generates the brick layout for the game
+	 * @return List<Brick>
+	 */
+	// TODO: make a new class that can handle this logic
 	private List<Brick> createBrickLayout(){
 		float currentHue = 180f; 
 		final float saturation = 1.0f; 
@@ -95,6 +105,10 @@ public class AnimationController {
 	}
 
 
+	/**
+	 * Makes a new step in the animation checking for collisions as objects in the scene move around
+	 * @param elapsedTime
+	 */
 	public void step(double elapsedTime) {
 		for (Ball ball : myBouncers) {
 			if(paddle.hasBeenMoved()) {
@@ -122,6 +136,10 @@ public class AnimationController {
 
 	}
 
+	/**
+	 * Checks for collisions with bricks
+	 * @param brick
+	 */
 	private void checkCollisionWithBricks(Brick brick) {
 		for (Ball ball : myBouncers) {
 
@@ -142,6 +160,12 @@ public class AnimationController {
 		}
 	}
 
+
+	/**
+	 * Checks for collisions with the player paddle
+	 * @param ball
+	 * @param paddle 
+	 */
 	private void checkCollisionWithPaddle(Ball ball, Paddle paddle) {
 		Shape intersection = Shape.intersect(ball.getBall(), paddle.getCollisionBox());
 
@@ -159,6 +183,11 @@ public class AnimationController {
 	}
 
 
+	/**
+	 * Checks health of the brick to remove from scene
+	 * @param brick
+	 */
+	// TODO: move to same class as the create brick layout
 	private void checkBrickHealth(Brick brick) {
 		if(!brick.isBroken()) {
 			brick.removeDurability();
@@ -170,13 +199,20 @@ public class AnimationController {
 	}
 
 
+	/**
+	 * Will animate the paddle moving across the scene 
+	 * @param goRight
+	 */
+	// TODO: move to player controller
 	public void paddleMovesRight(boolean goRight) {
 		paddle.moveHorizontally(goRight);
 	}
 
+	/**
+	 * Stops the paddle
+	 */
+	// TODO: move to player controller
 	public void stopPaddle() {
 		paddle.stop();
-		// TODO Auto-generated method stub
-		
 	}
 }
