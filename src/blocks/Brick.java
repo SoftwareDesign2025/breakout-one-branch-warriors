@@ -75,6 +75,10 @@ public class Brick extends Block{
 		return hitForceMultiplier;
 	}
 	
+	public int getPoints() {
+		return points;
+	}
+	
 	/**
 	 * Changes the color to reflect that is has lost durability 
 	 */

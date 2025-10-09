@@ -78,7 +78,7 @@ public class Block {
 	 */
 	public void setFill(Paint color) {
 		rect.setFill(color);
-		rect.setStroke(Color.BLACK);
+		//rect.setStroke(Color.BLACK);
 	}
 
 	/**
