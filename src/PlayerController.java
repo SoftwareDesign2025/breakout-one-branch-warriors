@@ -19,6 +19,8 @@ public class PlayerController {
 	public PlayerController(HighScoreController highScoreController, Paddle paddle) {
 		this.highScoreController = highScoreController;
 		this.paddle = paddle;
+		lives = MAX_LIVES;
+		playerName = "Player 1";
 	}
 	
 	
@@ -50,14 +52,8 @@ public class PlayerController {
 	 * if the current score is higher than the current highscore, sets the new highscore
 	 * @return
 	 */
-	private void addScoreToHighScores() {
-		String[] highScores = highScoreController.getHighScores();
-		int numHighScores = highScores.length;
-		int lowestHighScore = Integer.parseInt(highScores[numHighScores - 1]);
-	
-		if (score > lowestHighScore) {
-			highScoreController.addToHighScores(score, playerName);
-		}
+	public void addScoreToHighScores() {
+		highScoreController.addToHighScores(score, playerName);	
 	}
 	
 	/**
