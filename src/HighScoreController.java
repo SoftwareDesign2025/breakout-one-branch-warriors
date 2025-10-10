@@ -126,6 +126,10 @@ public class HighScoreController {
 		}
 	}
 
+	// Input: None
+	// Output: None
+	// Purpose: reads in scores from the scoreFile.txt file and adds it to the null
+	// filled Array
 	public void readScores() {
 		try {
 			Scanner scnr = new Scanner(this.scoreFile);
@@ -145,11 +149,7 @@ public class HighScoreController {
 	// Purpose: checks to see if the recorded number of scores is under the preset
 	// scoreLimit value
 	public boolean underOrAtScoreLimit() {
-
-		if (findCurrentNumberOfScores() <= this.scoreLimit) {
-			return true;
-		}
-		return false;
+		return findCurrentNumberOfScores() <= this.scoreLimit;
 	}
 
 	// Input: None
