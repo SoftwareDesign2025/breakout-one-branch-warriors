@@ -100,7 +100,7 @@ public class HighScoreController {
 				}
 			}
 		}
-		writeScores();
+		sortHighScores();
 	}
 
 	// Input: None
@@ -109,7 +109,7 @@ public class HighScoreController {
 	public void writeScores() {
 		if (underOrAtScoreLimit()) {
 			try {
-				String file = this.filePath;
+				//String file = this.filePath;
 				FileWriter fWriter = new FileWriter(filePath);
 
 				for (int i = 0; i < this.highScores.length; i++) {

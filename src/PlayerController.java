@@ -1,3 +1,4 @@
+import blocks.Paddle;
 import javafx.scene.input.KeyCode;
 
 public class PlayerController {
@@ -11,15 +12,17 @@ public class PlayerController {
 	private int score;
 	private int lives;
 	private String playerName;
-	//HighScoreController highScoreController;
-	//Paddle paddle;
+	HighScoreController highScoreController;
+	Paddle paddle;
 	
-	/*
+	
 	public PlayerController(HighScoreController highScoreController, Paddle paddle) {
 		this.highScoreController = highScoreController;
 		this.paddle = paddle;
+		lives = MAX_LIVES;
+		playerName = "Player_1";
 	}
-	*/
+	
 	
 	/**
 	 * handles the input for moving the paddle left or right
@@ -27,9 +30,9 @@ public class PlayerController {
 	 */
 	public void handleKeyInput(KeyCode keyCode) {
 		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
-			//paddle.movesHorizontally(true)
+			paddle.moveHorizontally(true);
 		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
-			//paddle.movesHorizontally(false)
+			paddle.moveHorizontally(false);
 		} 
 	}
 	
@@ -49,17 +52,24 @@ public class PlayerController {
 	 * if the current score is higher than the current highscore, sets the new highscore
 	 * @return
 	 */
-	/*
-	private void addScoreToHighScores() {
-		int[] highScores = highScoreController.getHighScores();
-		int numHighScores = highScores.length();
-	
-	
-		if (score > highScores[numHighScores - 1]) {
-			highScoreController.addToHighScores(score, playerName);
-		}
+	public void addScoreToHighScores() {
+		highScoreController.addToHighScores(score, playerName);	
 	}
-	*/
+	
+	/**
+	 * called when the ball hits a brick. Adds brick value to the current score
+	 * @param brickValue
+	 */
+	public void addBrickValueToScore(int brickValue) {
+		score += brickValue;
+	}
+	
+	/**
+	 * called when the ball hits the boundary. player loses one life
+	 */
+	public void subtractLife() {
+		lives--;
+	}
 	
 	public int getLives() {
 		return lives;
@@ -68,13 +78,4 @@ public class PlayerController {
 	public int getScore() {
 		return score;
 	}
-	
-	public void setScore(int newScore) {
-		score = newScore;
-	}
-	
-	public void setLives(int newLives) {
-		lives = newLives;
-	}
-	
 }
