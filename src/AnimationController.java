@@ -147,6 +147,8 @@ public class AnimationController {
 				}
 			}
 
+			//store results of collision instead of have them happen right away
+			
 			for (Ball ball : myBalls) {
 				ball.bounceOffWall(width, height);
 			}

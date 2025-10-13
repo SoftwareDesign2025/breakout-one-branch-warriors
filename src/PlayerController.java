@@ -41,11 +41,7 @@ public class PlayerController {
 	 * @return
 	 */
 	public boolean isPlayerDead() {
-		if (lives <= 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return lives <= 0;
 	}
 	
 	/**
