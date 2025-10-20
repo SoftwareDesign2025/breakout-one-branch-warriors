@@ -15,12 +15,16 @@ public class PlayerController {
 	HighScoreController highScoreController;
 	Paddle paddle;
 	
+	public PlayerController() {
+		lives = MAX_LIVES;
+		playerName = "Test_Player";
+		score = 0;
+	}
 	
 	public PlayerController(HighScoreController highScoreController, Paddle paddle) {
+		this();
 		this.highScoreController = highScoreController;
 		this.paddle = paddle;
-		lives = MAX_LIVES;
-		playerName = "Player_1";
 	}
 	
 	
@@ -64,7 +68,9 @@ public class PlayerController {
 	 * called when the ball hits the boundary. player loses one life
 	 */
 	public void subtractLife() {
-		lives--;
+		if (lives > 0) {
+			lives--;
+		}
 	}
 	
 	public int getLives() {

@@ -7,7 +7,7 @@ public class UIController {
 	private final int STARTING_HIGH_SCORE = 0;
 	private final int STARTING_LEVEL_NUMBER = 1;
 	
-	//defines the amount that the height will be multiplied for each level of UI
+	//defines the amount that the height will be multiplied for each vertical level of UI
 	private final double TOP_UI_HEIGHT_MULTIPLIER = 0.1;
 	private final double MID_UI_HEIGHT_MULTIPLIER = 0.5;
 	private final double BOTTOM_UI_HEIGHT_MULTIPLIER = 0.9;
@@ -51,8 +51,8 @@ public class UIController {
 	private void initializeUI() {
 		lives = new Text(width * 0.1, height * TOP_UI_HEIGHT_MULTIPLIER, "Lives: " + STARTING_LIVES);
 		score = new Text(width * 0.3, height * TOP_UI_HEIGHT_MULTIPLIER, "Score: " + STARTING_SCORE);
-		highScore = new Text(width * 0.6, height * TOP_UI_HEIGHT_MULTIPLIER, "High Score: " + STARTING_HIGH_SCORE);
-		levelNumber = new Text(width * 0.9, height * TOP_UI_HEIGHT_MULTIPLIER, "Level: " + STARTING_LEVEL_NUMBER);
+		highScore = new Text(width * 0.5, height * TOP_UI_HEIGHT_MULTIPLIER, "High Score: " + STARTING_HIGH_SCORE);
+		levelNumber = new Text(width * 0.8, height * TOP_UI_HEIGHT_MULTIPLIER, "Level: " + STARTING_LEVEL_NUMBER);
 		winMessage = new Text(width * 0.5, height * MID_UI_HEIGHT_MULTIPLIER, "YOU WIN!");
 		gameOverMessage = new Text(width * 0.5, height * MID_UI_HEIGHT_MULTIPLIER, "GAME OVER");
 		
