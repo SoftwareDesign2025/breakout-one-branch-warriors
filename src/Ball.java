@@ -10,13 +10,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-public class Ball {
+public class Ball implements Collidable{
 
 	private Random random = new Random();
 	private Point2D velocity;
 	private Point2D position;
 	private final Circle myBall;
 	private Point2D previousLocation;
+	public boolean inCollision;
 
 	private static final double HORIZONTAL_KICK = 0.7;
 	private static final double FRICTION_FACTOR = 0.99;
@@ -339,4 +340,11 @@ public class Ball {
 	public void setY(double y) {
 		myBall.setCenterY(y);
 	}
+	/*
+	 * NEED TO IMPLEMENT
+	 */
+	public boolean isCollidedWith() {
+		return false;
+	}
+	
 }
