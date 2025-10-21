@@ -1,3 +1,4 @@
+
 import java.util.List;
 
 public class GameController {
@@ -21,4 +22,3 @@ public class GameController {
 	private void nextLevel() {
 		
 	}
-}
