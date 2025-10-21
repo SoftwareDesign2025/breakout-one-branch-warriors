@@ -21,6 +21,8 @@ public class HighScoreController {
 		this.scoreFile = new File(this.filePath);
 		if (!doesExist()) {
 			createScoreFile();
+			this.highScores[0] = "Placeholder,0";
+			writeScores();
 		} else {
 			readScores();
 		}
