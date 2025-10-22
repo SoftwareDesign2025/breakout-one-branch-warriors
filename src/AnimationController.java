@@ -5,6 +5,7 @@
 import blocks.Paddle;
 import blocks.Boundary;
 import blocks.Brick;
+import blocks.BrickLayout;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,11 +22,10 @@ import javafx.scene.text.Text;
 public class AnimationController {
 
 	public static final String PADDLE_IMAGE = "resources/paddle.gif";
-	public static final int BLOCK_SIZE = 50;
 	public static final int MOVER_SPEED = 15;
 	public static final int NUM_BALLS = 1;
-	public static final int NUM_BRICKS = 54;
 	public static final int SHIELD_CHANCE = 24;
+	public static final int BLOCK_SIZE = 50;
 
 	private List<Ball> myBalls = new ArrayList<>();
 	private List<Brick> myBlocks = new ArrayList<>();
@@ -34,6 +34,7 @@ public class AnimationController {
 	private Boundary boundary;
 	private PlayerController playerController;
 	private HighScoreController highScoreController;
+	private BrickLayout brickLayout;
 	private Group root;
 
 	private int width;
@@ -67,7 +68,8 @@ public class AnimationController {
 		Ball ball = new Ball(width / 2, height - 120, new Point2D(50, -250), 10, Color.RED);
 		myBalls.add(ball);
 
-		myBlocks = createBrickLayout();
+		brickLayout = new BrickLayout(height, width);
+		myBlocks = brickLayout.getMyBlocks();
 
 		try {
 			Image image = new Image(new FileInputStream(PADDLE_IMAGE));
@@ -88,44 +90,6 @@ public class AnimationController {
 		return root;
 	}
 
-	/**
-	 * Generates the brick layout for the game
-	 * 
-	 * @return List<Brick>
-	 */
-	// TODO: make a new class that can handle this logic
-	private List<Brick> createBrickLayout() {
-		float currentHue = 180f;
-		final float saturation = 1.0f;
-		final float brightness = 1.0f;
-		int lives = 1;
-		double powerFactor = 1.025;
-		int points = 5;
-		List<Brick> myBlocks = new ArrayList<>();
-
-		int xPos = 0;
-		int yPos = height / 2 - 100;
-
-		for (int i = 0; i < NUM_BRICKS; i++) {
-			if (xPos >= width) {
-				xPos = 0;
-				yPos -= BLOCK_SIZE / 2;
-				currentHue += 15;
-				powerFactor += 0.010;
-				points += 5;
-				lives += 1;
-			}
-			if (yPos < BLOCK_SIZE) {
-				break;
-			}
-			Color rectColor = Color.hsb(currentHue, saturation, brightness);
-			Brick brick = new Brick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor, points, lives, rectColor);
-			myBlocks.add(brick);
-			xPos += BLOCK_SIZE * 2;
-		}
-
-		return myBlocks;
-	}
 
 	/**
 	 * Makes a new step in the animation checking for collisions as objects in the
@@ -142,7 +106,7 @@ public class AnimationController {
 					ball.setX(paddle.getX() + BLOCK_SIZE);
 				}
 
-				if (myBlocks.size() == 0) {
+				if (brickLayout.blocksLeft() == 0) {
 					ball.stop();
 				}
 			}
