@@ -5,7 +5,7 @@ package blocks;
 
 import javafx.scene.paint.Color;
 
-public class Brick extends Block{
+public class Brick extends Block {
 	private static final int COLOR_CHANGE_FACTOR = 15;
 	private static final int BASE_MULTIPLIER = 2;
 	private static final int BASE_POINTS = 10;
