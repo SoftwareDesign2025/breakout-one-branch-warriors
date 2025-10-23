@@ -31,6 +31,8 @@ public class Main extends Application {
 
 	// This class will handle the logic that is specific to this application.
 	private AnimationController myAnimation;
+	
+	private GameController gameController = new GameController();
 
 	
 	// Input: stage
@@ -90,6 +92,18 @@ public class Main extends Application {
 		} else if (code == KeyCode.RIGHT) {
 			myAnimation.paddleMovesRight(true);
 
+		}
+		else if(code == KeyCode.F1) {
+			gameController.setLevel(WIDTH,HEIGHT,1);
+			System.out.println("1");
+		}
+		else if(code == KeyCode.F2) {
+			gameController.setLevel(WIDTH,HEIGHT,2);
+			System.out.println("2");
+		}
+		else if(code == KeyCode.F3) {
+			gameController.setLevel(WIDTH,HEIGHT,3);
+			System.out.println("3");
 		}
 	}
 
