@@ -7,8 +7,9 @@ import javafx.scene.paint.Color;
 
 public class BrickLayout {
 
-	public static final int BLOCK_SIZE = 50;
-	public static final int NUM_BRICKS = 54;
+	private static final int BLOCK_SIZE = 50;
+	private static final int NUM_BRICKS = 54;
+	private static final int UNBREAKABLE_CHANCE = 2;
 
 	private List<Brick> myBlocks = new ArrayList<>();
 
@@ -75,11 +76,10 @@ public class BrickLayout {
 	 */
 	private Brick createBrick(int xPos, int yPos, double powerFactor, int points, int lives, Color rectColor) {
 		Brick brick;
-		int randomNum = (int) (Math.random() * 50) + 1;
+		int randomNum = (int) (Math.random() * 100);
 
-		if (randomNum == 1 && !isPreviousBlocker) {
-			brick = new Brick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor, 0, Integer.MAX_VALUE,
-					Color.GRAY);
+		if (randomNum <= UNBREAKABLE_CHANCE && !isPreviousBlocker) {
+			brick = new UnbreakableBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor);
 			isPreviousBlocker = true;
 			unbreakableBlockCount++;
 		} else {
