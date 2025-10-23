@@ -3,13 +3,10 @@
  */
 package blocks;
 
-import Ball.Ball;
-import interfaces.Collidable;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
 
-public class Brick extends Block implements Collidable {
-	private static final int COLOR_CHANGE_FACTOR = 15;
+public class Brick extends Block {
+	protected static final int COLOR_CHANGE_FACTOR = 15;
 	private static final int BASE_MULTIPLIER = 2;
 	private static final int BASE_POINTS = 10;
 	private static final int BASE_DURABILITY = 1;
@@ -88,7 +85,7 @@ public class Brick extends Block implements Collidable {
 	/**
 	 * Changes the color to reflect that is has lost durability
 	 */
-	private void alterColor() {
+	protected void alterColor() {
 		Color currentColor = (Color) rect.getFill();
 
 		double hue = currentColor.getHue();
@@ -102,26 +99,4 @@ public class Brick extends Block implements Collidable {
 		rect.setFill(newColor);
 	}
 
-	@Override
-	public void handleCollision(Ball ball) {
-		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
-
-		if (!intersection.getBoundsInLocal().isEmpty()) {
-			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
-			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
-
-			if (intersectionWidth > intersectionHeight) {
-				ball.bounce(false, getHitForceMultiplier()); // isReflectingXAxis is false
-			} else {
-				ball.bounce(true, getHitForceMultiplier()); // isReflectingXAxis is true
-			}
-
-			//checkBrickHealth();
-
-			//playerController.addBrickValueToScore(brick.getPoints());
-			//score.setText(playerController.getScore() + " points");
-
-			//chanceToActivateShieldOnBrickHit();
-		}
-	}
 }
