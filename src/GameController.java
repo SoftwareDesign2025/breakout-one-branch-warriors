@@ -1,5 +1,7 @@
 import java.util.List;
 
+import Ball.Ball;
+
 import java.util.List;
 
 public class GameController {

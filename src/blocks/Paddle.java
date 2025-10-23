@@ -3,11 +3,14 @@
  */
 package blocks;
 
+import Ball.Ball;
+import interfaces.Collidable;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 
-public class Paddle extends Block {
+public class Paddle extends Block implements Collidable{
 	private Point2D velocity;
 	private static int MOVE_SPEED = 15;
 	private static final double MAX_VELOCITY = 45;
@@ -130,6 +133,22 @@ public class Paddle extends Block {
 	public void stop() {
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
+	}
+	
+	public void handleCollision(Ball ball) {
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+
+		if (!intersection.getBoundsInLocal().isEmpty()) {
+
+			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+
+			if (intersectionWidth > intersectionHeight) {
+				ball.bounce(false, getState()); // isReflectingXAxis is false
+			} else {
+				ball.bounce(true, getState()); // isReflectingXAxis is true
+			}
+		}
 	}
 
 }

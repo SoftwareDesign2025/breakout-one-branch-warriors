@@ -10,6 +10,9 @@ import blocks.BrickLayout;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
+
+import Ball.Ball;
+
 import java.util.ArrayList;
 
 import javafx.geometry.Point2D;
