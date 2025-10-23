@@ -23,6 +23,12 @@ public class UIController {
 	private Text gameOverMessage;
 	private Text levelNumber;
 	
+	/**
+	 * creates and returns the UI as a Group object
+	 * @param windowWidth
+	 * @param windowHeight
+	 * @return the UI
+	 */
 	public Group createGroupForUI(int windowWidth, int windowHeight) {
 		width = windowWidth;
 		height = windowHeight;
@@ -41,6 +47,13 @@ public class UIController {
 		return UIRoot;
 	}
 	
+	/**
+	 * will be called each time stats displayed in the UI change. updates the UI using the new stats
+	 * @param currentLives
+	 * @param currentScore
+	 * @param currentHighScore
+	 * @param currentLevelNumber
+	 */
 	public void updateUI(int currentLives, int currentScore, int currentHighScore, int currentLevelNumber) {
 		lives.setText("Lives: " + currentLives);
 		score.setText("Score: " + currentScore);
@@ -48,6 +61,9 @@ public class UIController {
 		levelNumber.setText("Level: " + currentLevelNumber);
 	}
 	
+	/**
+	 * initializes UI with default display stats
+	 */
 	private void initializeUI() {
 		lives = new Text(width * 0.1, height * TOP_UI_HEIGHT_MULTIPLIER, "Lives: " + STARTING_LIVES);
 		score = new Text(width * 0.3, height * TOP_UI_HEIGHT_MULTIPLIER, "Score: " + STARTING_SCORE);
@@ -60,18 +76,30 @@ public class UIController {
 		hideGameOverMessage();
 	}
 	
+	/**
+	 * shows the win message when game is won
+	 */
 	public void showWinMessage() {
 		winMessage.setVisible(true);
 	}
 	
+	/**
+	 * shows game over message when game is lost
+	 */
 	public void showGameOverMessage() {
 		gameOverMessage.setVisible(true);
 	}
 	
+	/**
+	 * hides win message at the beginning of each level
+	 */
 	public void hideWinMessage() {
 		winMessage.setVisible(false);
 	}
 	
+	/**
+	 * hides the game over message at the beginning of each level
+	 */
 	public void hideGameOverMessage() {
 		gameOverMessage.setVisible(false);
 	}
