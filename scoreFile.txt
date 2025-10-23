@@ -1,3 +1,5 @@
+Player_1,500
+Player_1,490
 Player_1,25
 Player_1,25
 Player_1,25

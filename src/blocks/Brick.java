@@ -12,9 +12,9 @@ public class Brick extends Block implements Collidable{
 	private static final int BASE_POINTS = 10;
 	private static final int BASE_DURABILITY = 1;
 
-	private double hitForceMultiplier;
-	private int points;
-	private int durability;
+	protected double hitForceMultiplier;
+	protected int points;
+	protected int durability;
 
 
 	/**
