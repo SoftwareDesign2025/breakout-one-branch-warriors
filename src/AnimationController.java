@@ -68,7 +68,7 @@ public class AnimationController {
 		Ball ball = new Ball(width / 2, height - 120, new Point2D(50, -250), 10, Color.RED);
 		myBalls.add(ball);
 
-		brickLayout = new BrickLayout(height, width);
+		brickLayout = new BrickLayout(height, width, 2);
 		myBlocks = brickLayout.getMyBlocks();
 
 		try {
