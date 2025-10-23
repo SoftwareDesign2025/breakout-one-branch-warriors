@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
-public class Paddle extends Block implements Collidable{
+public class Paddle extends Block {
 	private Point2D velocity;
 	private static int MOVE_SPEED = 15;
 	private static final double MAX_VELOCITY = 45;

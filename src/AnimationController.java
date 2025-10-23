@@ -71,7 +71,7 @@ public class AnimationController {
 		Ball ball = new Ball(width / 2, height - 120, new Point2D(50, -250), 10, Color.RED);
 		myBalls.add(ball);
 
-		brickLayout = new BrickLayout(height, width, 2);
+		brickLayout = new BrickLayout(height, width, 1);
 		myBlocks = brickLayout.getMyBlocks();
 
 		try {
@@ -260,5 +260,12 @@ public class AnimationController {
 			isShieldActive = true;
 			boundary.setFill(Color.BLUE);
 		}
+	}
+	
+	public void setLevel(int screenWidth, int screenHeight, int level) {
+		BrickLayout brickLayout = new BrickLayout(screenHeight,screenWidth, level);
+		myBlocks = brickLayout.getMyBlocks();
+
+		myBlocks.forEach(block -> root.getChildren().add(block.getView()));
 	}
 }

@@ -24,14 +24,12 @@ public class GameController {
 		return true;
 	}
 	
-	public void nextLevel(int screenWidth, int screenHeight) {
+	public void nextLevel(int screenWidth, int screenHeight, AnimationController animation) {
 		if(level != 4) {
 			level++;
-			BrickLayout brickLayout = new BrickLayout(screenHeight, screenWidth/*, int level++ */);
+			BrickLayout brickLayout = new BrickLayout(screenHeight, screenWidth, level++ );
 			
 		}
 	}
-	public void setLevel(int screenWidth, int screenHeight, int level) {
-		BrickLayout brickLayout = new BrickLayout(screenHeight,screenWidth);
-	}
+	
 }

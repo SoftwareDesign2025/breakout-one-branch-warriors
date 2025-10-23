@@ -94,16 +94,16 @@ public class Main extends Application {
 
 		}
 		else if(code == KeyCode.F1) {
-			gameController.setLevel(WIDTH,HEIGHT,1);
-			System.out.println("1");
+			myAnimation.setLevel(WIDTH,HEIGHT,1);
+			
 		}
 		else if(code == KeyCode.F2) {
-			gameController.setLevel(WIDTH,HEIGHT,2);
-			System.out.println("2");
+			myAnimation.setLevel(WIDTH,HEIGHT,2);
+			
 		}
 		else if(code == KeyCode.F3) {
-			gameController.setLevel(WIDTH,HEIGHT,3);
-			System.out.println("3");
+			myAnimation.setLevel(WIDTH,HEIGHT,3);
+			
 		}
 	}
 
