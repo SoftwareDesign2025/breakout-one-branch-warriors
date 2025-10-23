@@ -1,3 +1,4 @@
+package interfaces;
 
 public interface Collidable {
 	public boolean inCollision = false;

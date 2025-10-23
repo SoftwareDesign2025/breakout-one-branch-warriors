@@ -3,9 +3,10 @@
  */
 package blocks;
 
+import interfaces.Collidable;
 import javafx.scene.paint.Color;
 
-public class Brick extends Block {
+public class Brick extends Block implements Collidable{
 	private static final int COLOR_CHANGE_FACTOR = 15;
 	private static final int BASE_MULTIPLIER = 2;
 	private static final int BASE_POINTS = 10;
@@ -94,5 +95,11 @@ public class Brick extends Block {
 	    Color newColor = Color.hsb(newHue, saturation, brightness);
 
 	    rect.setFill(newColor);
+	}
+
+	@Override
+	public boolean isCollidedWith() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

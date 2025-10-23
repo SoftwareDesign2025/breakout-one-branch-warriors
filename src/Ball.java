@@ -4,6 +4,7 @@
 import java.util.Random;
 
 import blocks.Paddle.MoveState;
+import interfaces.Collidable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;

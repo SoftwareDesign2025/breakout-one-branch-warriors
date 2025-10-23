@@ -79,7 +79,7 @@ public class BrickLayout {
 		int randomNum = (int) (Math.random() * 100);
 
 		if (randomNum <= UNBREAKABLE_CHANCE && !isPreviousBlocker) {
-			brick = new UnbreakableBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor, 0);
+			brick = new UnbreakableBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor);
 			isPreviousBlocker = true;
 			unbreakableBlockCount++;
 		} else {
