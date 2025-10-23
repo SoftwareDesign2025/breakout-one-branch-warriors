@@ -3,6 +3,7 @@ package blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
 public class BrickLayout {
@@ -101,4 +102,21 @@ public class BrickLayout {
 	public int blocksLeft() {
 		return myBlocks.size() - unbreakableBlockCount;
 	}
+	
+	private Node checkBrickHealth(Brick brick) {
+		if (!brick.isBroken()) {
+			brick.removeDurability();
+		} else {
+			//root.getChildren().remove(brick.getView());
+			myBlocks.remove(brick);
+		}
+		
+		return brick.getView();
+
+	}
+	
+	public void removeBrick(Brick brick) {
+		myBlocks.remove(brick);
+	}
+
 }
