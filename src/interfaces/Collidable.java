@@ -1,7 +1,7 @@
 package interfaces;
 
+import Ball.Ball;
+
 public interface Collidable {
-	public boolean inCollision = false;
-	
-	public boolean isCollidedWith();
+	public void handleCollision(Ball ball);
 }

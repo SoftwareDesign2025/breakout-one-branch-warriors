@@ -3,10 +3,12 @@
  */
 package blocks;
 
+import Ball.Ball;
 import interfaces.Collidable;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 
-public class Brick extends Block implements Collidable{
+public class Brick extends Block implements Collidable {
 	private static final int COLOR_CHANGE_FACTOR = 15;
 	private static final int BASE_MULTIPLIER = 2;
 	private static final int BASE_POINTS = 10;
@@ -16,9 +18,9 @@ public class Brick extends Block implements Collidable{
 	protected int points;
 	protected int durability;
 
-
 	/**
 	 * Base Constructor for the brick
+	 * 
 	 * @param xPosition
 	 * @param yPosition
 	 * @param width
@@ -33,6 +35,7 @@ public class Brick extends Block implements Collidable{
 
 	/**
 	 * Constructor for the brick
+	 * 
 	 * @param xPosition
 	 * @param yPosition
 	 * @param width
@@ -42,7 +45,8 @@ public class Brick extends Block implements Collidable{
 	 * @param durability
 	 * @param color
 	 */
-	public Brick(int xPosition, int yPosition, int width, int height, double hitForceMultiplier, int points, int durability, Color color) {
+	public Brick(int xPosition, int yPosition, int width, int height, double hitForceMultiplier, int points,
+			int durability, Color color) {
 		super(xPosition, yPosition, width, height);
 		this.hitForceMultiplier = hitForceMultiplier;
 		this.points = points;
@@ -51,17 +55,17 @@ public class Brick extends Block implements Collidable{
 		this.rect.setStroke(Color.BLACK);
 	}
 
-	
 	/**
 	 * Removes a durability from the block
 	 */
 	public void removeDurability() {
 		alterColor();
-		durability -=1;
+		durability -= 1;
 	}
 
 	/**
 	 * Checks if the durability is at 0 so it can be considered broken
+	 * 
 	 * @return boolean
 	 */
 	public boolean isBroken() {
@@ -70,36 +74,54 @@ public class Brick extends Block implements Collidable{
 
 	/**
 	 * Getter for the hit force that the brick has
+	 * 
 	 * @return boolean
 	 */
 	public double getHitForceMultiplier() {
 		return hitForceMultiplier;
 	}
-	
+
 	public int getPoints() {
 		return points;
 	}
-	
+
 	/**
-	 * Changes the color to reflect that is has lost durability 
+	 * Changes the color to reflect that is has lost durability
 	 */
 	private void alterColor() {
 		Color currentColor = (Color) rect.getFill();
 
-	    double hue = currentColor.getHue();
-	    double saturation = currentColor.getSaturation();
-	    double brightness = currentColor.getBrightness();
+		double hue = currentColor.getHue();
+		double saturation = currentColor.getSaturation();
+		double brightness = currentColor.getBrightness();
 
-	    double newHue = (hue - COLOR_CHANGE_FACTOR) % 360;
+		double newHue = (hue - COLOR_CHANGE_FACTOR) % 360;
 
-	    Color newColor = Color.hsb(newHue, saturation, brightness);
+		Color newColor = Color.hsb(newHue, saturation, brightness);
 
-	    rect.setFill(newColor);
+		rect.setFill(newColor);
 	}
 
 	@Override
-	public boolean isCollidedWith() {
-		// TODO Auto-generated method stub
-		return false;
+	public void handleCollision(Ball ball) {
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+
+		if (!intersection.getBoundsInLocal().isEmpty()) {
+			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+
+			if (intersectionWidth > intersectionHeight) {
+				ball.bounce(false, getHitForceMultiplier()); // isReflectingXAxis is false
+			} else {
+				ball.bounce(true, getHitForceMultiplier()); // isReflectingXAxis is true
+			}
+
+			//checkBrickHealth();
+
+			//playerController.addBrickValueToScore(brick.getPoints());
+			//score.setText(playerController.getScore() + " points");
+
+			//chanceToActivateShieldOnBrickHit();
+		}
 	}
 }
