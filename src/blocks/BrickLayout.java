@@ -8,8 +8,9 @@ import javafx.scene.paint.Color;
 public class BrickLayout {
 
 	private static final int BLOCK_SIZE = 50;
-	private static final int NUM_BRICKS = 54;
+	private static final int NUM_BRICKS = 12;
 	private static final int UNBREAKABLE_CHANCE = 2;
+	private static final int MULTIBALL_CHANCE = 1;
 
 	private List<Brick> myBlocks = new ArrayList<>();
 
@@ -19,10 +20,10 @@ public class BrickLayout {
 
 	boolean isPreviousBlocker = false;
 
-	public BrickLayout(int screenHeight, int screenWidth) {
+	public BrickLayout(int screenHeight, int screenWidth, int level) {
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
-		myBlocks = createBrickLayout();
+		myBlocks = createBrickLayout(level);
 	}
 
 	/**
@@ -30,8 +31,8 @@ public class BrickLayout {
 	 * 
 	 * @return List<Brick>
 	 */
-	private List<Brick> createBrickLayout() {
-		float currentHue = 180f;
+	private List<Brick> createBrickLayout(int level) {
+		float currentHue = 180f * 1 + (level * 0.1f);
 		final float saturation = 1.0f;
 		final float brightness = 1.0f;
 		int lives = 1;
@@ -42,11 +43,11 @@ public class BrickLayout {
 		int xPos = 0;
 		int yPos = screenHeight / 2 - 100;
 
-		for (int i = 0; i < NUM_BRICKS; i++) {
+		for (int i = 0; i < NUM_BRICKS * level; i++) {
 			if (xPos >= screenWidth) {
 				xPos = 0;
 				yPos -= BLOCK_SIZE / 2;
-				currentHue += 15;
+				currentHue += 15 * level;
 				powerFactor += 0.010;
 				points += 5;
 				lives += 1;
@@ -76,12 +77,19 @@ public class BrickLayout {
 	 */
 	private Brick createBrick(int xPos, int yPos, double powerFactor, int points, int lives, Color rectColor) {
 		Brick brick;
-		int randomNum = (int) (Math.random() * 100);
+		int randomUnbreakable = (int) (Math.random() * 100);
+		int randomMultiball = (int) (Math.random() * 1000);
 
-		if (randomNum <= UNBREAKABLE_CHANCE && !isPreviousBlocker) {
+		if (randomUnbreakable <= UNBREAKABLE_CHANCE && !isPreviousBlocker) {
 			brick = new UnbreakableBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor);
 			isPreviousBlocker = true;
 			unbreakableBlockCount++;
+		}
+		else if (randomMultiball <= MULTIBALL_CHANCE){
+			brick = new MultiBallBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor);
+			isPreviousBlocker = true;
+			unbreakableBlockCount++;
+			
 		} else {
 			brick = new Brick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor, points, lives, rectColor);
 			isPreviousBlocker = false;

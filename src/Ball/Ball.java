@@ -1,6 +1,8 @@
 /**
  * @author Aidan Jimenez & Benji Altman
 */
+package Ball;
+
 import java.util.Random;
 
 import blocks.Paddle.MoveState;
