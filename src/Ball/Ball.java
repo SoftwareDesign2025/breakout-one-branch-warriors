@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-public class Ball implements Collidable{
+public class Ball {
 
 	private Random random = new Random();
 	private Point2D velocity;

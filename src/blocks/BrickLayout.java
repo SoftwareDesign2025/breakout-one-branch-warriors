@@ -11,19 +11,21 @@ public class BrickLayout {
 	private static final int BLOCK_SIZE = 50;
 	private static final int NUM_BRICKS = 12;
 	private static final int UNBREAKABLE_CHANCE = 2;
-	private static final int MULTIBALL_CHANCE = 1;
+	private static final int DOUBLE_DAMAGE_CHANCE = 3;
 
 	private List<Brick> myBlocks = new ArrayList<>();
 
 	int screenHeight;
 	int screenWidth;
 	int unbreakableBlockCount = 0;
+	int level = 1;
 
 	boolean isPreviousBlocker = false;
 
 	public BrickLayout(int screenHeight, int screenWidth, int level) {
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
+		this.level =  level;
 		myBlocks = createBrickLayout(level);
 	}
 
@@ -79,18 +81,15 @@ public class BrickLayout {
 	private Brick createBrick(int xPos, int yPos, double powerFactor, int points, int lives, Color rectColor) {
 		Brick brick;
 		int randomUnbreakable = (int) (Math.random() * 100);
-		int randomMultiball = (int) (Math.random() * 1000);
+		int randomDD = (int) (Math.random() * 1000);
 
 		if (randomUnbreakable <= UNBREAKABLE_CHANCE && !isPreviousBlocker) {
 			brick = new UnbreakableBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor);
 			isPreviousBlocker = true;
 			unbreakableBlockCount++;
 		}
-		else if (randomMultiball <= MULTIBALL_CHANCE){
-			brick = new MultiBallBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor);
-			isPreviousBlocker = true;
-			unbreakableBlockCount++;
-			
+		else if (randomDD <= DOUBLE_DAMAGE_CHANCE * level){
+			brick = new DoubleDamageBrick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor, points, lives, rectColor);
 		} else {
 			brick = new Brick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor, points, lives, rectColor);
 			isPreviousBlocker = false;
