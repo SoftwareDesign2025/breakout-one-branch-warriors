@@ -2,8 +2,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
@@ -55,6 +58,7 @@ public class Main extends Application {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
+		
 	}
 
 	// Input: screen width, screen height, background color
@@ -63,6 +67,7 @@ public class Main extends Application {
 	// starting properties
 	private Scene setupScene(int WIDTH, int HEIGHT, Paint background) {
 		Group root = myAnimation.createRootForAnimation(WIDTH, HEIGHT);
+		
 		// create a place to see the shapes
 		Scene scene = new Scene(root, WIDTH, HEIGHT, background);
 		// respond to input
@@ -94,6 +99,7 @@ public class Main extends Application {
 
 		}
 		else if(code == KeyCode.F1) {
+			
 			myAnimation.setLevel(WIDTH,HEIGHT,1);
 			
 		}

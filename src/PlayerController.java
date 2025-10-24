@@ -16,7 +16,7 @@ public class PlayerController {
 	Paddle paddle;
 	
 	public PlayerController() {
-		lives = MAX_LIVES;
+		this.lives = MAX_LIVES;
 		playerName = "Test_Player";
 		score = 0;
 	}
@@ -79,5 +79,8 @@ public class PlayerController {
 	
 	public int getScore() {
 		return score;
+	}
+	public void setLives(int lives) {
+		this.lives = lives;
 	}
 }

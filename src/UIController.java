@@ -8,7 +8,7 @@ public class UIController {
 	private final int STARTING_LEVEL_NUMBER = 1;
 	
 	//defines the amount that the height will be multiplied for each vertical level of UI
-	private final double TOP_UI_HEIGHT_MULTIPLIER = 0.1;
+	private final double TOP_UI_HEIGHT_MULTIPLIER = 0.05;
 	private final double MID_UI_HEIGHT_MULTIPLIER = 0.5;
 	private final double BOTTOM_UI_HEIGHT_MULTIPLIER = 0.9;
 	
@@ -22,6 +22,10 @@ public class UIController {
 	private Text winMessage;
 	private Text gameOverMessage;
 	private Text levelNumber;
+	
+	public UIController() {
+		
+	}
 	
 	/**
 	 * creates and returns the UI as a Group object
