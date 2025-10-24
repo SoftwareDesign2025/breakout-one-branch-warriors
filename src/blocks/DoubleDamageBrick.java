@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class DoubleDamageBrick extends Brick{
 	
 	public DoubleDamageBrick (int xPosition, int yPosition, int width, int height, double hitForceMultiplier, int points, int lives, Color rectColor ) {
-		super(xPosition, yPosition, width, height, hitForceMultiplier, points, lives, Color.RED);
+		super(xPosition, yPosition, width, height, hitForceMultiplier, points, lives, Color.CHOCOLATE);
 	}
 	
 	/**
