@@ -1,9 +1,12 @@
 /**
  * @author Aidan Jimenez & Benji Altman
 */
+package Ball;
+
 import java.util.Random;
 
 import blocks.Paddle.MoveState;
+import interfaces.Collidable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -17,6 +20,7 @@ public class Ball {
 	private Point2D position;
 	private final Circle myBall;
 	private Point2D previousLocation;
+	public boolean inCollision;
 
 	private static final double HORIZONTAL_KICK = 0.7;
 	private static final double FRICTION_FACTOR = 0.99;
@@ -339,4 +343,11 @@ public class Ball {
 	public void setY(double y) {
 		myBall.setCenterY(y);
 	}
+	/*
+	 * NEED TO IMPLEMENT
+	 */
+	public boolean isCollidedWith() {
+		return false;
+	}
+	
 }

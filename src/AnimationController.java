@@ -5,27 +5,33 @@
 import blocks.Paddle;
 import blocks.Boundary;
 import blocks.Brick;
+import blocks.BrickLayout;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
+
+import Ball.Ball;
+
 import java.util.ArrayList;
 
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import javafx.scene.*;
 
 public class AnimationController {
 
 	public static final String PADDLE_IMAGE = "resources/paddle.gif";
-	public static final int BLOCK_SIZE = 50;
 	public static final int MOVER_SPEED = 15;
 	public static final int NUM_BALLS = 1;
-	public static final int NUM_BRICKS = 54;
 	public static final int SHIELD_CHANCE = 24;
+	public static final int BLOCK_SIZE = 50;
 
 	private List<Ball> myBalls = new ArrayList<>();
 	private List<Brick> myBlocks = new ArrayList<>();
@@ -33,7 +39,7 @@ public class AnimationController {
 	private Paddle paddle;
 	private Boundary boundary;
 	private PlayerController playerController;
-	private HighScoreController highScoreController;
+	private BrickLayout brickLayout;
 	private Group root;
 
 	private int width;
@@ -43,8 +49,11 @@ public class AnimationController {
 	private Text score;
 	private Text highScore;
 	private boolean gameEnded = false;
-	
+
 	private boolean isShieldActive = false;
+	private Group ui;
+	private UIController uiController;
+	private int level = 1;
 
 	/**
 	 * Creates the scene required for the game to start adding all assets
@@ -52,22 +61,29 @@ public class AnimationController {
 	 * @return Group
 	 */
 	public Group createRootForAnimation(int windowWidth, int windowHeight) {
+
 		width = windowWidth;
 		height = windowHeight;
 
 		root = new Group();
-		boundary = new Boundary(Color.TRANSPARENT, 0, height - 10, width, 20);
-		highScoreController = new HighScoreController();
-		playerController = new PlayerController(highScoreController, paddle);
+		uiController = new UIController();
+		ui = uiController.createGroupForUI(windowWidth, windowHeight);
 
-		lives = new Text(10, 20, playerController.getLives() + " lives");
-		score = new Text(60, 20, playerController.getScore() + " points");
-		highScore = new Text(120, 20, "highscore: " + highScoreController.splitScore(highScoreController.getHighScores()[0]));
+		// StackPane scene = new StackPane(ui, root);
+
+		boundary = new Boundary(Color.TRANSPARENT, 0, height - 10, width, 20);
+		this.playerController = new PlayerController(paddle);
+
+		// lives = new Text(10, 20, playerController.getLives() + " lives");
+		// score = new Text(60, 20, playerController.getScore() + " points");
+		// highScore = new Text(120, 20, "highscore: " +
+		// highScoreController.splitScore(highScoreController.getHighScores()[0]));
 
 		Ball ball = new Ball(width / 2, height - 120, new Point2D(50, -250), 10, Color.RED);
 		myBalls.add(ball);
 
-		myBlocks = createBrickLayout();
+		brickLayout = new BrickLayout(height, width, 1);
+		myBlocks = brickLayout.getMyBlocks();
 
 		try {
 			Image image = new Image(new FileInputStream(PADDLE_IMAGE));
@@ -81,50 +97,17 @@ public class AnimationController {
 		root.getChildren().add(paddle.getView());
 		root.getChildren().add(ball.getView());
 		root.getChildren().add(boundary.getView());
-		root.getChildren().add(lives);
-		root.getChildren().add(score);
-		root.getChildren().add(highScore);
+		root.getChildren().add(ui);
 
 		return root;
 	}
 
-	/**
-	 * Generates the brick layout for the game
-	 * 
-	 * @return List<Brick>
-	 */
-	// TODO: make a new class that can handle this logic
-	private List<Brick> createBrickLayout() {
-		float currentHue = 180f;
-		final float saturation = 1.0f;
-		final float brightness = 1.0f;
-		int lives = 1;
-		double powerFactor = 1.025;
-		int points = 5;
-		List<Brick> myBlocks = new ArrayList<>();
+	public void setBallToPaddle() {
+		for (Ball ball : myBalls) {
+			ball.setX(paddle.getX() + BLOCK_SIZE);
+			ball.setY(paddle.getY() - 10);
 
-		int xPos = 0;
-		int yPos = height / 2 - 100;
-
-		for (int i = 0; i < NUM_BRICKS; i++) {
-			if (xPos >= width) {
-				xPos = 0;
-				yPos -= BLOCK_SIZE / 2;
-				currentHue += 15;
-				powerFactor += 0.010;
-				points += 5;
-				lives += 1;
-			}
-			if (yPos < BLOCK_SIZE) {
-				break;
-			}
-			Color rectColor = Color.hsb(currentHue, saturation, brightness);
-			Brick brick = new Brick(xPos, yPos, BLOCK_SIZE * 2, BLOCK_SIZE / 2, powerFactor, points, lives, rectColor);
-			myBlocks.add(brick);
-			xPos += BLOCK_SIZE * 2;
 		}
-
-		return myBlocks;
 	}
 
 	/**
@@ -134,6 +117,10 @@ public class AnimationController {
 	 * @param elapsedTime
 	 */
 	public void step(double elapsedTime) {
+
+		uiController.updateUI(this.playerController.getLives(), this.playerController.getScore(),
+				playerController.getHighScore(), this.level);
+		// uiController.updateUI(3,3,3,3);
 		if (!playerController.isPlayerDead()) {
 			for (Ball ball : myBalls) {
 				if (paddle.hasBeenMoved()) {
@@ -142,13 +129,14 @@ public class AnimationController {
 					ball.setX(paddle.getX() + BLOCK_SIZE);
 				}
 
-				if (myBlocks.size() == 0) {
-					ball.stop();
+				if (brickLayout.blocksLeft() == 0) {
+					playerController.addScoreToHighScores();
+					nextLevel(width, height);
 				}
 			}
 
-			//store results of collision instead of have them happen right away
-			
+			// store results of collision instead of have them happen right away
+
 			for (Ball ball : myBalls) {
 				ball.bounceOffWall(width, height);
 			}
@@ -168,11 +156,13 @@ public class AnimationController {
 			for (Ball ball : myBalls) {
 				ball.stop();
 			}
-			
+
 			if (!gameEnded) {
 				gameEnded = true;
 				playerController.addScoreToHighScores();
-				highScore.setText("highscore: " + highScoreController.splitScore(highScoreController.getHighScores()[0]));
+				uiController.showGameOverMessage();
+				// highScore.setText("highscore: " +
+				// highScoreController.splitScore(highScoreController.getHighScores()[0]));
 			}
 		}
 
@@ -199,10 +189,10 @@ public class AnimationController {
 				}
 
 				checkBrickHealth(brick);
-				
+
 				playerController.addBrickValueToScore(brick.getPoints());
-				score.setText(playerController.getScore() + " points");
-				
+				// score.setText(playerController.getScore() + " points");
+
 				chanceToActivateShieldOnBrickHit();
 			}
 		}
@@ -235,18 +225,17 @@ public class AnimationController {
 
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 			// remove life
-			
-			if(!isShieldActive) {
+
+			if (!isShieldActive) {
 				playerController.subtractLife();
-				lives.setText(playerController.getLives() + " lives");
+				// lives.setText(playerController.getLives() + " lives");
 			}
-			
 
 			// reset position
 			ball.setX(paddle.getX() + BLOCK_SIZE);
 			ball.setY(paddle.getY() - 10);
 			// Time.sleep();
-			
+
 			isShieldActive = false;
 			boundary.setFill(Color.TRANSPARENT);
 		}
@@ -285,13 +274,39 @@ public class AnimationController {
 	public void stopPaddle() {
 		paddle.stop();
 	}
-	
+
 	public void chanceToActivateShieldOnBrickHit() {
 		int randomNum = (int) (Math.random() * SHIELD_CHANCE) + 1;
-		
+
 		if (randomNum == SHIELD_CHANCE) {
 			isShieldActive = true;
 			boundary.setFill(Color.BLUE);
 		}
 	}
+
+	public void setLevel(int screenWidth, int screenHeight, int level) {
+
+		this.level = level;
+		brickLayout = new BrickLayout(screenHeight, screenWidth, level);
+		for (int i = 0; i < myBlocks.size(); i++) {
+			root.getChildren().remove(myBlocks.get(i).getView());
+			brickLayout.removeBrick(myBlocks.get(i));
+		}
+
+		myBlocks = brickLayout.getMyBlocks();
+
+		myBlocks.forEach(block -> root.getChildren().add(block.getView()));
+		playerController.setLives(3);
+		setBallToPaddle();
+	}
+
+	public void nextLevel(int screenWidth, int screenHeight) {
+		if (this.level > 3) {
+			this.level = 1;
+		}
+		this.level++;
+		setLevel(screenWidth, screenHeight, this.level);
+
+	}
+
 }

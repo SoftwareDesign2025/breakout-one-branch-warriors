@@ -1,6 +1,10 @@
-Player_1,500
-Player_1,490
+Test_Player,280
+Test_Player,165
+Test_Player,70
 Player_1,25
 Player_1,25
 Player_1,25
+Test_Player,5
+Player_1,0
+Player_1,0
 Placeholder,0

@@ -16,14 +16,14 @@ public class PlayerController {
 	Paddle paddle;
 	
 	public PlayerController() {
-		lives = MAX_LIVES;
+		this.lives = MAX_LIVES;
 		playerName = "Test_Player";
 		score = 0;
 	}
 	
-	public PlayerController(HighScoreController highScoreController, Paddle paddle) {
+	public PlayerController(Paddle paddle) {
 		this();
-		this.highScoreController = highScoreController;
+		this.highScoreController = new HighScoreController();
 		this.paddle = paddle;
 	}
 	
@@ -78,6 +78,14 @@ public class PlayerController {
 	}
 	
 	public int getScore() {
+		return score;
+	}
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+
+	public int getHighScore() {
+		int score = highScoreController.splitScore(highScoreController.getHighScores()[0]);
 		return score;
 	}
 }

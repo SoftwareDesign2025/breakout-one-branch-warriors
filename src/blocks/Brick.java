@@ -5,8 +5,8 @@ package blocks;
 
 import javafx.scene.paint.Color;
 
-public class Brick extends Block{
-	private static final int COLOR_CHANGE_FACTOR = 15;
+public class Brick extends Block {
+	protected static final int COLOR_CHANGE_FACTOR = 15;
 	private static final int BASE_MULTIPLIER = 2;
 	private static final int BASE_POINTS = 10;
 	private static final int BASE_DURABILITY = 1;
@@ -15,9 +15,9 @@ public class Brick extends Block{
 	protected int points;
 	protected int durability;
 
-
 	/**
 	 * Base Constructor for the brick
+	 * 
 	 * @param xPosition
 	 * @param yPosition
 	 * @param width
@@ -32,6 +32,7 @@ public class Brick extends Block{
 
 	/**
 	 * Constructor for the brick
+	 * 
 	 * @param xPosition
 	 * @param yPosition
 	 * @param width
@@ -41,7 +42,8 @@ public class Brick extends Block{
 	 * @param durability
 	 * @param color
 	 */
-	public Brick(int xPosition, int yPosition, int width, int height, double hitForceMultiplier, int points, int durability, Color color) {
+	public Brick(int xPosition, int yPosition, int width, int height, double hitForceMultiplier, int points,
+			int durability, Color color) {
 		super(xPosition, yPosition, width, height);
 		this.hitForceMultiplier = hitForceMultiplier;
 		this.points = points;
@@ -50,17 +52,17 @@ public class Brick extends Block{
 		this.rect.setStroke(Color.BLACK);
 	}
 
-	
 	/**
 	 * Removes a durability from the block
 	 */
 	public void removeDurability() {
 		alterColor();
-		durability -=1;
+		durability -= 1;
 	}
 
 	/**
 	 * Checks if the durability is at 0 so it can be considered broken
+	 * 
 	 * @return boolean
 	 */
 	public boolean isBroken() {
@@ -69,30 +71,32 @@ public class Brick extends Block{
 
 	/**
 	 * Getter for the hit force that the brick has
+	 * 
 	 * @return boolean
 	 */
 	public double getHitForceMultiplier() {
 		return hitForceMultiplier;
 	}
-	
+
 	public int getPoints() {
 		return points;
 	}
-	
+
 	/**
-	 * Changes the color to reflect that is has lost durability 
+	 * Changes the color to reflect that is has lost durability
 	 */
-	private void alterColor() {
+	protected void alterColor() {
 		Color currentColor = (Color) rect.getFill();
 
-	    double hue = currentColor.getHue();
-	    double saturation = currentColor.getSaturation();
-	    double brightness = currentColor.getBrightness();
+		double hue = currentColor.getHue();
+		double saturation = currentColor.getSaturation();
+		double brightness = currentColor.getBrightness();
 
-	    double newHue = (hue - COLOR_CHANGE_FACTOR) % 360;
+		double newHue = (hue - COLOR_CHANGE_FACTOR) % 360;
 
-	    Color newColor = Color.hsb(newHue, saturation, brightness);
+		Color newColor = Color.hsb(newHue, saturation, brightness);
 
-	    rect.setFill(newColor);
+		rect.setFill(newColor);
 	}
+
 }
