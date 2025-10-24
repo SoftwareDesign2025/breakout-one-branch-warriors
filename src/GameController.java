@@ -12,9 +12,9 @@ public class GameController {
 	//private BrickLayout brickLayout
 	private List<Ball> balls;
 	private AnimationController animationController;
-	//private UI uiController;
+	
 	private boolean gameLost;
-	private int level = 1;
+	private int level;
 	
 	public void run() {
 		
@@ -31,5 +31,6 @@ public class GameController {
 			
 		}
 	}
+	
 	
 }
