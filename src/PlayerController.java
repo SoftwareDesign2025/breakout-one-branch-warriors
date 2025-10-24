@@ -15,12 +15,16 @@ public class PlayerController {
 	HighScoreController highScoreController;
 	Paddle paddle;
 	
+	public PlayerController() {
+		this.lives = MAX_LIVES;
+		playerName = "Test_Player";
+		score = 0;
+	}
 	
-	public PlayerController(HighScoreController highScoreController, Paddle paddle) {
-		this.highScoreController = highScoreController;
+	public PlayerController(Paddle paddle) {
+		this();
+		this.highScoreController = new HighScoreController();
 		this.paddle = paddle;
-		lives = MAX_LIVES;
-		playerName = "Player_1";
 	}
 	
 	
@@ -41,11 +45,7 @@ public class PlayerController {
 	 * @return
 	 */
 	public boolean isPlayerDead() {
-		if (lives <= 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return lives <= 0;
 	}
 	
 	/**
@@ -68,7 +68,9 @@ public class PlayerController {
 	 * called when the ball hits the boundary. player loses one life
 	 */
 	public void subtractLife() {
-		lives--;
+		if (lives > 0) {
+			lives--;
+		}
 	}
 	
 	public int getLives() {
@@ -76,6 +78,14 @@ public class PlayerController {
 	}
 	
 	public int getScore() {
+		return score;
+	}
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+
+	public int getHighScore() {
+		int score = highScoreController.splitScore(highScoreController.getHighScores()[0]);
 		return score;
 	}
 }

@@ -131,5 +131,5 @@ public class Paddle extends Block {
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
 	}
-
+	
 }
