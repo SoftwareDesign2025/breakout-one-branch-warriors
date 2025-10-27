@@ -73,6 +73,22 @@ public class PlayerController {
 		}
 	}
 	
+	/**
+	 * Stops the paddle
+	 */
+	public void stopPaddle() {
+		paddle.stop();
+	}
+	
+	/**
+	 * Will animate the paddle moving across the scene
+	 * 
+	 * @param goRight
+	 */
+	public void paddleMovesRight(boolean goRight) {
+		paddle.moveHorizontally(goRight);
+	}
+	
 	public int getLives() {
 		return lives;
 	}

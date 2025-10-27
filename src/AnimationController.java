@@ -30,7 +30,6 @@ public class AnimationController {
 	public static final String PADDLE_IMAGE = "resources/paddle.gif";
 	public static final int MOVER_SPEED = 15;
 	public static final int NUM_BALLS = 1;
-	public static final int SHIELD_CHANCE = 24;
 	public static final int BLOCK_SIZE = 50;
 
 	private List<Ball> myBalls = new ArrayList<>();
@@ -45,15 +44,10 @@ public class AnimationController {
 	private int width;
 	private int height;
 
-	private Text lives;
-	private Text score;
-	private Text highScore;
 	private boolean gameEnded = false;
 
-	private boolean isShieldActive = false;
 	private Group ui;
 	private UIController uiController;
-	private int level = 1;
 
 	/**
 	 * Creates the scene required for the game to start adding all assets
@@ -66,8 +60,6 @@ public class AnimationController {
 		height = windowHeight;
 
 		root = new Group();
-		uiController = new UIController();
-		ui = uiController.createGroupForUI(windowWidth, windowHeight);
 
 		// StackPane scene = new StackPane(ui, root);
 
@@ -90,24 +82,35 @@ public class AnimationController {
 
 			paddle = new Paddle(width / 2 - BLOCK_SIZE, height - 100, BLOCK_SIZE * 2, BLOCK_SIZE / 2, width, image);
 
-			myBlocks.forEach(block -> root.getChildren().add(block.getView()));
+			myBlocks.forEach(block -> addToRoot(block.getView()));
 		} catch (FileNotFoundException e) {
 		}
 
-		root.getChildren().add(paddle.getView());
-		root.getChildren().add(ball.getView());
-		root.getChildren().add(boundary.getView());
-		root.getChildren().add(ui);
+		addToRoot(paddle.getView());
+		addToRoot(ball.getView());
+		addToRoot(boundary.getView());
+		addToRoot(ui);
 
 		return root;
+	}
+	
+	public void addToRoot(Node node) {
+		root.getChildren().add(node);
+	}
+	
+	public void removeFromRoot(Node node) {
+		root.getChildren().remove(node);
 	}
 
 	public void setBallToPaddle() {
 		for (Ball ball : myBalls) {
 			ball.setX(paddle.getX() + BLOCK_SIZE);
 			ball.setY(paddle.getY() - 10);
-
 		}
+	}
+	
+	public void stopPaddle() {
+		paddle.stop();
 	}
 
 	/**
@@ -117,10 +120,6 @@ public class AnimationController {
 	 * @param elapsedTime
 	 */
 	public void step(double elapsedTime) {
-
-		uiController.updateUI(this.playerController.getLives(), this.playerController.getScore(),
-				playerController.getHighScore(), this.level);
-		// uiController.updateUI(3,3,3,3);
 		if (!playerController.isPlayerDead()) {
 			for (Ball ball : myBalls) {
 				if (paddle.hasBeenMoved()) {
@@ -131,7 +130,7 @@ public class AnimationController {
 
 				if (brickLayout.blocksLeft() == 0) {
 					playerController.addScoreToHighScores();
-					nextLevel(width, height);
+					//nextLevel(width, height);
 				}
 			}
 
@@ -141,6 +140,8 @@ public class AnimationController {
 				ball.bounceOffWall(width, height);
 			}
 
+			/* waiting for collision handling
+			
 			for (Ball ball : myBalls) {
 				checkCollisionWithPaddle(ball, paddle);
 			}
@@ -152,6 +153,8 @@ public class AnimationController {
 			for (Brick brick : myBlocks) {
 				checkCollisionWithBricks(brick);
 			}
+			
+			*/ 
 		} else {
 			for (Ball ball : myBalls) {
 				ball.stop();
@@ -160,19 +163,32 @@ public class AnimationController {
 			if (!gameEnded) {
 				gameEnded = true;
 				playerController.addScoreToHighScores();
-				uiController.showGameOverMessage();
+				//uiController.showGameOverMessage();
 				// highScore.setText("highscore: " +
 				// highScoreController.splitScore(highScoreController.getHighScores()[0]));
 			}
 		}
 
 	}
+	
+	public void stopAnimation() {
+		stopBalls();
+		stopPaddle();
+	}
+	
+	private void stopBalls() {
+		for (Ball ball : myBalls) {
+			ball.stop();
+		}
+	}
+	
+	/*MOVE TO COLLISION HANDLING
 
 	/**
 	 * Checks for collisions with bricks
 	 * 
 	 * @param brick
-	 */
+	 
 	private void checkCollisionWithBricks(Brick brick) {
 		for (Ball ball : myBalls) {
 
@@ -188,12 +204,12 @@ public class AnimationController {
 					ball.bounce(true, brick.getHitForceMultiplier()); // isReflectingXAxis is true
 				}
 
-				checkBrickHealth(brick);
+				//checkBrickHealth(brick);
 
 				playerController.addBrickValueToScore(brick.getPoints());
 				// score.setText(playerController.getScore() + " points");
 
-				chanceToActivateShieldOnBrickHit();
+				gameController.chanceToActivateShieldOnBrickHit();
 			}
 		}
 	}
@@ -203,7 +219,7 @@ public class AnimationController {
 	 * 
 	 * @param ball
 	 * @param paddle
-	 */
+	 
 	private void checkCollisionWithPaddle(Ball ball, Paddle paddle) {
 		Shape intersection = Shape.intersect(ball.getBall(), paddle.getCollisionBox());
 
@@ -241,72 +257,7 @@ public class AnimationController {
 		}
 	}
 
-	/**
-	 * Checks health of the brick to remove from scene
-	 * 
-	 * @param brick
-	 */
-	// TODO: move to same class as the create brick layout
-	private void checkBrickHealth(Brick brick) {
-		if (!brick.isBroken()) {
-			brick.removeDurability();
-		} else {
-			root.getChildren().remove(brick.getView());
-			myBlocks.remove(brick);
-		}
+	*/
 
-	}
-
-	/**
-	 * Will animate the paddle moving across the scene
-	 * 
-	 * @param goRight
-	 */
-	// TODO: move to player controller
-	public void paddleMovesRight(boolean goRight) {
-		paddle.moveHorizontally(goRight);
-	}
-
-	/**
-	 * Stops the paddle
-	 */
-	// TODO: move to player controller
-	public void stopPaddle() {
-		paddle.stop();
-	}
-
-	public void chanceToActivateShieldOnBrickHit() {
-		int randomNum = (int) (Math.random() * SHIELD_CHANCE) + 1;
-
-		if (randomNum == SHIELD_CHANCE) {
-			isShieldActive = true;
-			boundary.setFill(Color.BLUE);
-		}
-	}
-
-	public void setLevel(int screenWidth, int screenHeight, int level) {
-
-		this.level = level;
-		brickLayout = new BrickLayout(screenHeight, screenWidth, level);
-		for (int i = 0; i < myBlocks.size(); i++) {
-			root.getChildren().remove(myBlocks.get(i).getView());
-			brickLayout.removeBrick(myBlocks.get(i));
-		}
-
-		myBlocks = brickLayout.getMyBlocks();
-
-		myBlocks.forEach(block -> root.getChildren().add(block.getView()));
-		playerController.setLives(3);
-		setBallToPaddle();
-	}
-
-	public void nextLevel(int screenWidth, int screenHeight) {
-		if (this.level > 3) {
-			this.level = 1;
-		}
-		this.level++;
-		setLevel(screenWidth, screenHeight, this.level);
-
-	}
-
+	
 }
