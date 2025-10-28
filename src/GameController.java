@@ -1,7 +1,7 @@
 import java.util.List;
-import blocks.BrickLayout;
 
 import Ball.Ball;
+import layouts.BrickLayout;
 
 import java.util.List;
 
