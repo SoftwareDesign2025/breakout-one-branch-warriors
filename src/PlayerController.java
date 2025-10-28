@@ -1,4 +1,4 @@
-import blocks.Paddle;
+import entities.blocks.Paddle;
 import javafx.scene.input.KeyCode;
 
 public class PlayerController {

@@ -2,10 +2,10 @@
 /**
  * @author Aidan Jimenez
  */
-import blocks.Paddle;
-import blocks.Boundary;
-import blocks.Brick;
-import blocks.BrickLayout;
+import entities.blocks.Paddle;
+import entities.Entity;
+import entities.blocks.Boundary;
+import entities.blocks.Brick;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,14 +16,12 @@ import Ball.Ball;
 import java.util.ArrayList;
 
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-import javafx.scene.*;
+import layouts.BrickLayout;
 
 public class AnimationController {
 
@@ -85,14 +83,10 @@ public class AnimationController {
 		brickLayout = new BrickLayout(height, width, 1);
 		myBlocks = brickLayout.getMyBlocks();
 
-		try {
-			Image image = new Image(new FileInputStream(PADDLE_IMAGE));
 
-			paddle = new Paddle(width / 2 - BLOCK_SIZE, height - 100, BLOCK_SIZE * 2, BLOCK_SIZE / 2, width, image);
+		paddle = new Paddle(width / 2 - BLOCK_SIZE, height - 100, BLOCK_SIZE * 2, BLOCK_SIZE / 2, width);
 
-			myBlocks.forEach(block -> root.getChildren().add(block.getView()));
-		} catch (FileNotFoundException e) {
-		}
+		myBlocks.forEach(block -> root.getChildren().add(block.getView()));
 
 		root.getChildren().add(paddle.getView());
 		root.getChildren().add(ball.getView());
@@ -149,8 +143,8 @@ public class AnimationController {
 				checkCollisionWithBoundary(ball, boundary);
 			}
 
-			for (Brick brick : myBlocks) {
-				checkCollisionWithBricks(brick);
+			for (Entity brick : myBlocks) {
+				checkCollisionWithBricks((Brick) brick);
 			}
 		} else {
 			for (Ball ball : myBalls) {
