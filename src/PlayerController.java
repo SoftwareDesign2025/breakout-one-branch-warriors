@@ -1,3 +1,5 @@
+//Author: Carter Pucket
+
 import blocks.Paddle;
 import javafx.scene.input.KeyCode;
 
