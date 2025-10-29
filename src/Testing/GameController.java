@@ -1,14 +1,13 @@
 //Author: Carter Puckett and Aidan Spoerndle 
 package Testing;
 
-import blocks.Boundary;
-import blocks.Brick;
-import blocks.BrickLayout;
-import blocks.Paddle;
+import entities.blocks.Boundary;
+import entities.blocks.Brick;
+import layouts.BrickLayout;
+import entities.blocks.Paddle;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import Ball.Ball;
-import layouts.BrickLayout;
 
 import java.util.*;
 
