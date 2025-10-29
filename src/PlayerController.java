@@ -1,6 +1,6 @@
 //Author: Carter Puckett
 
-import blocks.Paddle;
+import entities.blocks.Paddle;
 import javafx.scene.input.KeyCode;
 
 public class PlayerController {
@@ -27,6 +27,7 @@ public class PlayerController {
 		this();
 		this.highScoreController = new HighScoreController();
 		this.paddle = paddle;
+	
 	}
 	
 	
@@ -34,11 +35,11 @@ public class PlayerController {
 	 * handles the input for moving the paddle left or right
 	 * @param keyCode
 	 */
-	public void handleKeyInput(KeyCode keyCode) {
+	public void handleKeyInput(KeyCode keyCode, double elapsedTime) {
 		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
-			paddle.moveHorizontally(true);
+			paddle.moveHorizontally(true, elapsedTime);
 		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
-			paddle.moveHorizontally(false);
+			paddle.moveHorizontally(false, elapsedTime);
 		} 
 	}
 	
@@ -87,8 +88,8 @@ public class PlayerController {
 	 * 
 	 * @param goRight
 	 */
-	public void paddleMovesRight(boolean goRight) {
-		paddle.moveHorizontally(goRight);
+	public void paddleMovesRight(boolean goRight, double elapsedTime) {
+		paddle.moveHorizontally(goRight, elapsedTime);
 	}
 	
 	public int getLives() {
