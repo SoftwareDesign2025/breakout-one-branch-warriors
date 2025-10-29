@@ -16,10 +16,10 @@ import javafx.scene.paint.Color;
 public class BrickLayout extends Layout{
 	private static final String[] LEVEL_1_MAP = {
 		    "XXXXXXXXX",
-		    "XXXXXXXXX",
-		    "XXXXXXXXX",
-		    "XXXXXXXXX",
-		    "XXXXXXXXX",
+//		    "XXXXXXXXX",
+//		    "XXXXXXXXX",
+//		    "XXXXXXXXX",
+//		    "XXXXXXXXX",
 		};
 
 		private static final String[] LEVEL_2_MAP = {
@@ -122,6 +122,7 @@ public class BrickLayout extends Layout{
 	        case 'D':
 	            return new DoubleDamageBrick(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT, powerFactor, points, lives, rectColor);
 	        case 'X':
+	            return new Brick(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT, powerFactor, points, lives, rectColor);
 	        default:
 	            return new Brick(xPos, yPos, BRICK_WIDTH, BRICK_HEIGHT, powerFactor, points, lives, rectColor);
 	    }

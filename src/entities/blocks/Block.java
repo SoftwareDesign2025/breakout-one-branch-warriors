@@ -5,16 +5,12 @@ package entities.blocks;
 
 import Ball.Ball;
 import entities.Entity;
-import javafx.scene.Group; 
-import javafx.scene.Node;
-import javafx.scene.image.Image;
+import interfaces.Collidable;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
-public class Block extends Entity {
+public class Block extends Entity implements Collidable{
 	protected ImageView sprite;  
 
 	// Can be used to make curved corners

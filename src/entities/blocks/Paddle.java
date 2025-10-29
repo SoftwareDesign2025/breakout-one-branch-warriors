@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Paddle extends Block {
-	private static final String IMAGE_LOCATION = "resources/paddle.gif";
+	private static final String IMAGE_LOCATION = "resources/blue_paddle.png";
 	private Point2D velocity;
 	private static int MOVE_SPEED = 15;
 	private static final double MAX_VELOCITY = 45;

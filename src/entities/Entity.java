@@ -4,7 +4,6 @@
 package entities;
 
 
-import interfaces.Collidable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -14,7 +13,7 @@ import javafx.scene.shape.Shape;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public abstract class Entity implements Collidable {
+public abstract class Entity {
 	protected Group view; 
 	protected Rectangle rect;   
 	protected ImageView sprite;  
@@ -32,11 +31,12 @@ public abstract class Entity implements Collidable {
 		this(xPosition, yPosition, width, height);
 
 		try {
+
 			Image image_file = new Image(new FileInputStream(image));
 			sprite = new ImageView(image_file);
 			sprite.setFitWidth(width);
 			sprite.setFitHeight(height);
-			
+
 			view.getChildren().add(sprite);
 
 		} catch (FileNotFoundException e) {
