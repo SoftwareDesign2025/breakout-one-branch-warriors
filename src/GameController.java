@@ -1,4 +1,4 @@
-//Author: Carter Puckett and Aidan Spoerndle
+//Author: Carter Puckett and Aidan Spoerndle 
 
 import blocks.Boundary;
 import blocks.Brick;
