@@ -1,11 +1,12 @@
 /**
  * @author Aidan Jimenez
  */
-package blocks;
+package entities.blocks;
 
 import javafx.scene.paint.Color;
 
 public class Brick extends Block {
+	protected static final String BRICK_IMAGE = "resources/green_brick.png";
 	protected static final int COLOR_CHANGE_FACTOR = 15;
 	private static final int BASE_MULTIPLIER = 2;
 	private static final int BASE_POINTS = 10;
@@ -50,6 +51,14 @@ public class Brick extends Block {
 		this.durability = durability;
 		this.rect.setFill(color);
 		this.rect.setStroke(Color.BLACK);
+	}
+
+	public Brick(int xPosition, int yPosition, int width, int height, double hitForceMultiplier, int points,
+			int durability) {
+		super(xPosition, yPosition, width, height, BRICK_IMAGE);
+		this.hitForceMultiplier = hitForceMultiplier;
+		this.points = points;
+		this.durability = durability;
 	}
 
 	/**

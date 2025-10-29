@@ -2,10 +2,10 @@
 /**
  * @author Aidan Jimenez
  */
-import blocks.Paddle;
-import blocks.Boundary;
-import blocks.Brick;
-import blocks.BrickLayout;
+import entities.blocks.Paddle;
+import entities.Entity;
+import entities.blocks.Boundary;
+import entities.blocks.Brick;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,18 +16,15 @@ import Ball.Ball;
 import java.util.ArrayList;
 
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-import javafx.scene.*;
+import layouts.BrickLayout;
 
 public class AnimationController {
 
-	public static final String PADDLE_IMAGE = "resources/paddle.gif";
 	public static final int MOVER_SPEED = 15;
 	public static final int NUM_BALLS = 1;
 	public static final int SHIELD_CHANCE = 24;
@@ -45,9 +42,6 @@ public class AnimationController {
 	private int width;
 	private int height;
 
-	private Text lives;
-	private Text score;
-	private Text highScore;
 	private boolean gameEnded = false;
 
 	private boolean isShieldActive = false;
@@ -74,25 +68,16 @@ public class AnimationController {
 		boundary = new Boundary(Color.TRANSPARENT, 0, height - 10, width, 20);
 		this.playerController = new PlayerController(paddle);
 
-		// lives = new Text(10, 20, playerController.getLives() + " lives");
-		// score = new Text(60, 20, playerController.getScore() + " points");
-		// highScore = new Text(120, 20, "highscore: " +
-		// highScoreController.splitScore(highScoreController.getHighScores()[0]));
-
-		Ball ball = new Ball(width / 2, height - 120, new Point2D(50, -250), 10, Color.RED);
+		Ball ball = new Ball(width / 2, height - 120, new Point2D(50, -250), 10);
 		myBalls.add(ball);
 
 		brickLayout = new BrickLayout(height, width, 1);
 		myBlocks = brickLayout.getMyBlocks();
 
-		try {
-			Image image = new Image(new FileInputStream(PADDLE_IMAGE));
 
-			paddle = new Paddle(width / 2 - BLOCK_SIZE, height - 100, BLOCK_SIZE * 2, BLOCK_SIZE / 2, width, image);
+		paddle = new Paddle( width / 2 - BLOCK_SIZE, height - 100, BLOCK_SIZE * 2, BLOCK_SIZE / 2, width );
 
-			myBlocks.forEach(block -> root.getChildren().add(block.getView()));
-		} catch (FileNotFoundException e) {
-		}
+		myBlocks.forEach(block -> root.getChildren().add(block.getView()));
 
 		root.getChildren().add(paddle.getView());
 		root.getChildren().add(ball.getView());
@@ -120,7 +105,6 @@ public class AnimationController {
 
 		uiController.updateUI(this.playerController.getLives(), this.playerController.getScore(),
 				playerController.getHighScore(), this.level);
-		// uiController.updateUI(3,3,3,3);
 		if (!playerController.isPlayerDead()) {
 			for (Ball ball : myBalls) {
 				if (paddle.hasBeenMoved()) {
@@ -149,8 +133,8 @@ public class AnimationController {
 				checkCollisionWithBoundary(ball, boundary);
 			}
 
-			for (Brick brick : myBlocks) {
-				checkCollisionWithBricks(brick);
+			for (Entity brick : myBlocks) {
+				checkCollisionWithBricks((Brick) brick);
 			}
 		} else {
 			for (Ball ball : myBalls) {
@@ -161,8 +145,6 @@ public class AnimationController {
 				gameEnded = true;
 				playerController.addScoreToHighScores();
 				uiController.showGameOverMessage();
-				// highScore.setText("highscore: " +
-				// highScoreController.splitScore(highScoreController.getHighScores()[0]));
 			}
 		}
 

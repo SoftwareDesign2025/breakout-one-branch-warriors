@@ -1,13 +1,14 @@
 /**
  * @author Aidan Jimenez
  */
-package blocks;
+package entities.blocks;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Paddle extends Block {
+	private static final String IMAGE_LOCATION = "resources/blue_paddle.png";
 	private Point2D velocity;
 	private static int MOVE_SPEED = 15;
 	private static final double MAX_VELOCITY = 45;
@@ -38,6 +39,8 @@ public class Paddle extends Block {
 		this.paddleWidth = width;
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
+		this.rect.setArcHeight(CORNER_RADIUS);
+		this.rect.setArcWidth(CORNER_RADIUS);
 	}
 
 	/**
@@ -50,8 +53,8 @@ public class Paddle extends Block {
 	 * @param boardWidth
 	 * @param image
 	 */
-	public Paddle(int xPosition, int yPosition, int width, int height, int boardWidth, Image image) {
-		super(xPosition, yPosition, width, height, image);
+	public Paddle(int xPosition, int yPosition, int width, int height, int boardWidth) {
+		super(xPosition, yPosition, width, height, IMAGE_LOCATION);
 		this.boardWidth = boardWidth;
 		this.paddleWidth = width;
 		this.velocity = new Point2D(0, 0);
