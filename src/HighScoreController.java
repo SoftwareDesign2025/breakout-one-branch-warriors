@@ -31,8 +31,8 @@ public class HighScoreController {
 
 	// Class Variables
 	private File scoreFile; // The scoreFile.txt reference
-	private int scoreLimit = 10; // The maximum number of scores that can be added to scoreFile
-	private String[] highScores = new String[scoreLimit]; // An array of Strings that holds the data of the high scores
+	private final int SCORELIMIT = 10; // The maximum number of scores that can be added to scoreFile
+	private String[] highScores = new String[SCORELIMIT]; // An array of Strings that holds the data of the high scores
 	private String filePath = "scoreFile.txt"; // The file path of scoreFile.txt
 
 	// Getter
@@ -92,9 +92,9 @@ public class HighScoreController {
 			}
 		}
 
-		if(this.highScores.length == scoreLimit) {
-			if(splitScore(highScores[scoreLimit-1]) < score) {
-				highScores[scoreLimit-1] = name + "," + score;
+		if(this.highScores.length == SCORELIMIT) {
+			if(splitScore(highScores[SCORELIMIT-1]) < score) {
+				highScores[SCORELIMIT-1] = name + "," + score;
 			}
 		}
 		sortHighScores();
@@ -145,9 +145,9 @@ public class HighScoreController {
 	// Input: None
 	// Output: Boolean
 	// Purpose: checks to see if the recorded number of scores is under the preset
-	// scoreLimit value
+	// SCORELIMIT value
 	public boolean underOrAtScoreLimit() {
-		return findCurrentNumberOfScores() <= this.scoreLimit;
+		return findCurrentNumberOfScores() <= this.SCORELIMIT;
 	}
 
 	// Input: None
