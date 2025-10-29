@@ -1,4 +1,5 @@
 //Author: Carter Puckett and Aidan Spoerndle 
+package Testing;
 
 import blocks.Boundary;
 import blocks.Brick;
@@ -10,6 +11,11 @@ import Ball.Ball;
 import layouts.BrickLayout;
 
 import java.util.*;
+
+import AnimationController;
+import HighScoreController;
+import PlayerController;
+import UIController;
 
 public class GameController {
 	
@@ -149,6 +155,32 @@ public class GameController {
 	 */
 	public boolean getIsShieldActive() {
 		return isShieldActive;
+	}
+	
+	public Paddle getPaddle() {
+		return paddle;
+	}
+	
+	public void removeShield() {
+		isShieldActive = false;
+	}
+	public PlayerController getPlayerController() {
+		return playerController;
+	}
+	public List<Brick> getMyBricks() {
+		return myBricks;
+	}
+	public AnimationController getAnimationController() {
+		return animationController;
+	}
+	
+	public void chanceToActivateShieldOnBrickHit() {
+		int randomNum = (int) (Math.random() * SHIELD_CHANCE) + 1;
+		
+		if (randomNum == SHIELD_CHANCE) {
+			isShieldActive = true;
+			boundary.setFill(Color.BLUE);
+		}
 	}
 	
 	public Group getAnimationRoot() {

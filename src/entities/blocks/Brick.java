@@ -3,6 +3,8 @@
  */
 package entities.blocks;
 
+import Ball.Ball;
+import Testing.GameController;
 import javafx.scene.paint.Color;
 
 public class Brick extends Block {
@@ -106,6 +108,12 @@ public class Brick extends Block {
 		Color newColor = Color.hsb(newHue, saturation, brightness);
 
 		rect.setFill(newColor);
+	}
+	
+	@Override
+	public void handleCollision(Ball ball, GameController gameController) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
