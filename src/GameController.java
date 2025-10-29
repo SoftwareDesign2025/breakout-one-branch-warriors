@@ -7,6 +7,7 @@ import blocks.Paddle;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import Ball.Ball;
+import layouts.BrickLayout;
 
 import java.util.*;
 
