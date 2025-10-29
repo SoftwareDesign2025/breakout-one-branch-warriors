@@ -91,18 +91,14 @@ public class HighScoreController {
 				break;
 			}
 		}
-		if (this.highScores[this.highScores.length - 1] != null) {
-			for (int i = 1; i < findCurrentNumberOfScores(); i++) {
-				if (score > splitScore(this.highScores[i - 1])) {
-					this.highScores[this.highScores.length - 1] = "";
-					for (int j = i; j < this.highScores.length; j++) {
-						this.highScores[this.highScores.length - j - 1] = this.highScores[this.highScores.length - j];
-					}
-					this.highScores[i] = name + "," + score;
-				}
+
+		if(this.highScores.length == scoreLimit) {
+			if(splitScore(highScores[scoreLimit-1]) < score) {
+				highScores[scoreLimit-1] = name + "," + score;
 			}
 		}
 		sortHighScores();
+		
 	}
 
 	// Input: None
