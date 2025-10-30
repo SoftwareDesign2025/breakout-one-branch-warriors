@@ -3,7 +3,8 @@
  */
 package entities.blocks;
 
-import Ball.Ball;
+import game.GameController;
+import Projectiles.Ball;
 import entities.Entity;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;
@@ -63,7 +64,7 @@ public class Block extends Entity implements Collidable{
 	}
 
 	@Override
-	public void handleCollision(Ball ball) {
+	public void handleCollision(Ball ball, GameController gameController) {
 		// TODO Auto-generated method stub
 		
 	}

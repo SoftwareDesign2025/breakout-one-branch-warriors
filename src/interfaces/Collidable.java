@@ -1,7 +1,8 @@
 package interfaces;
 
-import Ball.Ball;
+import Projectiles.Ball;
+import game.GameController;
 
 public interface Collidable {
-	public void handleCollision(Ball ball);
+	public void handleCollision(Ball ball, GameController gameController);
 }
