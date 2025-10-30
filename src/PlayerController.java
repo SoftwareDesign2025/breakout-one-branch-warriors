@@ -96,7 +96,7 @@ public class PlayerController {
 		return lives;
 	}
 	
-	public int getScore() {
+	public Integer getScore() {
 		return score;
 	}
 	public void setLives(int lives) {

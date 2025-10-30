@@ -1,8 +1,13 @@
-
 /**
  * @author Aidan Jimenez
  */
+
+
+
 import entities.blocks.Paddle;
+
+import interfaces.Collidable;
+import entities.Entity;
 import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import interfaces.IMoveable;
@@ -77,6 +82,54 @@ public class AnimationController {
 	 * @param elapsedTime
 	 */
 	public void step(double elapsedTime) {
+		if (!playerController.isPlayerDead()) {
+			for (Ball ball : myBalls) {
+				if (paddle.hasBeenMoved()) {
+					ball.move(elapsedTime);
+				} else {
+					ball.setX(paddle.getX() + BLOCK_SIZE);
+				}
+
+				if (brickLayout.blocksLeft() == 0) {
+					playerController.addScoreToHighScores();
+					//nextLevel(width, height);
+				}
+			}
+			
+
+			// store results of collision instead of have them happen right away
+
+			for (Ball ball : myBalls) {
+				ball.bounceOffWall(width, height);
+			}
+
+			/* waiting for collision handling
+			
+			for (Ball ball : myBalls) {
+				checkCollisionWithPaddle(ball, paddle);
+			}
+
+			for (Ball ball : myBalls) {
+				checkCollisionWithBoundary(ball, boundary);
+			}
+
+			for (Entity brick : myBlocks) {
+				checkCollisionWithBricks((Brick) brick);
+			}
+			
+			*/ 
+		} else {
+			for (Ball ball : myBalls) {
+				ball.stop();
+			}
+
+			if (!gameEnded) {
+				gameEnded = true;
+				playerController.addScoreToHighScores();
+				//uiController.showGameOverMessage();
+				// highScore.setText("highscore: " +
+				// highScoreController.splitScore(highScoreController.getHighScores()[0]));
+			}
 		for(IMoveable moveable: moveables) {
 			moveable.move(elapsedTime);
 		}

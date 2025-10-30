@@ -4,6 +4,7 @@ import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
+import interfaces.Collidable;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
@@ -36,6 +37,7 @@ public class GameController {
 	
 	private List<Ball> balls = new ArrayList<>();
 	private List<Brick> myBricks = new ArrayList<>();
+	private List<Collidable> myCollidables;
 	
 	private String gameType; //breakout or galaga
 	private boolean isGameLost;
@@ -82,6 +84,12 @@ public class GameController {
 		uiController.updateUI(playerController.getLives(), playerController.getScore(), playerController.getHighScore(), level);
 		
 		animationController.step(elapsedTime);
+		
+		//Handle all collisions, will have to add any potential collidables to list "myCollidables"
+		for(Collidable collidable : myCollidables) {
+			for(Ball ball : balls) {
+				collidable.handleCollision(ball, this);
+			}
 	}
 	
 	/**
@@ -125,20 +133,6 @@ public class GameController {
 	}
 	
 	/**
-	 * Checks health of the brick to remove from scene
-	 * 
-	 * @param brick
-	 */
-	public void checkBrickHealth(Brick brick) {
-		if (!brick.isBroken()) {
-			brick.removeDurability();
-		} else {
-			animationController.removeFromRoot(brick.getView());;
-			myBricks.remove(brick);
-		}
-	}
-	
-	/**
 	 * gives a 1 in SHIELD_CHANCE + 1 chance of activating the shield
 	 */
 	public void chanceToActivateShieldOnBrickHit() {
@@ -156,6 +150,23 @@ public class GameController {
 	 */
 	public boolean getIsShieldActive() {
 		return isShieldActive;
+	}
+	
+	public Paddle getPaddle() {
+		return paddle;
+	}
+	
+	public void removeShield() {
+		isShieldActive = false;
+	}
+	public PlayerController getPlayerController() {
+		return playerController;
+	}
+	public List<Brick> getMyBricks() {
+		return myBricks;
+	}
+	public AnimationController getAnimationController() {
+		return animationController;
 	}
 	
 	public Group getAnimationRoot() {

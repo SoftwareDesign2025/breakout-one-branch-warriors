@@ -3,6 +3,7 @@
  */
 package entities.blocks;
 
+import GameController;
 import Ball.Ball;
 import entities.Entity;
 import interfaces.Collidable;
@@ -63,7 +64,7 @@ public class Block extends Entity implements Collidable{
 	}
 
 	@Override
-	public void handleCollision(Ball ball) {
+	public void handleCollision(Ball ball, GameController gameController) {
 		// TODO Auto-generated method stub
 		
 	}

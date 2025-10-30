@@ -3,10 +3,14 @@
  */
 package entities.blocks;
 
+import GameController;
+import Ball.Ball;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.scene.input.KeyCode;
+
 
 public class Paddle extends Block {
 	private static final String IMAGE_LOCATION = "resources/blue_paddle.png";
@@ -135,6 +139,20 @@ public class Paddle extends Block {
 	public void stop() {
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
+	}
+	
+	
+	public void handleCollision(Ball ball, GameController gameController) {
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+		if (!intersection.getBoundsInLocal().isEmpty()) {
+			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+			if (intersectionWidth > intersectionHeight) {
+				ball.bounce(false, getState()); // isReflectingXAxis is false
+			} else {
+				ball.bounce(true, getState()); // isReflectingXAxis is true
+			}
+		}
 	}
 	
 }
