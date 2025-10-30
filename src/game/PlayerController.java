@@ -1,4 +1,5 @@
 //Author: Carter Puckett
+package game;
 
 import entities.blocks.Paddle;
 import javafx.scene.input.KeyCode;

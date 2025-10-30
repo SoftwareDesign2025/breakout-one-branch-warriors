@@ -3,7 +3,7 @@
  */
 package entities.blocks;
 
-import GameController;
+import game.GameController;
 import Ball.Ball;
 import entities.Entity;
 import interfaces.Collidable;

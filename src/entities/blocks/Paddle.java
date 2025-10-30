@@ -3,7 +3,7 @@
  */
 package entities.blocks;
 
-import GameController;
+import game.GameController;
 import Ball.Ball;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;

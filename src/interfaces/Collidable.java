@@ -1,6 +1,6 @@
 package interfaces;
 
-import GameController;
+import game.GameController;
 import Ball.Ball;
 
 public interface Collidable {

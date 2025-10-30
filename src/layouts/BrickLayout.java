@@ -14,7 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
 public class BrickLayout extends Layout{
-	private static final String[] LEVEL_1_MAP = {
+	private static final String[] LEVEL_2_MAP = {
 		    "XXXXXXXXX",
 //		    "XXXXXXXXX",
 //		    "XXXXXXXXX",
@@ -22,7 +22,7 @@ public class BrickLayout extends Layout{
 //		    "XXXXXXXXX",
 		};
 
-		private static final String[] LEVEL_2_MAP = {
+		private static final String[] LEVEL_1_MAP = {
 		    "  XXXXX  ",
 		    "  X   X  ",
 		    "  X D X  ",
