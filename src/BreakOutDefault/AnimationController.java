@@ -1,7 +1,9 @@
-
 /**
  * @author Aidan Jimenez
  */
+package BreakOutDefault;
+
+
 import entities.blocks.Paddle;
 import entities.Entity;
 import entities.blocks.Boundary;

@@ -1,5 +1,5 @@
 //Author: Carter Puckett and Aidan Spoerndle 
-package Testing;
+package BreakOutDefault;
 
 import entities.blocks.Boundary;
 import entities.blocks.Brick;
@@ -10,11 +10,6 @@ import javafx.scene.paint.Color;
 import Ball.Ball;
 
 import java.util.*;
-
-import AnimationController;
-import HighScoreController;
-import PlayerController;
-import UIController;
 
 public class GameController {
 	
@@ -127,12 +122,12 @@ public class GameController {
 	 * 
 	 * @param brick
 	 */
-	public void checkBrickHealth(Brick brick) {
-		if (!brick.isBroken()) {
-			brick.removeDurability();
+	private void checkBrickHealth(GameController gameController) {
+		if (!isBroken()) {
+			removeDurability();
 		} else {
-			animationController.removeFromRoot(brick.getView());;
-			myBricks.remove(brick);
+			//root.getChildren().remove(brick.getView());		Remove from scene
+			gameController.getMyBricks().remove(this);
 		}
 	}
 	
@@ -171,15 +166,6 @@ public class GameController {
 	}
 	public AnimationController getAnimationController() {
 		return animationController;
-	}
-	
-	public void chanceToActivateShieldOnBrickHit() {
-		int randomNum = (int) (Math.random() * SHIELD_CHANCE) + 1;
-		
-		if (randomNum == SHIELD_CHANCE) {
-			isShieldActive = true;
-			boundary.setFill(Color.BLUE);
-		}
 	}
 	
 	public Group getAnimationRoot() {

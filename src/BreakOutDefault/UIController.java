@@ -1,4 +1,5 @@
 //Author: Carter Puckett
+package BreakOutDefault;
 
 import javafx.scene.*;
 import javafx.scene.text.Text;

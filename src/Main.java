@@ -1,4 +1,5 @@
-import Testing.GameController;
+import BreakOutDefault.AnimationController;
+import BreakOutDefault.GameController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;

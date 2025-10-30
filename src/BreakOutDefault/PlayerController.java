@@ -1,6 +1,7 @@
 //Author: Carter Puckett
+package BreakOutDefault;
 
-import blocks.Paddle;
+import entities.blocks.Paddle;
 import javafx.scene.input.KeyCode;
 
 public class PlayerController {
@@ -95,7 +96,7 @@ public class PlayerController {
 		return lives;
 	}
 	
-	public int getScore() {
+	public Integer getScore() {
 		return score;
 	}
 	public void setLives(int lives) {

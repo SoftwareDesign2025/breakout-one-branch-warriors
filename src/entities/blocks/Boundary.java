@@ -4,7 +4,7 @@
 package entities.blocks;
 
 import Ball.Ball;
-import Testing.GameController;
+import BreakOutDefault.GameController;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
@@ -19,7 +19,7 @@ public class Boundary extends Block {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 
-			if(!gameController.isShieldActive()) {
+			if(!gameController.getIsShieldActive()) {
 				gameController.getPlayerController().subtractLife();
 				//lives.setText(playerController.getLives() + " lives");  		Update number of lives text
 			}

@@ -4,7 +4,7 @@
 package entities.blocks;
 
 import Ball.Ball;
-import Testing.GameController;
+import BreakOutDefault.GameController;
 import entities.Entity;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;

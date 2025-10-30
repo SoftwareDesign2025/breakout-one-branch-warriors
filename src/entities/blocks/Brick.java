@@ -4,8 +4,9 @@
 package entities.blocks;
 
 import Ball.Ball;
-import Testing.GameController;
+import BreakOutDefault.GameController;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 
 public class Brick extends Block {
 	protected static final String BRICK_IMAGE = "resources/green_brick.png";
@@ -112,8 +113,37 @@ public class Brick extends Block {
 	
 	@Override
 	public void handleCollision(Ball ball, GameController gameController) {
-		// TODO Auto-generated method stub
-		
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+		if (!intersection.getBoundsInLocal().isEmpty()) {
+			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+			if (intersectionWidth > intersectionHeight) {
+				ball.bounce(false, getHitForceMultiplier()); // isReflectingXAxis is false
+			} else {
+				ball.bounce(true, getHitForceMultiplier()); // isReflectingXAxis is true
+			}
+			
+			checkBrickHealth(gameController);
+			
+			gameController.getPlayerController().addBrickValueToScore(getPoints());
+			//gameController.getPlayerController().getScore().setText(gameController.getPlayerController().getScore() + " points");   		Fix how we update the score UI
+			
+			gameController.chanceToActivateShieldOnBrickHit();
+		}
+	}
+	
+	/**
+	 * Checks health of the brick to remove from scene
+	 *
+	 * @param brick
+	 */
+	private void checkBrickHealth(GameController gameController) {
+		if (!isBroken()) {
+			removeDurability();
+		} else {
+			//root.getChildren().remove(brick.getView());		Remove from scene
+			gameController.getMyBricks().remove(this);
+		}
 	}
 
 }
