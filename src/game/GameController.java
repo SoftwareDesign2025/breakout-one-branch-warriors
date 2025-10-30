@@ -10,10 +10,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import Ball.Ball;
 import interfaces.IMoveable;
 
 import java.util.*;
+
+import Projectiles.Ball;
 
 public class GameController {
 

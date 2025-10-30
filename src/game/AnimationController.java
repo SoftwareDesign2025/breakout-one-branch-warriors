@@ -13,7 +13,7 @@ import interfaces.IMoveable;
 
 import java.util.List;
 
-import Ball.Ball;
+import Projectiles.Ball;
 
 import java.util.ArrayList;
 

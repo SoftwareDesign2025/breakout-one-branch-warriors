@@ -4,7 +4,7 @@
 package entities.blocks;
 
 import game.GameController;
-import Ball.Ball;
+import Projectiles.Ball;
 import entities.Entity;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;
