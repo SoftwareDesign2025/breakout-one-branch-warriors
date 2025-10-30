@@ -1,8 +1,6 @@
 //Author: Carter Puckett
 
 import javafx.application.Application;
-import BreakOutDefault.PlayerController;
-import BreakOutDefault.UIController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;

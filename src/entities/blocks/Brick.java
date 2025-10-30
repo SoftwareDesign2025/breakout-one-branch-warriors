@@ -3,8 +3,8 @@
  */
 package entities.blocks;
 
+import GameController;
 import Ball.Ball;
-import BreakOutDefault.GameController;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 

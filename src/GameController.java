@@ -1,10 +1,11 @@
 //Author: Carter Puckett and Aidan Spoerndle 
-package BreakOutDefault;
+
 
 import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
+import interfaces.Collidable;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import Ball.Ball;
@@ -28,6 +29,7 @@ public class GameController {
 	
 	private List<Ball> balls = new ArrayList<>();
 	private List<Brick> myBricks = new ArrayList<>();
+	private List<Collidable> myCollidables;
 	
 	private String gameType; //breakout or galaga
 	private boolean isGameLost;
@@ -75,6 +77,12 @@ public class GameController {
 		uiController.updateUI(playerController.getLives(), playerController.getScore(), playerController.getHighScore(), level);
 		
 		animationController.step(elapsedTime);
+		
+		//Handle all collisions, will have to add any potential collidables to list "myCollidables"
+		for(Collidable collidable : myCollidables) {
+			for(Ball ball : balls) {
+				collidable.handleCollision(ball, this);
+			}
 	}
 	
 	/**
@@ -115,20 +123,6 @@ public class GameController {
 		myBricks.forEach(block -> animationController.addToRoot(block.getView()));
 		playerController.setLives(3);
 		animationController.setBallToPaddle();
-	}
-	
-	/**
-	 * Checks health of the brick to remove from scene
-	 * 
-	 * @param brick
-	 */
-	private void checkBrickHealth(GameController gameController) {
-		if (!isBroken()) {
-			removeDurability();
-		} else {
-			//root.getChildren().remove(brick.getView());		Remove from scene
-			gameController.getMyBricks().remove(this);
-		}
 	}
 	
 	/**

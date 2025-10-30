@@ -1,5 +1,5 @@
 //Author: Carter Puckett
-package BreakOutDefault;
+
 
 import entities.blocks.Paddle;
 import javafx.scene.input.KeyCode;

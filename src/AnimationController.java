@@ -1,10 +1,11 @@
 /**
  * @author Aidan Jimenez
  */
-package BreakOutDefault;
+
 
 
 import entities.blocks.Paddle;
+import interfaces.Collidable;
 import entities.Entity;
 import entities.blocks.Boundary;
 import entities.blocks.Brick;
@@ -125,6 +126,7 @@ public class AnimationController {
 					//nextLevel(width, height);
 				}
 			}
+			
 
 			// store results of collision instead of have them happen right away
 
