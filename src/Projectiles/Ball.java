@@ -1,32 +1,35 @@
 /**
  * @author Aidan Jimenez & Benji Altman
 */
-package Ball;
+package Projectiles;
 
 import java.util.Random;
 
-import blocks.Paddle.MoveState;
-import interfaces.Collidable;
+import entities.Entity;
+import entities.blocks.Paddle.MoveState;
+import interfaces.IMoveable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-public class Ball {
+public class Ball extends Entity implements IMoveable{
 
 	private Random random = new Random();
 	private Point2D velocity;
 	private Point2D position;
-	private final Circle myBall;
 	private Point2D previousLocation;
+	private int ballRadius;
 	public boolean inCollision;
+		
 
 	private static final double HORIZONTAL_KICK = 0.7;
 	private static final double FRICTION_FACTOR = 0.99;
 	private static final double WOBBLE_FACTOR = 0.5;
 	private static final double BASE_KICK_FACTOR = 1.5;
 	private static final double KICK_MULTIPLIER_MAX = 1.3;
+	private static final int CORNER_RADIUS = 100;
+	private static final String BALL_IMAGE = "resources/breakout_ball_fix.png";
 
 	private static final int RADIUS_DIVIDER = 3;
 
@@ -41,15 +44,31 @@ public class Ball {
 	 * @param startX
 	 * @param startY
 	 * @param velocity
-	 * @param radius
+	 * @param ballRadius
 	 * @param color
 	 */
-	public Ball(double startX, double startY, Point2D velocity, double ballRadius, Color color) {
-		this.velocity = velocity;
-		this.myBall = new Circle(ballRadius, color);
+	public Ball(int startX, int startY, Point2D velocity, int ballRadius, Color color) {
+		super(startX, startY, ballRadius * 2, ballRadius *2);
 
-		this.myBall.setCenterX(startX);
-		this.myBall.setCenterY(startY);
+		this.ballRadius = ballRadius;
+		this.velocity = velocity;
+		this.rect.setArcHeight(CORNER_RADIUS);
+		this.rect.setArcWidth(CORNER_RADIUS);
+		setColor(color);
+
+		this.view.setLayoutX(startX);
+		this.view.setLayoutY(startY);
+	}
+
+	public Ball(int startX, int startY, Point2D velocity, int ballRadius) {
+		super(startX, startY, ballRadius * 2, ballRadius * 2, BALL_IMAGE );
+		this.velocity = velocity;
+		this.ballRadius = ballRadius;
+		
+		setColor(Color.TRANSPARENT);
+
+		view.setLayoutX(startX);
+		view.setLayoutY(startY);
 	}
 
 	/**
@@ -61,13 +80,13 @@ public class Ball {
 		double deltaX = velocity.getX();
 		double deltaY = velocity.getY();
 
-		previousLocation = new Point2D(myBall.getCenterX(), myBall.getCenterY());
-		double newX = (myBall.getCenterX() + (deltaX * FRICTION_FACTOR) * elapsedTime);
-		double newY = (myBall.getCenterY() + (deltaY * FRICTION_FACTOR) * elapsedTime);
+		previousLocation = new Point2D(view.getLayoutX(), view.getLayoutY());
+		double newX = (view.getLayoutX() + (deltaX * FRICTION_FACTOR) * elapsedTime);
+		double newY = (view.getLayoutY() + (deltaY * FRICTION_FACTOR) * elapsedTime);
 
 		// Update the circle's position
-		myBall.setCenterX(newX);
-		myBall.setCenterY(newY);
+		view.setLayoutX(newX);
+		view.setLayoutY(newY);
 	}
 
 	/**
@@ -86,27 +105,26 @@ public class Ball {
 	 */
 	public void bounceOffWall(double screenWidth, double screenHeight) {
 		// Get ball properties
-		double radius = myBall.getRadius();
-		double x = myBall.getCenterX();
-		double y = myBall.getCenterY();
+		double x = view.getLayoutX();
+		double y = view.getLayoutY();
 
 		// Horizontal (X-axis) collision
-		if (x - radius < 0) {
-			myBall.setCenterX(radius);
+		if (x - ballRadius < 0) {
+			view.setLayoutX(ballRadius);
 			velocity = new Point2D(-velocity.getX(), velocity.getY());
-		} else if (x + radius > screenWidth) {
+		} else if (x + ballRadius > screenWidth) {
 			velocity = new Point2D(-velocity.getX(), velocity.getY());
 		}
 
 		// Vertical (Y-axis) collision
-		if (y - radius < 0) {
+		if (y - ballRadius < 0) {
 			velocity = new Point2D(velocity.getX(), -velocity.getY());
-		} else if (y + radius > screenHeight) {
+		} else if (y + ballRadius > screenHeight) {
 			velocity = new Point2D(velocity.getX(), -velocity.getY());
 		}
-		if (y - radius < 0 && x - radius < 0) {
-			myBall.setCenterX(-radius);
-			myBall.setCenterY(-radius);
+		if (y - ballRadius < 0 && x - ballRadius < 0) {
+			view.setLayoutX(-ballRadius);
+			view.setLayoutY(-ballRadius);
 			velocity = new Point2D(velocity.getX(), velocity.getY());
 		}
 	}
@@ -146,10 +164,10 @@ public class Ball {
 	 * movement.
 	 * 
 	 * @param isReflectingXAxis True if bouncing off a vertical surface.
-	 * @param directionState    The current movement state of the paddle (LEFT,
+	 * @param diviewionState    The current movement state of the paddle (LEFT,
 	 *                          RIGHT, or NONE).
 	 */
-	public void bounce(boolean isReflectingXAxis, MoveState directionState) {
+	public void bounce(boolean isReflectingXAxis, MoveState diviewionState) {
 		double currentDeltaX = checkDeltaX();
 		double currentDeltaY = checkDeltaY();
 
@@ -161,7 +179,7 @@ public class Ball {
 			newDeltaY = addRandomWobble(currentDeltaY);
 		} else {
 			newDeltaY = -currentDeltaY;
-			newDeltaX = calculatePaddleKick(currentDeltaX, directionState);
+			newDeltaX = calculatePaddleKick(currentDeltaX, diviewionState);
 		}
 
 		resetBallPositionAfterCollision(isReflectingXAxis);
@@ -171,19 +189,19 @@ public class Ball {
 	/**
 	 * Calculates the new horizontal speed based on paddle movement.
 	 */
-	private double calculatePaddleKick(double currentDeltaX, MoveState directionState) {
+	private double calculatePaddleKick(double currentDeltaX, MoveState diviewionState) {
 		double kickMultiplier = getRandomDouble(1.0, KICK_MULTIPLIER_MAX);
 		double baseKick = HORIZONTAL_KICK * getRandomDouble(1.0, BASE_KICK_FACTOR);
 
 		// Logic for left paddle movement
-		if (directionState == MoveState.LEFT) {
+		if (diviewionState == MoveState.LEFT) {
 			if (Math.abs(currentDeltaX) < HORIZONTAL_KICK) {
 				return -baseKick;
 			} else {
 				return -Math.abs(currentDeltaX) * kickMultiplier;
 			}
 			// Logic for right paddle movement
-		} else if (directionState == MoveState.RIGHT) {
+		} else if (diviewionState == MoveState.RIGHT) {
 			if (Math.abs(currentDeltaX) < HORIZONTAL_KICK) {
 				return baseKick;
 			} else {
@@ -221,13 +239,13 @@ public class Ball {
 	 * @param isVerticalCollision
 	 */
 	private void resetBallPositionAfterCollision(boolean isVerticalCollision) {
-		double offset = myBall.getRadius() / RADIUS_DIVIDER;
+		double offset = getRadius() / RADIUS_DIVIDER;
 		if (isVerticalCollision) {
-			myBall.setCenterX(previousLocation.getX() - offset);
-			myBall.setCenterY(previousLocation.getY());
+			view.setLayoutX(previousLocation.getX() - offset);
+			view.setLayoutY(previousLocation.getY());
 		} else {
-			myBall.setCenterX(previousLocation.getX());
-			myBall.setCenterY(previousLocation.getY() - offset);
+			view.setLayoutX(previousLocation.getX());
+			view.setLayoutY(previousLocation.getY() - offset);
 		}
 	}
 
@@ -287,7 +305,7 @@ public class Ball {
 	 * @return Node
 	 */
 	public Node getView() {
-		return myBall;
+		return view;
 	}
 
 	/**
@@ -296,16 +314,16 @@ public class Ball {
 	 * @return Node
 	 */
 	public Shape getBall() {
-		return myBall;
+		return rect;
 	}
 
 	/**
-	 * Getter for the radius of the circle
+	 * Getter for the ballRadius of the circle
 	 * 
 	 * @return double
 	 */
 	public double getRadius() {
-		return myBall.getRadius();
+		return ballRadius;
 	}
 
 	/**
@@ -323,7 +341,7 @@ public class Ball {
 	 * @param color
 	 */
 	public void setColor(Color color) {
-		myBall.setFill(color);
+		rect.setFill(color);
 	}
 
 	/**
@@ -332,7 +350,7 @@ public class Ball {
 	 * @param x
 	 */
 	public void setX(double x) {
-		myBall.setCenterX(x);
+		view.setLayoutX(x);
 	}
 
 	/**
@@ -341,7 +359,7 @@ public class Ball {
 	 * @param y
 	 */
 	public void setY(double y) {
-		myBall.setCenterY(y);
+		view.setLayoutY(y);
 	}
 	/*
 	 * NEED TO IMPLEMENT

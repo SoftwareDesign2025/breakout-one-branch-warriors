@@ -2,15 +2,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import game.GameController;
 
 /**
  * @Author OneBranchWarriors
@@ -23,7 +20,7 @@ import javafx.util.Duration;
 public class Main extends Application {
 
 	public static final int HEIGHT = 600;
-	public static final int WIDTH = 400;
+	public static final int WIDTH = 900;
 	public static final int FRAMES_PER_SECOND = 60;
 	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
@@ -33,9 +30,9 @@ public class Main extends Application {
 	private Scene myScene;
 
 	// This class will handle the logic that is specific to this application.
-	private AnimationController myAnimation;
+//	private AnimationController myAnimation;
 	
-	private GameController gameController = new GameController();
+	private GameController gameController; 
 
 	
 	// Input: stage
@@ -45,9 +42,10 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		myAnimation = new AnimationController();
+		gameController = new GameController(WIDTH, HEIGHT);
+//		myAnimation = new AnimationController();
 		// attach scene to the stage and display it
-		myScene = setupScene(WIDTH, HEIGHT, BACKGROUND);
+		myScene = setupScene();
 		stage.setScene(myScene);
 		stage.setTitle(TITLE);
 		stage.show();
@@ -65,14 +63,14 @@ public class Main extends Application {
 	// Output: Scene
 	// Purpose: creates the "Scene" including what shapes will be drawn and their
 	// starting properties
-	private Scene setupScene(int WIDTH, int HEIGHT, Paint background) {
-		Group root = myAnimation.createRootForAnimation(WIDTH, HEIGHT);
+	private Scene setupScene() {
+		Group root = gameController.getAnimationRoot();
 		
 		// create a place to see the shapes
-		Scene scene = new Scene(root, WIDTH, HEIGHT, background);
+		Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
 		// respond to input
-		scene.setOnKeyReleased(e -> stopPaddle());
-		scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
+		scene.setOnKeyReleased(e -> gameController.handleKeyRelease(e.getCode()));
+		scene.setOnKeyPressed(e -> gameController.handleKeyInput(e.getCode()));
 
 		return scene;
 	}
@@ -83,42 +81,36 @@ public class Main extends Application {
 	// determine the necessary time delay for each frame
 
 	private void step(double elapsedTime) {
-		myAnimation.step(elapsedTime);
+		gameController.step(elapsedTime);
 	}
 
 	// Input: KeyCode
 	// Output: none
 	// Purpose: determines what animation needs to be done depending on the key
 	// pressed
-	private void handleKeyInput(KeyCode code) {
+//	private void handleKeyInput(KeyCode code) {
+//
+//		if (code == KeyCode.LEFT) {
+//			myAnimation.paddleMovesRight(false);
+//		} else if (code == KeyCode.RIGHT) {
+//			myAnimation.paddleMovesRight(true);
+//
+//		}
+//		else if(code == KeyCode.F1) {
+//			
+//			myAnimation.setLevel(WIDTH,HEIGHT,1);
+//			
+//		}
+//		else if(code == KeyCode.F2) {
+//			myAnimation.setLevel(WIDTH,HEIGHT,2);
+//			
+//		}
+//		else if(code == KeyCode.F3) {
+//			myAnimation.setLevel(WIDTH,HEIGHT,3);
+//			
+//		}
+//	}
 
-		if (code == KeyCode.LEFT) {
-			myAnimation.paddleMovesRight(false);
-		} else if (code == KeyCode.RIGHT) {
-			myAnimation.paddleMovesRight(true);
-
-		}
-		else if(code == KeyCode.F1) {
-			
-			myAnimation.setLevel(WIDTH,HEIGHT,1);
-			
-		}
-		else if(code == KeyCode.F2) {
-			myAnimation.setLevel(WIDTH,HEIGHT,2);
-			
-		}
-		else if(code == KeyCode.F3) {
-			myAnimation.setLevel(WIDTH,HEIGHT,3);
-			
-		}
-	}
-
-	// Input: none
-	// Output: none
-	// Purpose: stops the paddle from moving
-	private void stopPaddle() {
-		myAnimation.stopPaddle();
-	}
 
 	/**
 	 * Start the program.

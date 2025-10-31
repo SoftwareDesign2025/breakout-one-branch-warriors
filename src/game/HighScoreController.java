@@ -1,3 +1,5 @@
+package game;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -189,7 +191,7 @@ public class HighScoreController {
 	// value is at the front
 	public void sortHighScores() {
 		int i = 1;
-		while (i != 10) {
+		while (i != scoreLimit) {
 			if (this.highScores[i] == null) {
 				i += 1;
 				continue;

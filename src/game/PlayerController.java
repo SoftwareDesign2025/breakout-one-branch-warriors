@@ -1,4 +1,7 @@
-import blocks.Paddle;
+//Author: Carter Puckett
+package game;
+
+import entities.blocks.Paddle;
 import javafx.scene.input.KeyCode;
 
 public class PlayerController {
@@ -25,6 +28,7 @@ public class PlayerController {
 		this();
 		this.highScoreController = new HighScoreController();
 		this.paddle = paddle;
+	
 	}
 	
 	
@@ -32,11 +36,11 @@ public class PlayerController {
 	 * handles the input for moving the paddle left or right
 	 * @param keyCode
 	 */
-	public void handleKeyInput(KeyCode keyCode) {
+	public void handleKeyInput(KeyCode keyCode, double elapsedTime) {
 		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
-			paddle.moveHorizontally(true);
+			paddle.moveHorizontally(true, elapsedTime);
 		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
-			paddle.moveHorizontally(false);
+			paddle.moveHorizontally(false, elapsedTime);
 		} 
 	}
 	
@@ -73,11 +77,27 @@ public class PlayerController {
 		}
 	}
 	
+	/**
+	 * Stops the paddle
+	 */
+	public void stopPaddle() {
+		paddle.stop();
+	}
+	
+	/**
+	 * Will animate the paddle moving across the scene
+	 * 
+	 * @param goRight
+	 */
+	public void paddleMovesRight(boolean goRight, double elapsedTime) {
+		paddle.moveHorizontally(goRight, elapsedTime);
+	}
+	
 	public int getLives() {
 		return lives;
 	}
 	
-	public int getScore() {
+	public Integer getScore() {
 		return score;
 	}
 	public void setLives(int lives) {

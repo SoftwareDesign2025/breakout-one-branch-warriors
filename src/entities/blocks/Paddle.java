@@ -1,16 +1,22 @@
 /**
  * @author Aidan Jimenez
  */
-package blocks;
+package entities.blocks;
 
+import Projectiles.Ball;
+import game.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
+import javafx.scene.input.KeyCode;
+
 
 public class Paddle extends Block {
+	private static final String IMAGE_LOCATION = "resources/blue_paddle.png";
 	private Point2D velocity;
-	private static int MOVE_SPEED = 15;
-	private static final double MAX_VELOCITY = 45;
+	private static int MOVE_SPEED = 500;
+	private static final double MAX_VELOCITY = 650;
 	private static final double MIN_VELOCITY = -MAX_VELOCITY;
 	private boolean moved = false;
 	private int boardWidth;
@@ -38,6 +44,8 @@ public class Paddle extends Block {
 		this.paddleWidth = width;
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
+		this.rect.setArcHeight(CORNER_RADIUS);
+		this.rect.setArcWidth(CORNER_RADIUS);
 	}
 
 	/**
@@ -50,8 +58,8 @@ public class Paddle extends Block {
 	 * @param boardWidth
 	 * @param image
 	 */
-	public Paddle(int xPosition, int yPosition, int width, int height, int boardWidth, Image image) {
-		super(xPosition, yPosition, width, height, image);
+	public Paddle(int xPosition, int yPosition, int width, int height, int boardWidth) {
+		super(xPosition, yPosition, width, height, IMAGE_LOCATION);
 		this.boardWidth = boardWidth;
 		this.paddleWidth = width;
 		this.velocity = new Point2D(0, 0);
@@ -62,8 +70,9 @@ public class Paddle extends Block {
 	 * Provides paddle movement which the user can use to control
 	 * 
 	 * @param goRight
+	 * @param elapsedTime 
 	 */
-	public void moveHorizontally(boolean goRight) {
+	public void moveHorizontally(boolean goRight, double elapsedTime) {
 		if (!moved) {
 			moved = true;
 		}
@@ -72,16 +81,16 @@ public class Paddle extends Block {
 
 		if (goRight && this.getView().getLayoutX() + paddleWidth < boardWidth) {
 			double deltaX = checkVelocity();
-			velocity = new Point2D(currentVelocityX * deltaX, 0);
+			velocity = new Point2D(currentVelocityX * deltaX * elapsedTime, 0);
 
-			this.setX(this.getX() + deltaX);
+			this.setX(this.getX() + deltaX * elapsedTime);
 			state = MoveState.RIGHT;
 
 		} else if (!goRight && this.getView().getLayoutX() > 0) {
 			double deltaX = checkVelocity();
-			velocity = new Point2D(currentVelocityX * -deltaX, 0);
+			velocity = new Point2D(currentVelocityX * -deltaX * elapsedTime, 0);
 
-			this.setX(this.getX() - deltaX);
+			this.setX(this.getX() - deltaX * elapsedTime);
 			state = MoveState.LEFT;
 		}
 	}
@@ -130,6 +139,20 @@ public class Paddle extends Block {
 	public void stop() {
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
+	}
+	
+	
+	public void handleCollision(Ball ball, GameController gameController) {
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+		if (!intersection.getBoundsInLocal().isEmpty()) {
+			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+			if (intersectionWidth > intersectionHeight) {
+				ball.bounce(false, getState()); // isReflectingXAxis is false
+			} else {
+				ball.bounce(true, getState()); // isReflectingXAxis is true
+			}
+		}
 	}
 	
 }

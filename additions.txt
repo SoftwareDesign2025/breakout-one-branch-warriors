@@ -1,6 +1,0 @@
-ball power up that falls with constant v, when caught extends paddle size
-brick that doesn't break but extends after each ball hit allowing for more bounces vertically
-multiball
-add in visual effects to brick breaking
-audio?
-

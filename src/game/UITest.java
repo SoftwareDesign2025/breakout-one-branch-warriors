@@ -1,3 +1,6 @@
+//Author: Carter Puckett
+package game;
+
 import javafx.application.Application;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

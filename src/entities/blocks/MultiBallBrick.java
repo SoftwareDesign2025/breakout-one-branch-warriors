@@ -1,4 +1,7 @@
-package blocks;
+/**
+ * @author Aidan Jimenez
+ */
+package entities.blocks;
 
 import javafx.scene.paint.Color;
 
