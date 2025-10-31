@@ -191,7 +191,7 @@ public class HighScoreController {
 	// value is at the front
 	public void sortHighScores() {
 		int i = 1;
-		while (i != scoreLimit) {
+		while (i != SCORELIMIT) {
 			if (this.highScores[i] == null) {
 				i += 1;
 				continue;
