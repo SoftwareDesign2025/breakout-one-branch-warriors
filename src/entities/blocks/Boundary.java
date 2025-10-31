@@ -3,10 +3,10 @@
  */
 package entities.blocks;
 
-import Projectiles.Ball;
 import game.GameController;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import projectiles.Ball;
 
 public class Boundary extends Block {
 

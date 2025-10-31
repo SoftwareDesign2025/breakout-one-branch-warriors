@@ -3,12 +3,12 @@
  */
 package entities.blocks;
 
-import Projectiles.Ball;
 import game.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import projectiles.Ball;
 import javafx.scene.input.KeyCode;
 
 

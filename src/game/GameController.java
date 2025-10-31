@@ -4,6 +4,7 @@ package game;
 import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
+import projectiles.Ball;
 import entities.blocks.Paddle;
 import interfaces.Collidable;
 import javafx.geometry.Point2D;
@@ -13,8 +14,6 @@ import javafx.scene.paint.Color;
 import interfaces.IMoveable;
 
 import java.util.*;
-
-import Projectiles.Ball;
 
 public class GameController {
 

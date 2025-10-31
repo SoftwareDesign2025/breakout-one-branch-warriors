@@ -12,14 +12,12 @@ import entities.blocks.Brick;
 import interfaces.IMoveable;
 
 import java.util.List;
-
-import Projectiles.Ball;
-
 import java.util.ArrayList;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
 import layouts.BrickLayout;
+import projectiles.Ball;
 
 public class AnimationController {
 

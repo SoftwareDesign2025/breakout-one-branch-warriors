@@ -4,12 +4,12 @@
 package entities.blocks;
 
 import game.GameController;
-import Projectiles.Ball;
 import entities.Entity;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import projectiles.Ball;
 
 public class Block extends Entity implements Collidable{
 	protected ImageView sprite;  
