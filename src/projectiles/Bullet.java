@@ -80,9 +80,10 @@ public class Bullet extends Entity implements IMoveable {
 		// Update the circle's position
 		//view.setLayoutX(newX);
 		view.setLayoutY(newY);
-		if(view.getLayoutY() > 100) {
-		//	stop();
-		}
+	}
+	
+	public boolean step() {
+		return view.getLayoutY() < 100;
 	}
 
 	/**

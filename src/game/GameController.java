@@ -1,6 +1,7 @@
 //Author: Carter Puckett and Aidan Spoerndle 
 package game;
 
+
 import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
@@ -12,6 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import interfaces.IMoveable;
+import projectiles.*;
 
 import java.util.*;
 
@@ -39,6 +41,7 @@ public class GameController {
 	private List<Ball> balls = new ArrayList<>();
 	private List<Brick> myBricks = new ArrayList<>();
 	private List<Collidable> myCollidables = new ArrayList<>();
+	List<Bullet> bullets = new ArrayList<>();
 
 	private String gameType; // breakout or galaga
 	private boolean isGameLost;
@@ -66,7 +69,8 @@ public class GameController {
 		createUI();
 		createLevel();
 		createPlayer();
-		createBall();
+		//createBall();
+		createBullet();
 	}
 
 	/**
@@ -77,6 +81,7 @@ public class GameController {
 		if (playerController.isPlayerDead()) {
 			gameEnded();
 		}
+		
 
 		if (brickLayout.blocksLeft() == 0) {
 			progressLevel();
@@ -92,6 +97,11 @@ public class GameController {
 		for (Collidable collidable : myCollidables) {
 			for (Ball ball : balls) {
 				collidable.handleCollision(ball, this);
+			}
+		}
+		for(Bullet bullet : bullets) {
+			if(bullet.step()) {
+				animationController.removeFromRoot(bullet.getView());
 			}
 		}
 	}
@@ -182,19 +192,30 @@ public class GameController {
 	}
 
 	public void handleKeyInput(KeyCode code) {
-		playerController.handleKeyInput(code, elapsedTime);
-
+		boolean isBullet = playerController.handleKeyInput(code, elapsedTime);
+		if(isBullet) {
+			createBullet();
+			
+		}
 	}
 
 	public void handleKeyRelease(KeyCode keyCode) {
 	}
 
-	private void createBall() {
+	private void createBall(int xPosition) {
 		Ball ball = new Ball(screenWidth / 2, screenHeight - 120, new Point2D(50, -250), 10);
 		balls.add(ball);
 		moveables.add(ball);
 		animationController.addToMoveables(ball);
 		animationController.addToRoot(ball.getView());
+	}
+	
+	private void createBullet() {
+		Bullet bullet = new Bullet((int) paddle.getX() + 40, screenHeight - 120, new Point2D(0, -250), 10);
+		bullets.add(bullet);
+		moveables.add(bullet);
+		animationController.addToMoveables(bullet);
+		animationController.addToRoot(bullet.getView());
 	}
 
 	private void createLevel() {
