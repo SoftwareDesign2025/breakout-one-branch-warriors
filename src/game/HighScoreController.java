@@ -56,7 +56,7 @@ public class HighScoreController {
 
 	// Input: None
 	// Output: Boolean
-	// Purpose: A boolean outputto see if scoreFile.txt exists
+	// Purpose: A boolean output to see if scoreFile.txt exists
 	public boolean doesExist() {
 		return (this.scoreFile.exists());
 	}
@@ -189,7 +189,7 @@ public class HighScoreController {
 	// value is at the front
 	public void sortHighScores() {
 		int i = 1;
-		while (i != scoreLimit) {
+		while (i != SCORELIMIT) {
 			if (this.highScores[i] == null) {
 				i += 1;
 				continue;

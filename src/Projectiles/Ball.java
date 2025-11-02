@@ -31,11 +31,14 @@ public class Ball extends Entity implements IMoveable {
 	private static final String BALL_IMAGE = "resources/breakout_ball_fix.png";
 
 	private static final int RADIUS_DIVIDER = 3;
+	private static final int RADIUS = 10;
 
 	private static final int MAX_VELOCITY_Y = 450;
 	private static final int MIN_VELOCITY_Y = -MAX_VELOCITY_Y;
 	private static final int MAX_VELOCITY_X = 90;
 	private static final int MIN_VELOCITY_X = -MAX_VELOCITY_X;
+
+	private static final Point2D STARTING_VELOCITY = new Point2D(-75, 250);
 
 	/**
 	 * Constructor for the ball
@@ -48,8 +51,7 @@ public class Ball extends Entity implements IMoveable {
 	 */
 	public Ball(int startX, int startY, Point2D velocity, int ballRadius, Color color) {
 		super(startX, startY, ballRadius * 2, ballRadius * 2);
-
-		this.ballRadius = ballRadius;
+		this.ballRadius = RADIUS;
 		this.velocity = velocity;
 		this.rect.setArcHeight(CORNER_RADIUS);
 		this.rect.setArcWidth(CORNER_RADIUS);
@@ -64,6 +66,16 @@ public class Ball extends Entity implements IMoveable {
 		this.velocity = velocity;
 		this.ballRadius = ballRadius;
 
+		setColor(Color.TRANSPARENT);
+
+		view.setLayoutX(startX);
+		view.setLayoutY(startY);
+	}
+
+	public Ball(int startX, int startY) {
+		super(startX, startY, RADIUS * 2, RADIUS * 2, BALL_IMAGE);
+		this.velocity = STARTING_VELOCITY;
+		this.ballRadius = RADIUS;
 		setColor(Color.TRANSPARENT);
 
 		view.setLayoutX(startX);
