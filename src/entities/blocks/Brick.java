@@ -3,6 +3,7 @@
  */
 package entities.blocks;
 
+import Projectiles.Ball;
 import game.GameController;
 import Ball.Ball;
 import javafx.geometry.Bounds;

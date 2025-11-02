@@ -1,7 +1,7 @@
 package interfaces;
 
+import Projectiles.Ball;
 import game.GameController;
-import Ball.Ball;
 
 public interface Collidable {
 	public boolean checkCollision(Ball ball);

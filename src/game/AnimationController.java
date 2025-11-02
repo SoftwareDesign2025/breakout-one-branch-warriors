@@ -7,6 +7,7 @@ import interfaces.IMoveable;
 
 import java.util.List;
 
+import Projectiles.Ball;
 
 import java.util.ArrayList;
 
