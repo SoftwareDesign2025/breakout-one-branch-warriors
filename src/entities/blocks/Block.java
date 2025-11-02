@@ -3,8 +3,8 @@
  */
 package entities.blocks;
 
-import GameController;
-import Ball.Ball;
+import game.GameController;
+import Projectiles.Ball;
 import entities.Entity;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;

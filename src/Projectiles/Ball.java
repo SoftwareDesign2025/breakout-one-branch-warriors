@@ -1,7 +1,7 @@
 /**
  * @author Aidan Jimenez & Benji Altman
 */
-package Ball;
+package Projectiles;
 
 import java.util.Random;
 

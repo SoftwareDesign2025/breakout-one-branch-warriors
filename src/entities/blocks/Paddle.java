@@ -3,8 +3,8 @@
  */
 package entities.blocks;
 
-import GameController;
-import Ball.Ball;
+import Projectiles.Ball;
+import game.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
