@@ -2,7 +2,7 @@
 
 package entities.bugs;
 
-import Projectiles.Ball;
+import projectiles.Ball;
 import entities.Entity;
 import game.GameController;
 import interfaces.Collidable;
@@ -15,6 +15,7 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 	protected int points;
 	protected int durability;
 	protected Point2D velocity;
+	protected Ball ball;
 	
 	public Bug(int xPosition, int yPosition, int width, int height, int points, int durability, Point2D velocity) {
 		super(xPosition, yPosition, width, height);
@@ -38,10 +39,21 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 			durability--;
 			manageCollision(gameController);
 		}
+		
+		if (checkCollision(ball)) {
+			
+		}
 	}
 	
 	public void manageCollision(GameController gameController) {
-		
+		gameController.getPlayerController().addBrickValueToScore(getPoints());
+	}
+	
+	@Override
+	public boolean checkCollision(Ball ball) {
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+
+		return intersection.getBoundsInLocal().isEmpty();
 	}
 	
 	public int getPoints() {
