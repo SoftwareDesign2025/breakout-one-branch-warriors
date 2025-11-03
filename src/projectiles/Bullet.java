@@ -131,7 +131,7 @@ public class Bullet extends Entity implements IMoveable {
 		 * 
 		 * @return Node
 		 */
-		public Shape getBall() {
+		public Shape getBullet() {
 			return rect;
 		}
 
