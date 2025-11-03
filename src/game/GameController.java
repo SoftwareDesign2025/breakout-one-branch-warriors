@@ -5,6 +5,9 @@ import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
+import entities.bugs.Bee;
+import entities.bugs.Butterfly;
+import entities.bugs.EnemyShip;
 import interfaces.Collidable;
 import interfaces.IMoveable;
 import projectiles.Ball;
@@ -49,6 +52,8 @@ public class GameController {
 	private Group ui;
 	private Group animation;
 	private boolean isShieldActive = false;
+	
+	private EnemyShip enemyShip;
 
 	private boolean paused = false;
 
@@ -71,7 +76,9 @@ public class GameController {
 		createPlayer();
 		createBall();
 		
-		
+		enemyShip = new EnemyShip(screenWidth / 4, screenHeight / 4, 25, 25, paddle);
+		animationController.addToRoot(enemyShip.getView());
+		enemyShip.initializeMovement();
 	}
 
 	/**
@@ -144,6 +151,8 @@ public class GameController {
 				}
 			}
 		}
+		
+		enemyShip.move(elapsedTime);
 	}
 
 	/**

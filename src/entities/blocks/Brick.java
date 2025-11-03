@@ -14,9 +14,9 @@ import projectiles.Ball;
 public class Brick extends Block {
 	protected static final String BRICK_IMAGE = "resources/green_brick.png";
 	protected static final int COLOR_CHANGE_FACTOR = 15;
-	private static final int BASE_MULTIPLIER = 2;
-	private static final int BASE_POINTS = 10;
-	private static final int BASE_DURABILITY = 1;
+	protected static final int BASE_MULTIPLIER = 2;
+	protected static final int BASE_POINTS = 10;
+	protected static final int BASE_DURABILITY = 1;
 
 	protected double hitForceMultiplier;
 	protected int points;

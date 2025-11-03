@@ -164,4 +164,8 @@ public class Paddle extends Block {
 		
 	}
 	
+	public int getPaddleWidth() {
+		return paddleWidth;
+	}
+	
 }
