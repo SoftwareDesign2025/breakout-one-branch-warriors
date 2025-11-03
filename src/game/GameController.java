@@ -1,4 +1,4 @@
-//Author: Carter Puckett and Aidan Spoerndle 
+//Author: Carter Puckett, Aidan Spoerndle, Aidan Jimenez 
 package game;
 
 import entities.blocks.Boundary;
@@ -6,15 +6,16 @@ import entities.blocks.Brick;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
 import interfaces.Collidable;
+import interfaces.IMoveable;
+import projectiles.Ball;
+import projectiles.Bullet;
+
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import interfaces.IMoveable;
-
 import java.util.*;
 
-import Projectiles.Ball;
 
 public class GameController {
 
@@ -26,11 +27,9 @@ public class GameController {
 	public static final int NUM_BALLS = 1;
 	public static final int BLOCK_SIZE = 50;
 
-	private List<Ball> myBalls = new ArrayList<>();
 	private List<IMoveable> moveables = new ArrayList<>();
 
 	private PlayerController playerController;
-	private HighScoreController highScoreController;
 	private BrickLayout brickLayout;
 	private AnimationController animationController;
 	private UIController uiController;
@@ -38,6 +37,7 @@ public class GameController {
 	private Boundary boundary;
 
 	private List<Ball> balls = new ArrayList<>();
+	private List<Bullet> bullets = new ArrayList<>();
 	private List<Brick> myBricks = new ArrayList<>();
 	private List<Collidable> myCollidables = new ArrayList<>();
 
@@ -50,6 +50,8 @@ public class GameController {
 	private Group ui;
 	private Group animation;
 	private boolean isShieldActive = false;
+
+	private boolean paused = false;
 
 	public GameController(int screenWidth, int screenHeight) {
 		this.screenWidth = screenWidth;
@@ -66,33 +68,64 @@ public class GameController {
 
 		createUI();
 		createLevel();
+		createBoundary();
 		createPlayer();
 		createBall();
+		
+		
 	}
 
 	/**
 	 * handles everything that happens in each frame (each step)
 	 */
 	public void step(double elapsedTime) {
-		this.elapsedTime = elapsedTime;
-		if (playerController.isPlayerDead()) {
-			gameEnded();
-		}
+		if (!paused) {
 
-		if (brickLayout.blocksLeft() == 0) {
-			progressLevel();
-		}
+			this.elapsedTime = elapsedTime;
+			if (playerController.isPlayerDead()) {
+				gameEnded();
+			}
 
-		uiController.updateUI(playerController.getLives(), playerController.getScore(), playerController.getHighScore(),
-				level);
+			if (brickLayout.blocksLeft() == 0) {
+				progressLevel();
+			}
 
-		animationController.step(elapsedTime);
+			uiController.updateUI(playerController.getLives(), playerController.getScore(),
+					playerController.getHighScore(), level);
 
-		// Handle all collisions, will have to add any potential collidables to list
-		// "myCollidables"
-		for (Collidable collidable : myCollidables) {
+			animationController.step(elapsedTime);
+
+			// check through for collisions -> add to list
+			// iterate through second list do the reactions
+
+			List<Collidable> collided = new ArrayList<>();
+			// Handle all collisions, will have to add any potential collidables to list
+			// "myCollidables"
 			for (Ball ball : balls) {
-				collidable.handleCollision(ball, this);
+				ball.bounceOffWall(screenWidth, screenHeight);
+				for (Collidable collidable : myCollidables) {
+					if (!collidable.checkCollision(ball)) {
+						collided.add(collidable);
+
+					}
+				}
+			}
+
+			// Only handle the collision with the ball for the first collision and manage
+			// the rest
+			for (Ball ball : balls) {
+				for (int i = 0; i < collided.size(); i++) {
+					if (i == 0) {
+						collided.get(i).handleCollision(ball, this);
+					} else {
+						collided.get(i).manageCollision(this);
+					}
+				}
+			}
+			for (Bullet bullet : bullets) {
+				if(bullet.getY() < 10) {
+					animationController.removeFromRoot(bullet.getView());
+				}
 			}
 		}
 	}
@@ -102,6 +135,9 @@ public class GameController {
 	 */
 	private void gameEnded() {
 		uiController.showGameOverMessage();
+
+		cleanBalls();
+
 		isGameLost = true;
 	}
 
@@ -111,30 +147,14 @@ public class GameController {
 	private void progressLevel() {
 		if (level >= FINAL_LEVEL_NUMBER) {
 			level = STARTING_LEVEL_NUMBER;
+		} else {
+			level++;
 		}
 
-		level++;
+
 		playerController.setLives(PLAYER_LIVES_AT_LEVEL_START);
-
 		constructLevel();
-	}
 
-	/**
-	 * builds brick layout of the level
-	 */
-	private void constructLevel() {
-		brickLayout = new BrickLayout(screenHeight, screenWidth, level);
-
-		for (int i = 0; i < myBricks.size(); i++) {
-			animationController.removeFromRoot(myBricks.get(i).getView());
-			brickLayout.removeBrick(myBricks.get(i));
-		}
-
-		myBricks = brickLayout.getMyBlocks();
-
-		myBricks.forEach(block -> animationController.addToRoot(block.getView()));
-		playerController.setLives(3);
-//		animationController.setBallToPaddle();
 	}
 
 	/**
@@ -164,6 +184,7 @@ public class GameController {
 
 	public void removeShield() {
 		isShieldActive = false;
+		boundary.setFill(Color.TRANSPARENT);
 	}
 
 	public PlayerController getPlayerController() {
@@ -183,29 +204,97 @@ public class GameController {
 	}
 
 	public void handleKeyInput(KeyCode code) {
+		if (code == KeyCode.ESCAPE) {
+			this.paused = !paused;
+			handlePause();
+		} else if (code == KeyCode.F1) {
+			progressLevel();
+		} else if(code == KeyCode.SPACE) {
+			createBullet(paddle.getX());
+		}
+		
 		playerController.handleKeyInput(code, elapsedTime);
 
 	}
 
-	public void handleKeyRelease(KeyCode keyCode) {
+	public void handleKeyRelease(KeyCode code) {
+		playerController.handleKeyRelease(code);
+	}
+
+	public void breakBrick(Brick brick) {
+		myCollidables.remove(brick);
+		brickLayout.removeBrick(brick);
+		animationController.removeFromRoot(brick.getView());
+	}
+
+	private void handlePause() {
+		if (paused) {
+			uiController.showPauseMessage();
+		} else {
+			uiController.hidePauseMessage();
+		}
 	}
 
 	private void createBall() {
-		Ball ball = new Ball(screenWidth / 2, screenHeight - 120, new Point2D(50, -250), 10);
+		Ball ball = new Ball(screenWidth / 2, screenHeight - 120);
 		balls.add(ball);
 		moveables.add(ball);
 		animationController.addToMoveables(ball);
 		animationController.addToRoot(ball.getView());
 	}
+	private void createBullet(double x) {
+		Bullet bullet = new Bullet((int) x +40, screenHeight - 120);
+		bullets.add(bullet);
+		moveables.add(bullet);
+		animationController.addToMoveables(bullet);
+		animationController.addToRoot(bullet.getView());
+	}
+
+	private void cleanBalls() {
+		// Remove from scene
+		balls.forEach(ball -> {
+			animationController.removeFromRoot(ball.getView());
+			animationController.removeFromMoveables(ball);
+		});
+
+		// List
+		int listSize = balls.size();
+		for (int i = 0; i < listSize; i++) {
+			balls.remove(i);
+		}
+	}
+
+	/**
+	 * builds brick layout of the level
+	 */
+	private void constructLevel() {
+		cleanBricks();
+		cleanBalls();
+
+		createLevel();
+		createBall();
+	}
 
 	private void createLevel() {
 		brickLayout = new BrickLayout(screenWidth, screenHeight, level);
 		myBricks = brickLayout.getMyBlocks();
+
+		myBricks.forEach(block -> myCollidables.add(block));
 		myBricks.forEach(block -> animationController.addToRoot(block.getView()));
+	}
+
+	private void cleanBricks() {
+		int listSize = myBricks.size();
+		for (int i = 0; i < listSize; i++) {
+			animationController.removeFromRoot(myBricks.get(i).getView());
+			myCollidables.remove(myBricks.get(i));
+		}
+	}
+
+	private void createBoundary() {
 		boundary = new Boundary(Color.TRANSPARENT, 0, screenHeight - 10, screenWidth, 20);
 		animationController.addToRoot(boundary.getView());
-		myBricks.forEach(block -> myCollidables.add(block));
-
+		myCollidables.add(boundary);
 	}
 
 	private void createUI() {
@@ -222,4 +311,5 @@ public class GameController {
 		animationController.addToRoot(paddle.getView());
 		myCollidables.add(paddle);
 	}
+
 }

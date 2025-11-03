@@ -23,6 +23,7 @@ public class UIController {
 	private Text score;
 	private Text highScore;
 	private Text winMessage;
+	private Text pauseMessage;
 	private Text gameOverMessage;
 	private Text levelNumber;
 	
@@ -48,6 +49,7 @@ public class UIController {
 		UIRoot.getChildren().add(score);
 		UIRoot.getChildren().add(highScore);
 		UIRoot.getChildren().add(winMessage);
+		UIRoot.getChildren().add(pauseMessage);
 		UIRoot.getChildren().add(gameOverMessage);
 		UIRoot.getChildren().add(levelNumber);
 		
@@ -77,9 +79,11 @@ public class UIController {
 		highScore = new Text(width * 0.5, height * TOP_UI_HEIGHT_MULTIPLIER, "High Score: " + STARTING_HIGH_SCORE);
 		levelNumber = new Text(width * 0.8, height * TOP_UI_HEIGHT_MULTIPLIER, "Level: " + STARTING_LEVEL_NUMBER);
 		winMessage = new Text(width * 0.5, height * MID_UI_HEIGHT_MULTIPLIER, "YOU WIN!");
+		pauseMessage = new Text(width * 0.5, height * MID_UI_HEIGHT_MULTIPLIER, "PAUSED.");
 		gameOverMessage = new Text(width * 0.5, height * MID_UI_HEIGHT_MULTIPLIER, "GAME OVER");
 		
 		hideWinMessage();
+		hidePauseMessage();
 		hideGameOverMessage();
 	}
 	
@@ -109,6 +113,14 @@ public class UIController {
 	 */
 	public void hideGameOverMessage() {
 		gameOverMessage.setVisible(false);
+	}
+
+	public void showPauseMessage() {
+		pauseMessage.setVisible(true);
+	}
+
+	public void hidePauseMessage() {
+		pauseMessage.setVisible(false);
 	}
 	
 }

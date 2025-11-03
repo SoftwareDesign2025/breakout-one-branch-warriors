@@ -1,7 +1,7 @@
 /**
  * @author Aidan Jimenez & Benji Altman
 */
-package Projectiles;
+package projectiles;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
-public class Ball extends Entity implements IMoveable{
+public class Ball extends Entity implements IMoveable {
 
 	private Random random = new Random();
 	private Point2D velocity;
@@ -21,7 +21,6 @@ public class Ball extends Entity implements IMoveable{
 	private Point2D previousLocation;
 	private int ballRadius;
 	public boolean inCollision;
-		
 
 	private static final double HORIZONTAL_KICK = 0.7;
 	private static final double FRICTION_FACTOR = 0.99;
@@ -32,11 +31,14 @@ public class Ball extends Entity implements IMoveable{
 	private static final String BALL_IMAGE = "resources/breakout_ball_fix.png";
 
 	private static final int RADIUS_DIVIDER = 3;
+	private static final int RADIUS = 10;
 
 	private static final int MAX_VELOCITY_Y = 450;
 	private static final int MIN_VELOCITY_Y = -MAX_VELOCITY_Y;
 	private static final int MAX_VELOCITY_X = 90;
 	private static final int MIN_VELOCITY_X = -MAX_VELOCITY_X;
+
+	private static final Point2D STARTING_VELOCITY = new Point2D(-75, 250);
 
 	/**
 	 * Constructor for the ball
@@ -48,9 +50,8 @@ public class Ball extends Entity implements IMoveable{
 	 * @param color
 	 */
 	public Ball(int startX, int startY, Point2D velocity, int ballRadius, Color color) {
-		super(startX, startY, ballRadius * 2, ballRadius *2);
-
-		this.ballRadius = ballRadius;
+		super(startX, startY, ballRadius * 2, ballRadius * 2);
+		this.ballRadius = RADIUS;
 		this.velocity = velocity;
 		this.rect.setArcHeight(CORNER_RADIUS);
 		this.rect.setArcWidth(CORNER_RADIUS);
@@ -61,10 +62,20 @@ public class Ball extends Entity implements IMoveable{
 	}
 
 	public Ball(int startX, int startY, Point2D velocity, int ballRadius) {
-		super(startX, startY, ballRadius * 2, ballRadius * 2, BALL_IMAGE );
+		super(startX, startY, ballRadius * 2, ballRadius * 2, BALL_IMAGE);
 		this.velocity = velocity;
 		this.ballRadius = ballRadius;
-		
+
+		setColor(Color.TRANSPARENT);
+
+		view.setLayoutX(startX);
+		view.setLayoutY(startY);
+	}
+
+	public Ball(int startX, int startY) {
+		super(startX, startY, RADIUS * 2, RADIUS * 2, BALL_IMAGE);
+		this.velocity = STARTING_VELOCITY;
+		this.ballRadius = RADIUS;
 		setColor(Color.TRANSPARENT);
 
 		view.setLayoutX(startX);
@@ -154,10 +165,43 @@ public class Ball extends Entity implements IMoveable{
 			newDeltaX = addRandomWobble(currentDeltaX);
 		}
 
-		// Reposition ball slightly to prevent it from getting stuck in the wall
 		resetBallPositionAfterCollision(isReflectingXAxis);
 		velocity = new Point2D(newDeltaX, newDeltaY);
 	}
+
+//	public void bounce(double overlapX, double overlapY, double modification) {
+//	    double currentDeltaX = checkDeltaX();
+//	    double currentDeltaY = checkDeltaY();
+//
+//	    boolean horizontalCollision = overlapX < overlapY;
+//
+//	    if (horizontalCollision) {
+//	        if (currentDeltaX > 0) {
+//	            this.setX(getX() - overlapX);  // Moving right, push left
+//	        } else {
+//	            this.setX(getX() + overlapX);  // Moving left, push right
+//	        }
+//	    } else {
+//	        if (currentDeltaY > 0) {
+//	            this.setY(getY() - overlapY);  // Moving down, push up
+//	        } else {
+//	            this.setY(getY() + overlapY);  // Moving up, push down
+//	        }
+//	    }
+//
+//	    double newDeltaX = currentDeltaX;
+//	    double newDeltaY = currentDeltaY;
+//
+//	    if (horizontalCollision) {
+//	        newDeltaX = -currentDeltaX * modification;
+//	        newDeltaX = addRandomWobble(newDeltaX);
+//	    } else {
+//	        newDeltaY = -currentDeltaY * modification;
+//	        newDeltaY = addRandomWobble(newDeltaY);
+//	    }
+//
+//	    velocity = new Point2D(newDeltaX, newDeltaY);
+//	}
 
 	/**
 	 * Bounces the ball off a paddle, applying a kick based on the paddle's
@@ -174,6 +218,7 @@ public class Ball extends Entity implements IMoveable{
 		double newDeltaX;
 		double newDeltaY;
 
+		resetBallPositionAfterCollision(isReflectingXAxis);
 		if (isReflectingXAxis) {
 			newDeltaX = -currentDeltaX;
 			newDeltaY = addRandomWobble(currentDeltaY);
@@ -182,7 +227,6 @@ public class Ball extends Entity implements IMoveable{
 			newDeltaX = calculatePaddleKick(currentDeltaX, diviewionState);
 		}
 
-		resetBallPositionAfterCollision(isReflectingXAxis);
 		velocity = new Point2D(newDeltaX, newDeltaY);
 	}
 
@@ -248,6 +292,20 @@ public class Ball extends Entity implements IMoveable{
 			view.setLayoutY(previousLocation.getY() - offset);
 		}
 	}
+
+//	private void resetBallPositionAfterCollision(double intersectW, double intersectH) {
+//	    if (velocity.getX() > 0) {
+//	        this.setX(getX() - intersectW);
+//	    } else {
+//	        this.setX(getX() + intersectW);
+//	    }
+//	    
+//	    if (velocity.getY() > 0) {
+//	        this.setY(getY() - intersectH);
+//	    } else {
+//	        this.setY(getY() + intersectH);
+//	    }
+//	}
 
 	/**
 	 * Checks the speed on the Y axis so that it can be limited and not exceed the
@@ -361,11 +419,11 @@ public class Ball extends Entity implements IMoveable{
 	public void setY(double y) {
 		view.setLayoutY(y);
 	}
+
 	/*
 	 * NEED TO IMPLEMENT
 	 */
 	public boolean isCollidedWith() {
 		return false;
 	}
-	
 }
