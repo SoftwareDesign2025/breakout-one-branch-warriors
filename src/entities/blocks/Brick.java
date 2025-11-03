@@ -4,7 +4,7 @@
 package entities.blocks;
 
 import game.GameController;
-import Projectiles.Ball;
+import projectiles.Ball;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
