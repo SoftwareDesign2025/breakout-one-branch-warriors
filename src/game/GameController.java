@@ -8,12 +8,14 @@ import entities.blocks.Paddle;
 import interfaces.Collidable;
 import interfaces.IMoveable;
 import projectiles.Ball;
+import projectiles.Bullet;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import java.util.*;
+
 
 public class GameController {
 
@@ -35,6 +37,7 @@ public class GameController {
 	private Boundary boundary;
 
 	private List<Ball> balls = new ArrayList<>();
+	private List<Bullet> bullets = new ArrayList<>();
 	private List<Brick> myBricks = new ArrayList<>();
 	private List<Collidable> myCollidables = new ArrayList<>();
 
@@ -68,6 +71,8 @@ public class GameController {
 		createBoundary();
 		createPlayer();
 		createBall();
+		
+		
 	}
 
 	/**
@@ -115,6 +120,11 @@ public class GameController {
 					} else {
 						collided.get(i).manageCollision(this);
 					}
+				}
+			}
+			for (Bullet bullet : bullets) {
+				if(bullet.getY() < 10) {
+					animationController.removeFromRoot(bullet.getView());
 				}
 			}
 		}
@@ -199,7 +209,10 @@ public class GameController {
 			handlePause();
 		} else if (code == KeyCode.F1) {
 			progressLevel();
+		} else if(code == KeyCode.SPACE) {
+			createBullet(paddle.getX());
 		}
+		
 		playerController.handleKeyInput(code, elapsedTime);
 
 	}
@@ -228,6 +241,13 @@ public class GameController {
 		moveables.add(ball);
 		animationController.addToMoveables(ball);
 		animationController.addToRoot(ball.getView());
+	}
+	private void createBullet(double x) {
+		Bullet bullet = new Bullet((int) x +40, screenHeight - 120);
+		bullets.add(bullet);
+		moveables.add(bullet);
+		animationController.addToMoveables(bullet);
+		animationController.addToRoot(bullet.getView());
 	}
 
 	private void cleanBalls() {

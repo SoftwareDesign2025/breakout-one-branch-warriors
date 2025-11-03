@@ -38,6 +38,10 @@ public class Bullet extends Entity implements IMoveable {
 	private static final int MAX_VELOCITY_X = 90;
 	private static final int MIN_VELOCITY_X = -MAX_VELOCITY_X;
 	private double startPosition;
+	
+	private static final int RADIUS = 10;
+
+	private static final Point2D STARTING_VELOCITY = new Point2D(-75, 250);
 
 	public Bullet(int startX, int startY, Point2D velocity, int ballRadius, Color color) {
 		super(startX, startY, ballRadius * 2, ballRadius *2);
@@ -63,6 +67,15 @@ public class Bullet extends Entity implements IMoveable {
 		view.setLayoutX(startX);
 		view.setLayoutY(startY);
 	}
+	public Bullet(int startX, int startY) {
+		super(startX, startY, RADIUS * 2, RADIUS * 2, BALL_IMAGE);
+		this.velocity = STARTING_VELOCITY;
+		this.ballRadius = RADIUS;
+		setColor(Color.TRANSPARENT);
+
+		view.setLayoutX(startX);
+		view.setLayoutY(startY);
+	}
 	/**
 	 * Updates the ball's position
 	 * 
@@ -75,7 +88,7 @@ public class Bullet extends Entity implements IMoveable {
 
 		previousLocation = new Point2D(view.getLayoutX(), view.getLayoutY());
 		//double newX = (view.getLayoutX() + (deltaX * FRICTION_FACTOR) * elapsedTime);
-		double newY = (view.getLayoutY() + deltaY * elapsedTime);
+		double newY = (view.getLayoutY() - deltaY * elapsedTime);
 
 		// Update the circle's position
 		//view.setLayoutX(newX);
