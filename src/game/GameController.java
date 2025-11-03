@@ -5,6 +5,8 @@ import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
+import entities.bugs.Bee;
+import entities.bugs.Butterfly;
 import interfaces.Collidable;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -205,7 +207,7 @@ public class GameController {
 		boundary = new Boundary(Color.TRANSPARENT, 0, screenHeight - 10, screenWidth, 20);
 		animationController.addToRoot(boundary.getView());
 		myBricks.forEach(block -> myCollidables.add(block));
-
+		
 	}
 
 	private void createUI() {
