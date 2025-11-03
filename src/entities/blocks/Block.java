@@ -4,14 +4,15 @@
 package entities.blocks;
 
 import game.GameController;
-import Projectiles.Ball;
+import projectiles.Ball;
 import entities.Entity;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Shape;
 
-public class Block extends Entity implements Collidable{
+public abstract class Block extends Entity implements Collidable{
 	protected ImageView sprite;  
 
 	// Can be used to make curved corners
@@ -51,6 +52,8 @@ public class Block extends Entity implements Collidable{
 	 */
 	public Block(int xPosition, int yPosition, int width, int height, String image) {
 		super(xPosition,yPosition, width, height, image);
+		rect.setArcHeight(CORNER_RADIUS);
+		rect.setArcWidth(CORNER_RADIUS);
 		rect.setFill(Color.TRANSPARENT);
 	}
 
@@ -63,10 +66,15 @@ public class Block extends Entity implements Collidable{
 		//rect.setStroke(Color.BLACK);
 	}
 
-	@Override
-	public void handleCollision(Ball ball, GameController gameController) {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void handleCollision(Ball ball, GameController gameController); 
 
+	public abstract void manageCollision(GameController gameController); 
+		
+
+	@Override
+	public boolean checkCollision(Ball ball) {
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+
+		return intersection.getBoundsInLocal().isEmpty();
+	}
 }

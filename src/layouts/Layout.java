@@ -3,10 +3,12 @@
  */
 package layouts;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import entities.Entity;
-import entities.blocks.Brick;
+import interfaces.Collidable;
+import javafx.scene.paint.Color;
+import layouts.levels.Level;
 
 public abstract class Layout {
 	protected static final int LAYOUT_TOP_MARGIN = 100;
@@ -15,6 +17,8 @@ public abstract class Layout {
 	protected int screenHeight;
 	protected int screenWidth;
 	protected int level = 1;
+	protected List<Collidable> layoutItems = new ArrayList<>();
+	protected Level levelController;
 
 	public Layout(int screenHeight, int screenWidth, int level) {
 		this.screenHeight = screenHeight;
@@ -22,7 +26,18 @@ public abstract class Layout {
 		this.level =  level;
 	}
 	
-	protected abstract String[] getLevelTemplate(int level);
-	protected abstract List<Brick> createLayout(int level); 
+	protected abstract List<Collidable> createLayout(int level); 
+
+	// TODO: Find a way to decouple the power factor and rectColor
+	protected abstract Collidable createItem(char itemType, int xPos, int yPos,int points, int lives, double powerFactor, Color rectColor);
+
+	public List<Collidable> getCollidables() {
+		return layoutItems;
+	}
+
+	public int itemsLeft() {
+		return layoutItems.size();
+	}
+	
 
 }

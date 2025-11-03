@@ -3,20 +3,20 @@
  */
 package entities.blocks;
 
-import Projectiles.Ball;
 import game.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import projectiles.Ball;
 import javafx.scene.input.KeyCode;
 
 
 public class Paddle extends Block {
 	private static final String IMAGE_LOCATION = "resources/blue_paddle.png";
 	private Point2D velocity;
-	private static int MOVE_SPEED = 500;
-	private static final double MAX_VELOCITY = 650;
+	private static int MOVE_SPEED = 600;
+	private static final double MAX_VELOCITY = 950;
 	private static final double MIN_VELOCITY = -MAX_VELOCITY;
 	private boolean moved = false;
 	private int boardWidth;
@@ -137,7 +137,6 @@ public class Paddle extends Block {
 	 * Stops the paddle from moving
 	 */
 	public void stop() {
-		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
 	}
 	
@@ -145,14 +144,23 @@ public class Paddle extends Block {
 	public void handleCollision(Ball ball, GameController gameController) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
+
 			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
 			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+
 			if (intersectionWidth > intersectionHeight) {
 				ball.bounce(false, getState()); // isReflectingXAxis is false
 			} else {
 				ball.bounce(true, getState()); // isReflectingXAxis is true
 			}
 		}
+	}
+
+	@Override
+	public void manageCollision(GameController gameController) {
+		// TODO Auto-generated method stub
+		// could be used to play audio
+		
 	}
 	
 }
