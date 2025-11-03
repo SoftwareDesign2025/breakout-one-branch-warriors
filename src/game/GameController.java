@@ -9,7 +9,6 @@ import interfaces.Collidable;
 import interfaces.IMoveable;
 import Projectiles.Ball;
 
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -35,7 +34,6 @@ public class GameController {
 	private Boundary boundary;
 
 	private List<Ball> balls = new ArrayList<>();
-	private List<Brick> myBricks = new ArrayList<>();
 	private List<Collidable> myCollidables = new ArrayList<>();
 
 	private String gameType; // breakout or galaga
@@ -81,7 +79,7 @@ public class GameController {
 				gameEnded();
 			}
 
-			if (brickLayout.blocksLeft() == 0) {
+			if (brickLayout.itemsLeft() == 0) {
 				progressLevel();
 			}
 
@@ -181,10 +179,6 @@ public class GameController {
 		return playerController;
 	}
 
-	public List<Brick> getMyBricks() {
-		return myBricks;
-	}
-
 	public AnimationController getAnimationController() {
 		return animationController;
 	}
@@ -257,17 +251,18 @@ public class GameController {
 
 	private void createLevel() {
 		brickLayout = new BrickLayout(screenWidth, screenHeight, level);
-		myBricks = brickLayout.getMyBlocks();
+		List<Collidable> bricks = brickLayout.getCollidables();
 
-		myBricks.forEach(block -> myCollidables.add(block));
-		myBricks.forEach(block -> animationController.addToRoot(block.getView()));
+		bricks.forEach(block -> myCollidables.add(block));
+		bricks.forEach(block -> animationController.addToRoot(block.getView()));
 	}
 
 	private void cleanBricks() {
-		int listSize = myBricks.size();
+		List<Collidable> bricks = brickLayout.getCollidables();
+		int listSize = brickLayout.getCollidables().size();
 		for (int i = 0; i < listSize; i++) {
-			animationController.removeFromRoot(myBricks.get(i).getView());
-			myCollidables.remove(myBricks.get(i));
+			animationController.removeFromRoot(bricks.get(i).getView());
+			myCollidables.remove(bricks.get(i));
 		}
 	}
 
