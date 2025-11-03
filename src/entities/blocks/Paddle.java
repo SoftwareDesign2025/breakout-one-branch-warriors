@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import projectiles.Ball;
+import projectiles.Projectiles;
 import javafx.scene.input.KeyCode;
 
 
@@ -141,7 +142,7 @@ public class Paddle extends Block {
 	}
 	
 	
-	public void handleCollision(Ball ball, GameController gameController) {
+	public void handleCollision(Projectiles ball, GameController gameController) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 

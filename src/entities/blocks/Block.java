@@ -5,6 +5,7 @@ package entities.blocks;
 
 import game.GameController;
 import projectiles.Ball;
+import projectiles.Projectiles;
 import entities.Entity;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;
@@ -66,13 +67,13 @@ public abstract class Block extends Entity implements Collidable{
 		//rect.setStroke(Color.BLACK);
 	}
 
-	public abstract void handleCollision(Ball ball, GameController gameController); 
+	public abstract void handleCollision(Projectiles ball, GameController gameController); 
 
 	public abstract void manageCollision(GameController gameController); 
 		
 
 	@Override
-	public boolean checkCollision(Ball ball) {
+	public boolean checkCollision(Projectiles ball) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 
 		return intersection.getBoundsInLocal().isEmpty();
