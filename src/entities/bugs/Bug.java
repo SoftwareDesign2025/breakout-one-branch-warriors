@@ -17,6 +17,16 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 	protected Point2D velocity;
 	protected Ball ball;
 	
+	/**
+	 * constructor for bug without sprite
+	 * @param xPosition
+	 * @param yPosition
+	 * @param width
+	 * @param height
+	 * @param points
+	 * @param durability
+	 * @param velocity
+	 */
 	public Bug(int xPosition, int yPosition, int width, int height, int points, int durability, Point2D velocity) {
 		super(xPosition, yPosition, width, height);
 		this.points = points;
@@ -24,6 +34,17 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 		this.velocity = velocity;
 	}
 	
+	/**
+	 * constructor for bug with sprite
+	 * @param xPosition
+	 * @param yPosition
+	 * @param width
+	 * @param height
+	 * @param image
+	 * @param points
+	 * @param durability
+	 * @param velocity
+	 */
 	public Bug(int xPosition, int yPosition, int width, int height, String image, int points, int durability, Point2D velocity) {
 		super(xPosition, yPosition, width, height, image);
 		this.points = points;
@@ -31,40 +52,48 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 		this.velocity = velocity;
 	}
 	
-	@Override
+	/**
+	 * handles collision with projectile
+	 */
 	public void handleCollision(Ball ball, GameController gameController) {
-		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
-		
-		if (!intersection.getBoundsInLocal().isEmpty()) {
-			durability--;
+		if (checkCollision(ball)) {
 			manageCollision(gameController);
 		}
-		
-		if (checkCollision(ball)) {
-			
-		}
 	}
 	
+	/**
+	 * controls what happens on collision
+	 */
 	public void manageCollision(GameController gameController) {
 		gameController.getPlayerController().addBrickValueToScore(getPoints());
+		durability--;
 	}
 	
-	@Override
+	/**
+	 * checks for collision with projectile
+	 */
 	public boolean checkCollision(Ball ball) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 
 		return intersection.getBoundsInLocal().isEmpty();
 	}
 	
+	/**
+	 * gets point value of bug
+	 * @return
+	 */
 	public int getPoints() {
 		return points;
 	}
 	
+	/**
+	 * gets durability of bug
+	 * @return
+	 */
 	public int getDurability() {
 		return durability;
 	}
 	
-	@Override
 	public abstract void move(double elapsedTime);
 	
 	public abstract void initializeMovement();

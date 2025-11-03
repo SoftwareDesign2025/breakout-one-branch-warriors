@@ -12,27 +12,47 @@ public class EnemyShip extends Bug{
 	private static final Point2D STARTING_VELOCITY = new Point2D(0,0);
 	private static final int HOVER_HEIGHT = 150;
 
-	//PlayerShip playerShip;
+	//private PlayerShip playerShip;
 	private Paddle paddle; // will be switched with playership
 	private boolean isMoving = false;
 	private Point2D playerLocation;
 	private double movementSpeed = 100;
 	private boolean hasReachedHoverHeight = false;
 
+	/**
+	 * constructor without sprite
+	 * @param xPosition
+	 * @param yPosition
+	 * @param width
+	 * @param height
+	 * @param paddle
+	 */
 	public EnemyShip(int xPosition, int yPosition, int width, int height, Paddle paddle) {
 		super(xPosition, yPosition, width, height, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
 		rect.setFill(Color.BLUE);
 		this.paddle = paddle;
 	}
 
+	/**
+	 * constructor with sprite
+	 * @param xPosition
+	 * @param yPosition
+	 * @param width
+	 * @param height
+	 * @param image
+	 * @param paddle
+	 */
 	public EnemyShip(int xPosition, int yPosition, int width, int height, String image, Paddle paddle) {
 		super(xPosition, yPosition, width, height, image, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
 		this.paddle = paddle;
 	}
 
-	//The bee will find the location of the player, store it, and then move to that location until it either
-	//hits the player or the bottom of the screen.
+	//The enemy ship will move to a designated point above the player. Once it reaches the height of that point,
+	//it switches to a drop state where it moves at a constant speed downwards, now ignoring the location of the player
 
+	/**
+	 * moves the enemy ship
+	 */
 	public void move(double elapsedTime) {
 		if (isMoving) {
 			hasReachedHoverHeight = checkReachedHoverHeight();
@@ -56,17 +76,26 @@ public class EnemyShip extends Bug{
 		}
 	}
 
-	@Override
+	/**
+	 * enemy ship starts moving
+	 */
 	public void initializeMovement() {
 		if (!isMoving) {
 			isMoving = true;
 		}
 	}
 	
+	/**
+	 * returns true if the enemy ship has reached the hover height
+	 * @return
+	 */
 	public boolean checkReachedHoverHeight() {	
 		return (getY() >= paddle.getY() - HOVER_HEIGHT);
 	}
 
+	/**
+	 * moves enemy ship towards hover location
+	 */
 	private void moveToHover() {
 		Point2D myPosition = new Point2D(getX(), getY());
 		getHoverLocation();
@@ -75,11 +104,17 @@ public class EnemyShip extends Bug{
 		velocity = direction.normalize().multiply(movementSpeed);
 	}
 	
+	/**
+	 * moves at a constant speed downwards
+	 */
 	private void moveToDrop() {
 		Point2D myPosition = new Point2D(getX(), getY());
 		velocity = new Point2D(0, movementSpeed / 2);
 	}
 	
+	/**
+	 * gets the location above the player that the enemy ship will hover at until reaching the hover height
+	 */
 	private void getHoverLocation() {
 		playerLocation = new Point2D(paddle.getX() + paddle.getPaddleWidth() / 2, paddle.getY() - HOVER_HEIGHT);
 	}

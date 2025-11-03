@@ -2,6 +2,7 @@
 
 package entities.bugs;
 
+import entities.blocks.Paddle;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
@@ -11,23 +12,45 @@ public class Bee extends Bug{
 	private static final int STARTING_DURABILITY = 1;
 	private static final Point2D STARTING_VELOCITY = new Point2D(0,0);
 
-	//PlayerShip playerShip;
-	boolean isMoving = false;
-	Point2D playerLocation;
-	double movementSpeed = 90;
+	//private PlayerShip playerShip;
+	private Paddle paddle;
+	private boolean isMoving = false;
+	private Point2D playerLocation;
+	private double movementSpeed = 90;
 
-	public Bee(int xPosition, int yPosition, int width, int height) {
+
+	/**
+	 * constructor without sprite
+	 * @param xPosition
+	 * @param yPosition
+	 * @param width
+	 * @param height
+	 */
+	public Bee(int xPosition, int yPosition, int width, int height, Paddle paddle) {
 		super(xPosition, yPosition, width, height, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
 		rect.setFill(Color.YELLOW);
+		this.paddle = paddle;
 	}
 
-	public Bee(int xPosition, int yPosition, int width, int height, String image) {
+	/**
+	 * constructor with sprite
+	 * @param xPosition
+	 * @param yPosition
+	 * @param width
+	 * @param height
+	 * @param image
+	 */
+	public Bee(int xPosition, int yPosition, int width, int height, String image, Paddle paddle) {
 		super(xPosition, yPosition, width, height, image, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
+		this.paddle = paddle;
 	}
 
 	//The bee will find the location of the player, store it, and then move to that location until it either
 	//hits the player or the bottom of the screen.
 
+	/**
+	 * moves the bee 
+	 */
 	public void move(double elapsedTime) {
 		if (isMoving) {
 
@@ -42,23 +65,31 @@ public class Bee extends Bug{
 		}
 	}
 
-	@Override
+	/**
+	 * stores the location of the player and starts movement
+	 */
 	public void initializeMovement() {
 		if (!isMoving) {
 			isMoving = true;
-			playerLocation = new Point2D(200,600);
+			storePlayerLocation();
 			setVelocity();
 		}
 	}
-	
+
+	/**
+	 * sets the velocity of the bee based on the stored player location
+	 */
 	private void setVelocity() {
 		Point2D myPosition = new Point2D(getX(), getY());
 		Point2D direction = playerLocation.subtract(myPosition);
-		
+
 		velocity = direction.normalize().multiply(movementSpeed);
 	}
-
-	//	private void storePlayerLocation() {
-	//		playerLocation = new Point2D(playerShip.getX, playerShip.getY);
-	//	}
+	
+	/**
+	 * stores the current location of the player
+	 */
+	private void storePlayerLocation() {
+		playerLocation =  new Point2D(paddle.getX(), paddle.getY());
+	}
 }
