@@ -14,7 +14,7 @@ import javafx.scene.Node;
 
 import javafx.scene.shape.Shape;
 
-public class Bullet extends Entity implements IMoveable {
+public class Bullet extends Projectiles implements IMoveable {
 	private Random random = new Random();
 	private Point2D velocity;
 	private Point2D position;
@@ -131,7 +131,7 @@ public class Bullet extends Entity implements IMoveable {
 		 * 
 		 * @return Node
 		 */
-		public Shape getBullet() {
+		public Shape getBall() {
 			return rect;
 		}
 
@@ -178,6 +178,12 @@ public class Bullet extends Entity implements IMoveable {
 		 */
 		public void setY(double y) {
 			view.setLayoutY(y);
+		}
+
+		@Override
+		public void bounce(boolean b, MoveState moveState) {
+			// TODO Auto-generated method stub
+			
 		}
 
 

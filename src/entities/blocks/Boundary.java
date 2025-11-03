@@ -7,6 +7,7 @@ import game.GameController;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import projectiles.Ball;
+import projectiles.Projectiles;
 
 public class Boundary extends Block {
 
@@ -15,7 +16,7 @@ public class Boundary extends Block {
 	}
 
 	@Override
-	public void handleCollision(Ball ball, GameController gameController) {
+	public void handleCollision(Projectiles ball, GameController gameController) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 

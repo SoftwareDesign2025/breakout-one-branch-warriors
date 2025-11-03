@@ -110,6 +110,16 @@ public class GameController {
 					}
 				}
 			}
+			for (Bullet bullet : bullets) {
+				//bullet.bounceOffWall(screenWidth, screenHeight);
+				for (Collidable collidable : myCollidables) {
+					if (!collidable.checkCollision(bullet)) {
+						collided.add(collidable);
+						
+					}
+				}
+			}
+
 
 			// Only handle the collision with the ball for the first collision and manage
 			// the rest
@@ -126,6 +136,13 @@ public class GameController {
 				if(bullet.getY() < 10) {
 					animationController.removeFromRoot(bullet.getView());
 				}
+				for (int i = 0; i < collided.size(); i++) {
+					if (i == 0) {
+						collided.get(i).handleCollision(bullet, this);
+					} else {
+						collided.get(i).manageCollision(this);
+					}
+				}
 			}
 		}
 	}
@@ -137,7 +154,6 @@ public class GameController {
 		uiController.showGameOverMessage();
 
 		cleanBalls();
-
 		isGameLost = true;
 	}
 

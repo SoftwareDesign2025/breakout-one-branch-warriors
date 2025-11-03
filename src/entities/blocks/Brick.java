@@ -5,6 +5,7 @@ package entities.blocks;
 
 import game.GameController;
 import projectiles.Ball;
+import projectiles.Projectiles;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -97,8 +98,8 @@ public class Brick extends Block {
 	}
 
 
-	@Override
-	public void handleCollision(Ball ball, GameController gameController) {
+	//@Override
+	public void handleCollision(Projectiles ball, GameController gameController) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
