@@ -38,7 +38,7 @@ public class Ball extends Entity implements IMoveable {
 	private static final int MAX_VELOCITY_X = 90;
 	private static final int MIN_VELOCITY_X = -MAX_VELOCITY_X;
 
-	private static final Point2D STARTING_VELOCITY = new Point2D(-75, 250);
+	private static final Point2D STARTING_VELOCITY = new Point2D(-75, -250);
 
 	/**
 	 * Constructor for the ball
