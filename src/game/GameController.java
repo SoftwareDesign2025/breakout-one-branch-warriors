@@ -5,6 +5,8 @@ import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
+import entities.bugs.Bee;
+import entities.bugs.Butterfly;
 import interfaces.Collidable;
 import interfaces.IMoveable;
 import projectiles.Ball;
