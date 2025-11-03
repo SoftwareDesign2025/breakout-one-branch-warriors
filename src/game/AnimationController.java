@@ -1,23 +1,18 @@
 /**
- * @author Aidan Jimenez
+ * @author Aidan Jimenez, Carter Puckett, Benji Altman
  */
 package game;
 
-import entities.blocks.Paddle;
-
-import interfaces.Collidable;
-import entities.Entity;
-import entities.blocks.Boundary;
-import entities.blocks.Brick;
 import interfaces.IMoveable;
 
 import java.util.List;
+
+import projectiles.Ball;
+
 import java.util.ArrayList;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
-import layouts.BrickLayout;
-import projectiles.Ball;
 
 public class AnimationController {
 
@@ -26,18 +21,12 @@ public class AnimationController {
 	public static final int BLOCK_SIZE = 50;
 
 	private List<IMoveable> moveables = new ArrayList<>();
-	private List<Ball> myBalls = new ArrayList<>();
-	private List<Brick> myBlocks = new ArrayList<>();
 
-	private Paddle paddle;
-	private PlayerController playerController;
-	private BrickLayout brickLayout;
 	private Group root;
 
 	private int width;
 	private int height;
 
-	private boolean gameEnded = false;
 
 	/**
 	 * Creates the scene required for the game to start adding all assets
@@ -80,22 +69,5 @@ public class AnimationController {
 		for (IMoveable moveable : moveables) {
 			moveable.move(elapsedTime);
 		}
-	}
-
-
-
-	public void stopAnimation() {
-		stopBalls();
-		stopPaddle();
-	}
-
-	private void stopBalls() {
-//		for (Ball ball : myBalls) {
-//			ball.stop();
-//		}
-	}
-
-	public void stopPaddle() {
-		paddle.stop();
 	}
 }

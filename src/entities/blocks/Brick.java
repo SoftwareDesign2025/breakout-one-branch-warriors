@@ -4,6 +4,8 @@
 package entities.blocks;
 
 import game.GameController;
+import Projectiles.Ball;
+import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import projectiles.Ball;
@@ -94,6 +96,60 @@ public class Brick extends Block {
 		return points;
 	}
 
+
+	@Override
+	public void handleCollision(Ball ball, GameController gameController) {
+		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+		if (!intersection.getBoundsInLocal().isEmpty()) {
+			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
+			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
+
+			if (intersectionWidth > intersectionHeight) {
+				ball.bounce(false, getHitForceMultiplier()); // isReflectingXAxis is false
+			} else {
+				ball.bounce(true, getHitForceMultiplier()); // isReflectingXAxis is true
+			}
+			
+			manageCollision(gameController);
+		}
+	}
+
+	
+	public void manageCollision(GameController gameController) {
+			checkBrickHealth(gameController);
+			gameController.getPlayerController().addBrickValueToScore(getPoints());
+			gameController.chanceToActivateShieldOnBrickHit();
+	}
+
+	// TODO: try to fix collision
+//	@Override
+//	public void handleCollision(Ball ball, GameController gameController) {
+//		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+//		if (!intersection.getBoundsInLocal().isEmpty()) {
+//			Bounds ballBounds = ball.getBall().getBoundsInParent();
+//			Bounds wallBounds = getCollisionBox().getBoundsInParent();
+//
+//			// Calculate overlap from each direction
+//			double overlapLeft = ballBounds.getMaxX() - wallBounds.getMinX();
+//			double overlapRight = wallBounds.getMaxX() - ballBounds.getMinX();
+//			double overlapTop = ballBounds.getMaxY() - wallBounds.getMinY();
+//			double overlapBottom = wallBounds.getMaxY() - ballBounds.getMinY();
+//
+//			// Find minimum overlap (this is the collision axis)
+//			double minOverlapX = Math.min(overlapLeft, overlapRight);
+//			double minOverlapY = Math.min(overlapTop, overlapBottom);
+//
+//			ball.bounce(minOverlapX, minOverlapY, 1.0);
+//
+//			checkBrickHealth(gameController);
+//
+//			gameController.getPlayerController().addBrickValueToScore(getPoints());
+//
+//			gameController.chanceToActivateShieldOnBrickHit();
+//		}
+//
+//	}
+
 	/**
 	 * Changes the color to reflect that is has lost durability
 	 */
@@ -110,28 +166,7 @@ public class Brick extends Block {
 
 		rect.setFill(newColor);
 	}
-	
-	@Override
-	public void handleCollision(Ball ball, GameController gameController) {
-		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
-		if (!intersection.getBoundsInLocal().isEmpty()) {
-			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
-			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
-			if (intersectionWidth > intersectionHeight) {
-				ball.bounce(false, getHitForceMultiplier()); // isReflectingXAxis is false
-			} else {
-				ball.bounce(true, getHitForceMultiplier()); // isReflectingXAxis is true
-			}
-			
-			checkBrickHealth(gameController);
-			
-			gameController.getPlayerController().addBrickValueToScore(getPoints());
-			//gameController.getPlayerController().getScore().setText(gameController.getPlayerController().getScore() + " points");   		Fix how we update the score UI
-			
-			gameController.chanceToActivateShieldOnBrickHit();
-		}
-	}
-	
+
 	/**
 	 * Checks health of the brick to remove from scene
 	 *
@@ -141,8 +176,7 @@ public class Brick extends Block {
 		if (!isBroken()) {
 			removeDurability();
 		} else {
-			//root.getChildren().remove(brick.getView());		Remove from scene
-			gameController.getMyBricks().remove(this);
+			gameController.breakBrick(this);
 		}
 	}
 

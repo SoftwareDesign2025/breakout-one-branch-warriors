@@ -3,6 +3,7 @@
  */
 package entities.blocks;
 
+import game.GameController;
 import javafx.scene.paint.Color;
 
 public class UnbreakableBrick extends Brick {
@@ -12,6 +13,11 @@ public class UnbreakableBrick extends Brick {
 	}
 
 	public void removeDurability() {
+		return;
+	}
+
+	public void manageCollision(GameController gameController) {
+		// There is nothing to do so we remove functionality
 		return;
 	}
 }

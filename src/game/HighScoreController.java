@@ -33,7 +33,7 @@ public class HighScoreController {
 
 	// Class Variables
 	private File scoreFile; // The scoreFile.txt reference
-	private final int SCORELIMIT = 10; // The maximum number of scores that can be added to scoreFile
+	private int SCORELIMIT = 10; // The maximum number of scores that can be added to scoreFile
 	private String[] highScores = new String[SCORELIMIT]; // An array of Strings that holds the data of the high scores
 	private String filePath = "scoreFile.txt"; // The file path of scoreFile.txt
 
@@ -56,7 +56,7 @@ public class HighScoreController {
 
 	// Input: None
 	// Output: Boolean
-	// Purpose: A boolean outputto see if scoreFile.txt exists
+	// Purpose: A boolean output to see if scoreFile.txt exists
 	public boolean doesExist() {
 		return (this.scoreFile.exists());
 	}
@@ -93,21 +93,19 @@ public class HighScoreController {
 				break;
 			}
 		}
-
 		if(this.highScores.length == SCORELIMIT) {
 			if(splitScore(highScores[SCORELIMIT-1]) < score) {
 				highScores[SCORELIMIT-1] = name + "," + score;
 			}
 		}
 		sortHighScores();
-		
 	}
 
 	// Input: None
 	// Output: None
 	// Purpose: Writes the String array, highScores, to the scoreFile.txt file
 	public void writeScores() {
-		if (underOrAtScoreLimit()) {
+		if (underOrAtSCORELIMIT()) {
 			try {
 				//String file = this.filePath;
 				FileWriter fWriter = new FileWriter(filePath);
@@ -148,7 +146,7 @@ public class HighScoreController {
 	// Output: Boolean
 	// Purpose: checks to see if the recorded number of scores is under the preset
 	// SCORELIMIT value
-	public boolean underOrAtScoreLimit() {
+	public boolean underOrAtSCORELIMIT() {
 		return findCurrentNumberOfScores() <= this.SCORELIMIT;
 	}
 

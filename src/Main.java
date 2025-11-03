@@ -8,6 +8,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import game.GameController;
+import javafx.scene.input.KeyCode;
 
 /**
  * @Author OneBranchWarriors
@@ -83,34 +84,6 @@ public class Main extends Application {
 	private void step(double elapsedTime) {
 		gameController.step(elapsedTime);
 	}
-
-	// Input: KeyCode
-	// Output: none
-	// Purpose: determines what animation needs to be done depending on the key
-	// pressed
-//	private void handleKeyInput(KeyCode code) {
-//
-//		if (code == KeyCode.LEFT) {
-//			myAnimation.paddleMovesRight(false);
-//		} else if (code == KeyCode.RIGHT) {
-//			myAnimation.paddleMovesRight(true);
-//
-//		}
-//		else if(code == KeyCode.F1) {
-//			
-//			myAnimation.setLevel(WIDTH,HEIGHT,1);
-//			
-//		}
-//		else if(code == KeyCode.F2) {
-//			myAnimation.setLevel(WIDTH,HEIGHT,2);
-//			
-//		}
-//		else if(code == KeyCode.F3) {
-//			myAnimation.setLevel(WIDTH,HEIGHT,3);
-//			
-//		}
-//	}
-
 
 	/**
 	 * Start the program.

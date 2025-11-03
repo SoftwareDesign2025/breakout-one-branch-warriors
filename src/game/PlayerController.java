@@ -121,4 +121,12 @@ public class PlayerController {
 		int score = highScoreController.splitScore(highScoreController.getHighScores()[0]);
 		return score;
 	}
+
+	public void handleKeyRelease(KeyCode keyCode) {
+		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
+			paddle.stop();
+		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
+			paddle.stop();
+		}
+	}
 }
