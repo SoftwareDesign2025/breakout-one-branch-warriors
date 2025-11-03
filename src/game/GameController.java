@@ -70,7 +70,7 @@ public class GameController {
 		createLevel();
 		createPlayer();
 		//createBall();
-		createBullet();
+		//createBullet();
 	}
 
 	/**
