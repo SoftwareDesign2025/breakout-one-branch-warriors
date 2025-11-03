@@ -4,8 +4,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 public class Butterfly extends Bug{
-	private static final int POINTS = 10;
-	private static final int STARTING_DURABILITY = 3;
+	private static final int POINTS = 20;
+	private static final int STARTING_DURABILITY = 1;
 	private static final Point2D STARTING_VELOCITY = new Point2D(0,0);
 
 	boolean isMoving = false;
