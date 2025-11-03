@@ -36,7 +36,12 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 		
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 			durability--;
+			manageCollision(gameController);
 		}
+	}
+	
+	public void manageCollision(GameController gameController) {
+		
 	}
 	
 	public int getPoints() {
