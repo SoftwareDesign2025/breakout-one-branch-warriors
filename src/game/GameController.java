@@ -160,7 +160,9 @@ public class GameController {
 	 */
 	private void gameEnded() {
 		uiController.showGameOverMessage();
-
+		if(isGameLost == false) {
+		playerController.addScoreToHighScores();
+		}
 		cleanBalls();
 		isGameLost = true;
 	}
@@ -282,6 +284,7 @@ public class GameController {
 		for (int i = 0; i < listSize; i++) {
 			balls.remove(i);
 		}
+		
 	}
 
 	/**
