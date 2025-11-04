@@ -3,10 +3,9 @@
  */
 package entities.blocks;
 
-import game.GameController;
-import projectiles.Ball;
 import projectiles.Projectiles;
 import entities.Entity;
+import game.gamecontroller.GameController;
 import interfaces.Collidable;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;

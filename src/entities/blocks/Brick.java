@@ -3,9 +3,10 @@
  */
 package entities.blocks;
 
-import game.GameController;
 import projectiles.Ball;
 import projectiles.Projectiles;
+import game.gamecontroller.BreakoutGameController;
+import game.gamecontroller.GameController;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -98,17 +99,17 @@ public class Brick extends Block {
 	}
 
 
-	//@Override
-	public void handleCollision(Projectiles ball, GameController gameController) {
-		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+	@Override
+	public void handleCollision(Projectiles projectile, GameController gameController) {
+		Shape intersection = Shape.intersect(projectile.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
 			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
 
 			if (intersectionWidth > intersectionHeight) {
-				ball.bounce(false, getHitForceMultiplier()); // isReflectingXAxis is false
+				projectile.bounce(false, getHitForceMultiplier()); // isReflectingXAxis is false
 			} else {
-				ball.bounce(true, getHitForceMultiplier()); // isReflectingXAxis is true
+				projectile.bounce(true, getHitForceMultiplier()); // isReflectingXAxis is true
 			}
 			
 			manageCollision(gameController);
@@ -116,10 +117,11 @@ public class Brick extends Block {
 	}
 
 	
+	@Override
 	public void manageCollision(GameController gameController) {
 			checkBrickHealth(gameController);
-			gameController.getPlayerController().addBrickValueToScore(getPoints());
-			gameController.chanceToActivateShieldOnBrickHit();
+			gameController.addToScore(getPoints());
+//			gameController.chanceToActivateShieldOnBrickHit();
 	}
 
 	// TODO: try to fix collision
@@ -177,8 +179,7 @@ public class Brick extends Block {
 		if (!isBroken()) {
 			removeDurability();
 		} else {
-			gameController.breakBrick(this);
+			gameController.breakItem(this);
 		}
 	}
-
 }

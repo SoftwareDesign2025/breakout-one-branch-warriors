@@ -3,14 +3,16 @@
 package entities.bugs;
 
 import projectiles.Ball;
+import projectiles.Projectiles;
 import entities.Entity;
-import game.GameController;
+import game.gamecontroller.GameController;
 import interfaces.Collidable;
 import interfaces.IMoveable;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
-public abstract class Bug extends Entity implements Collidable, IMoveable{
+public abstract class Bug extends Entity implements  IMoveable, Collidable{
 	
 	protected int points;
 	protected int durability;
@@ -27,8 +29,8 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 	 * @param durability
 	 * @param velocity
 	 */
-	public Bug(int xPosition, int yPosition, int width, int height, int points, int durability, Point2D velocity) {
-		super(xPosition, yPosition, width, height);
+	public Bug(int xPosition, int yPosition,int size, int points, int durability, Point2D velocity) {
+		super(xPosition, yPosition, size, size);
 		this.points = points;
 		this.durability = durability;
 		this.velocity = velocity;
@@ -50,13 +52,16 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 		this.points = points;
 		this.durability = durability;
 		this.velocity = velocity;
+		this.rect.setFill(Color.TRANSPARENT);
 	}
 	
 	/**
 	 * handles collision with projectile
 	 */
-	public void handleCollision(Ball ball, GameController gameController) {
-		if (checkCollision(ball)) {
+	@Override
+	public void handleCollision(Projectiles projectile, GameController gameController) {
+		if (checkCollision(projectile)) {
+			System.out.println("COLLIDED");
 			manageCollision(gameController);
 		}
 	}
@@ -64,18 +69,21 @@ public abstract class Bug extends Entity implements Collidable, IMoveable{
 	/**
 	 * controls what happens on collision
 	 */
+	@Override
 	public void manageCollision(GameController gameController) {
 		gameController.getPlayerController().addBrickValueToScore(getPoints());
+		gameController.breakItem(this);
 		durability--;
 	}
 	
 	/**
 	 * checks for collision with projectile
 	 */
-	public boolean checkCollision(Ball ball) {
-		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+	@Override
+	public boolean checkCollision(Projectiles projectile) {
+		Shape intersection = Shape.intersect(projectile.getBall(), getCollisionBox());
 
-		return intersection.getBoundsInLocal().isEmpty();
+		return !intersection.getBoundsInLocal().isEmpty();
 	}
 	
 	/**

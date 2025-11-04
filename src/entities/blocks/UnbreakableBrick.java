@@ -3,7 +3,7 @@
  */
 package entities.blocks;
 
-import game.GameController;
+import game.gamecontroller.BreakoutGameController;
 import javafx.scene.paint.Color;
 
 public class UnbreakableBrick extends Brick {
@@ -16,7 +16,7 @@ public class UnbreakableBrick extends Brick {
 		return;
 	}
 
-	public void manageCollision(GameController gameController) {
+	public void manageCollision(BreakoutGameController gameController) {
 		// There is nothing to do so we remove functionality
 		return;
 	}

@@ -1,3 +1,5 @@
+import game.gamecontroller.BreakoutGameController;
+import game.gamecontroller.GalagaGameController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -7,7 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import game.GameController;
 import javafx.scene.input.KeyCode;
 
 /**
@@ -33,7 +34,8 @@ public class Main extends Application {
 	// This class will handle the logic that is specific to this application.
 //	private AnimationController myAnimation;
 	
-	private GameController gameController; 
+//	private BreakoutGameController gameController; 
+	private GalagaGameController gameController; 
 
 	
 	// Input: stage
@@ -43,7 +45,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		gameController = new GameController(WIDTH, HEIGHT);
+		gameController = new GalagaGameController(WIDTH, HEIGHT);
 //		myAnimation = new AnimationController();
 		// attach scene to the stage and display it
 		myScene = setupScene();
