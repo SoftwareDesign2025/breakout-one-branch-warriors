@@ -117,7 +117,7 @@ public class Brick extends Block {
 	
 	public void manageCollision(GameController gameController) {
 			checkBrickHealth(gameController);
-			gameController.getPlayerController().addBrickValueToScore(getPoints());
+			gameController.getPlayerController().addValueToScore(getPoints());
 			gameController.chanceToActivateShieldOnBrickHit();
 	}
 

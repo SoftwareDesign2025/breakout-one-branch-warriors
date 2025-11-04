@@ -5,6 +5,8 @@ import entities.blocks.Boundary;
 import entities.blocks.Brick;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
+import entities.blocks.Player;
+import entities.blocks.PlayerShip;
 import interfaces.Collidable;
 import interfaces.IMoveable;
 import projectiles.Ball;
@@ -29,11 +31,11 @@ public class GameController {
 
 	private List<IMoveable> moveables = new ArrayList<>();
 
-	private PlayerController playerController;
+	private BreakOutPlayerController playerController;
 	private BrickLayout brickLayout;
 	private AnimationController animationController;
 	private UIController uiController;
-	private Paddle paddle;
+	private PlayerShip player;
 	private Boundary boundary;
 
 	private List<Ball> balls = new ArrayList<>();
@@ -178,8 +180,8 @@ public class GameController {
 		return isShieldActive;
 	}
 
-	public Paddle getPaddle() {
-		return paddle;
+	public Player getPaddle() {
+		return player;
 	}
 
 	public void removeShield() {
@@ -210,7 +212,7 @@ public class GameController {
 		} else if (code == KeyCode.F1) {
 			progressLevel();
 		} else if(code == KeyCode.SPACE) {
-			createBullet(paddle.getX());
+			createBullet(player.getX());
 		}
 		
 		playerController.handleKeyInput(code, elapsedTime);
@@ -305,11 +307,13 @@ public class GameController {
 	}
 
 	private void createPlayer() {
-		paddle = new Paddle(screenWidth / 2 - BLOCK_SIZE, screenHeight - 100, BLOCK_SIZE * 2, BLOCK_SIZE / 2,
+		//player = new Paddle(screenWidth / 2 - BLOCK_SIZE, screenHeight - 100, BLOCK_SIZE * 2, BLOCK_SIZE / 2,
+		//		screenWidth);
+		player = new PlayerShip(screenWidth / 2 - BLOCK_SIZE, screenHeight - 100, BLOCK_SIZE * 2, BLOCK_SIZE,
 				screenWidth);
-		playerController = new PlayerController(paddle);
-		animationController.addToRoot(paddle.getView());
-		myCollidables.add(paddle);
+		playerController = new BreakOutPlayerController(player);
+		animationController.addToRoot(player.getView());
+		myCollidables.add(player);
 	}
 
 }

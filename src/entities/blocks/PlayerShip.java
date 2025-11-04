@@ -1,6 +1,3 @@
-/**
- * @author Aidan Jimenez
- */
 package entities.blocks;
 
 import game.GameController;
@@ -9,11 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import projectiles.Ball;
 
-
-public class Paddle extends Player {
+public class PlayerShip extends Player {
 	
-	private static final String IMAGE_LOCATION = "resources/blue_paddle.png";
-
+	private static final String IMAGE_LOCATION = "resources/GalagaShip.png";
+	
 	/**
 	 * Paddle constructor using a color fill
 	 * 
@@ -24,7 +20,7 @@ public class Paddle extends Player {
 	 * @param height
 	 * @param boardWidth
 	 */
-	public Paddle(Color color, int xPosition, int yPosition, int width, int height, int boardWidth) {
+	public PlayerShip(Color color, int xPosition, int yPosition, int width, int height, int boardWidth) {
 		super(color, xPosition, yPosition, width, height, boardWidth);
 	}
 
@@ -38,7 +34,7 @@ public class Paddle extends Player {
 	 * @param boardWidth
 	 * @param image
 	 */
-	public Paddle(int xPosition, int yPosition, int width, int height, int boardWidth) {
+	public PlayerShip(int xPosition, int yPosition, int width, int height, int boardWidth) {
 		super(xPosition, yPosition, width, height, boardWidth, IMAGE_LOCATION);
 		this.playerWidth = width;
 		this.velocity = new Point2D(0, 0);
@@ -49,15 +45,7 @@ public class Paddle extends Player {
 	public void handleCollision(Ball ball, GameController gameController) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
-
-			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
-			double intersectionHeight = intersection.getBoundsInLocal().getHeight();
-
-			if (intersectionWidth > intersectionHeight) {
-				ball.bounce(false, getState()); // isReflectingXAxis is false
-			} else {
-				ball.bounce(true, getState()); // isReflectingXAxis is true
-			}
+			gameController.getPlayerController().subtractLife();
 		}
 	}
 
@@ -67,5 +55,5 @@ public class Paddle extends Player {
 		// could be used to play audio
 		
 	}
-	
+
 }

@@ -1,7 +1,8 @@
-//Author: Carter Puckett
+//Author: Carter Puckett and Benji Altmann
 package game;
 
 import entities.blocks.Paddle;
+import entities.blocks.Player;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import projectiles.Bullet;
@@ -12,14 +13,15 @@ public class PlayerController {
 	 * This class contains logic for all player inputs and stats
 	 */
 	
-	private static final int MAX_LIVES = 3;
+	protected static final int MAX_LIVES = 3;
 	
-	private int score;
-	private int lives;
-	private String playerName;
+	protected int score;
+	protected int lives;
+	protected String playerName;
 	HighScoreController highScoreController;
 	GameController gameController;
-	Paddle paddle;
+	Player player;
+	
 	
 	public PlayerController() {
 		this.lives = MAX_LIVES;
@@ -27,15 +29,18 @@ public class PlayerController {
 		score = 0;
 	}
 	
-	public PlayerController(Paddle paddle) {
+	public PlayerController(Player player) {
 		this();
 		this.highScoreController = new HighScoreController();
-		this.paddle = paddle;
+		this.player = player;
 	
 	}
-	public PlayerController(Paddle paddle, GameController gameController) {
-		this(paddle);
 	
+	/*
+	 * IDK the point of this one
+	 */
+	public PlayerController(Player player, GameController gameController) {
+		this(player);
 	}
 	
 	
@@ -45,10 +50,10 @@ public class PlayerController {
 	 */
 	public boolean handleKeyInput(KeyCode keyCode, double elapsedTime) {
 		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
-			paddle.moveHorizontally(true, elapsedTime);
+			player.moveHorizontally(true, elapsedTime);
 			
 		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
-			paddle.moveHorizontally(false, elapsedTime);
+			player.moveHorizontally(false, elapsedTime);
 		} 
 		else if(keyCode == KeyCode.SPACE) {
 			return true;
@@ -74,15 +79,15 @@ public class PlayerController {
 	}
 	
 	/**
-	 * called when the ball hits a brick. Adds brick value to the current score
-	 * @param brickValue
+	 * called when something updates the score. Adds value to the current score
+	 * @param value
 	 */
-	public void addBrickValueToScore(int brickValue) {
-		score += brickValue;
+	public void addValueToScore(int value) {
+		score += value;
 	}
 	
 	/**
-	 * called when the ball hits the boundary. player loses one life
+	 * called when something happens to cause the player to lose a life.
 	 */
 	public void subtractLife() {
 		if (lives > 0) {
@@ -93,8 +98,8 @@ public class PlayerController {
 	/**
 	 * Stops the paddle
 	 */
-	public void stopPaddle() {
-		paddle.stop();
+	public void stopPlayer() {
+		player.stop();
 	}
 	
 	/**
@@ -102,8 +107,8 @@ public class PlayerController {
 	 * 
 	 * @param goRight
 	 */
-	public void paddleMovesRight(boolean goRight, double elapsedTime) {
-		paddle.moveHorizontally(goRight, elapsedTime);
+	public void playerMovesRight(boolean goRight, double elapsedTime) {
+		player.moveHorizontally(goRight, elapsedTime);
 	}
 	
 	public int getLives() {
@@ -124,9 +129,9 @@ public class PlayerController {
 
 	public void handleKeyRelease(KeyCode keyCode) {
 		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
-			paddle.stop();
+			player.stop();
 		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
-			paddle.stop();
+			player.stop();
 		}
 	}
 }
