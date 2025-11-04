@@ -3,20 +3,22 @@ package layouts.levels;
 public class GalagaLevels extends Level{
 
 	private static final String[] LEVEL_1_MAP = {
-		    "  XXXXX  ",
+		    "          ",
+		    "          ",
+		    " XXXXXXX  ",
 		};
 
 		private static final String[] LEVEL_2_MAP = {
-		    "  BBBBB  ",
-		    "  XXXXX  ",
-		    "  XXXXX  ",
+		    " BBBBBBB  ",
+		    " XXXXXXX  ",
+		    " XXXXXXX  ",
 		};
 
 		private static final String[] LEVEL_3_MAP = {
-		    "  SSSSS  ",
-		    "  BBBBB  ",
-		    "  XXXXX  ",
-		    "  XXXXX  ",
+		    " SSSSSSS  ",
+		    " BBBBBBB  ",
+		    " XXXXXXX  ",
+		    " XXXXXXX  ",
 		};
 	public GalagaLevels() {
 		super();

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import entities.blocks.Paddle;
+import entities.blocks.PlayerBlock;
 import entities.blocks.PlayerShip;
 import entities.bugs.Bug;
 import game.PlayerController;
@@ -19,13 +19,17 @@ public class GalagaGameController extends GameController {
 
 	private List<Bullet> bullets = new ArrayList<>();
 
+
+	private List<Bug> movingBugs= new ArrayList<>();
+
 	// TODO: Fix player ship by creating parent class for paddle and ship
-	private Paddle ship;
+	private PlayerBlock ship;
 
 	private GalagaLayout itemLayout;
 
 	
-	private static int BUG_MOVING_LIMIT = 2;
+	private static int BUG_MOVING_LIMIT = 3;
+	private static int BUG_MOVING_TIME = 5;
 	private int bugsMoving = 0;
 	private double totalTime = 0;
 	public GalagaGameController(int screenWidth, int screenHeight) {
@@ -46,22 +50,26 @@ public class GalagaGameController extends GameController {
 			}
 
 			List<Collidable> collided = new ArrayList<>();
+			List<Bullet> bulletsForRemoval = new ArrayList<>();
 			
-			// TODO: remove bullet after 1 collision
 			// TODO: handle bug/player/boundary collision removing a life
 			for (Bullet bullet : bullets) {
-				for (Collidable collidable : myCollidables) {
-					if (collidable.checkCollision(bullet)) {
-						collided.add(collidable);
-					}
-				}
-			}
 
-			for (Bullet bullet : bullets) {
 				if (bullet.getY() < 0) {
 					animationController.removeFromRoot(bullet.getView());
 					animationController.removeFromMoveables(bullet);
 				}
+
+				for (Collidable collidable : myCollidables) {
+					if (collidable.checkCollision(bullet)) {
+						collided.add(collidable);
+						bulletsForRemoval.add(bullet);
+						if(movingBugs.contains(collidable)) {
+							movingBugs.remove(collidable);
+						}
+					}
+				}
+
 				for (int i = 0; i < collided.size(); i++) {
 					if (i == 0) {
 						collided.get(i).handleCollision(bullet, this);
@@ -69,7 +77,11 @@ public class GalagaGameController extends GameController {
 						collided.get(i).manageCollision(this);
 					}
 				}
+
 			}
+
+
+			bulletsForRemoval.forEach(bullet -> removeBullet(bullet));
 			
 
 			animationController.step(elapsedTime);
@@ -77,10 +89,7 @@ public class GalagaGameController extends GameController {
 			uiController.updateUI(playerController.getLives(), playerController.getScore(),
 					playerController.getHighScore(), level);
 
-			//TODO: move after X time
-			// manage moving numbers
-			// if killed remove from moving
-			if(BUG_MOVING_LIMIT != bugsMoving  && totalTime > 5) {
+			if(BUG_MOVING_LIMIT >= movingBugs.size() && totalTime > BUG_MOVING_TIME) {
 				chanceToMoveBugs();
 			}
 
@@ -88,19 +97,22 @@ public class GalagaGameController extends GameController {
 	}
 	
 	private void chanceToMoveBugs() {
+			resetTimer();
 			List<Bug> bugs = itemLayout.getBugs();
 
 			Collections.shuffle(bugs);
 
-			Random random = new Random();
-
-			int limit = BUG_MOVING_LIMIT - bugsMoving;
-
 			for (int i = 0; i < BUG_MOVING_LIMIT; i++) {
 			    Bug bug = bugs.get(i);
+			    movingBugs.add(bugs.get(i));
 			    bug.initializeMovement();
 			    bugsMoving++;
 			}
+	}
+	
+	private void resetTimer() {
+		totalTime = 0;
+		
 	}
 
 	@Override
@@ -116,15 +128,21 @@ public class GalagaGameController extends GameController {
 		ship = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
 		playerController = new PlayerController(ship);
 		animationController.addToRoot(ship.getView());
-		myCollidables.add(ship);
 	}
 
 	private void createBullet(double x) {
-		Bullet bullet = new Bullet((int) x + 10, screenHeight - 120);
+		Bullet bullet = new Bullet((int) x + 10, screenHeight - 125);
 		bullets.add(bullet);
 		moveables.add(bullet);
 		animationController.addToMoveables(bullet);
 		animationController.addToRoot(bullet.getView());
+	}
+	
+	private void removeBullet(Bullet bullet) {
+		bullets.remove(bullet);
+		moveables.remove(bullet);
+		animationController.removeFromMoveables(bullet);
+		animationController.removeFromRoot(bullet.getView());
 	}
 
 	@Override
@@ -167,9 +185,11 @@ public class GalagaGameController extends GameController {
 	protected void cleanLevel() {
 		cleanBugs();
 		cleanBullets();
+		resetTimer();
 	}
 
 	private void cleanBugs() {
+		movingBugs = new ArrayList<>();
 		List<Collidable> bugs = itemLayout.getCollidables();
 		int listSize = itemLayout.getCollidables().size();
 		for (int i = 0; i < listSize; i++) {

@@ -17,7 +17,7 @@ import layouts.levels.GalagaLevels;
 
 public class GalagaLayout extends Layout {
 
-
+	protected static final int LAYOUT_TOP_MARGIN = 50;
 	private static final int PADDING = 2;
 	private GalagaLevels levelController = new GalagaLevels();
 	private List<IMoveable> moveables = new ArrayList<>();

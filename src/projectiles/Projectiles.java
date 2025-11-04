@@ -1,6 +1,6 @@
 package projectiles;
 import entities.*;
-import entities.blocks.Paddle.MoveState;
+import entities.blocks.PlayerBlock.MoveState;
 import javafx.scene.shape.Shape;
 
 public abstract class Projectiles extends Entity {
