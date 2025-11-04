@@ -30,6 +30,17 @@ public class HighScoreController {
 		}
 
 	}
+	public HighScoreController(String game) {
+		this.scoreFile = new File("scoreFile"+game+".txt");
+		if (!doesExist()) {
+			createScoreFile();
+			this.highScores[0] = "Placeholder,0";
+			writeScores();
+		} else {
+			readScores();
+		}
+
+	}
 
 	// Class Variables
 	private File scoreFile; // The scoreFile.txt reference
