@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import entities.blocks.PlayerBlock;
+import entities.blocks.Player;
 import entities.blocks.PlayerShip;
 import entities.bugs.Bug;
 import game.PlayerController;
@@ -23,7 +23,7 @@ public class GalagaGameController extends GameController {
 	private List<Bug> movingBugs= new ArrayList<>();
 
 	// TODO: Fix player ship by creating parent class for paddle and ship
-	private PlayerBlock ship;
+	private Player ship;
 
 	private GalagaLayout itemLayout;
 

@@ -103,7 +103,7 @@ public class EnemyShip extends Bug{
 	 * gets the location above the player that the enemy ship will hover at until reaching the hover height
 	 */
 	private void getHoverLocation() {
-		playerLocation = new Point2D(paddle.getX() + paddle.getPaddleWidth() / 2, paddle.getY() - HOVER_HEIGHT);
+		playerLocation = new Point2D(paddle.getX() + paddle.getPlayerWidth() / 2, paddle.getY() - HOVER_HEIGHT);
 	}
 
 	@Override

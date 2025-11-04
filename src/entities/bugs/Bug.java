@@ -70,7 +70,7 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 	 */
 	@Override
 	public void manageCollision(GameController gameController) {
-		gameController.getPlayerController().addBrickValueToScore(getPoints());
+		gameController.getPlayerController().addValueToScore(getPoints());
 		gameController.breakItem(this);
 		durability--;
 	}

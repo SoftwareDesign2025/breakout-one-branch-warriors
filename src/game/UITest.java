@@ -53,7 +53,7 @@ public class UITest extends Application{
 			player.subtractLife();
 			uiController.updateUI(player.getLives(), player.getScore(), 0, 1);
 		} else if (key == KeyCode.S) {
-			player.addBrickValueToScore(10);
+			player.addValueToScore(10);
 			uiController.updateUI(player.getLives(), player.getScore(), 0, 1);
 		}
 	}

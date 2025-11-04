@@ -112,7 +112,7 @@ public abstract class GameController {
 	}
 	
 	public void addToScore(int points) {
-		playerController.addBrickValueToScore(points);
+		playerController.addValueToScore(points);
 	}
 
 	public PlayerController getPlayerController() {

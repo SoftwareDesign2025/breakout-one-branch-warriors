@@ -1,64 +1,46 @@
+//Author: Benji Altmann
+
 package entities.blocks;
 
+import entities.blocks.Player.MoveState;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
-public abstract class PlayerBlock extends Block {
-	
-
+public abstract class Player extends Block {
 	protected Point2D velocity;
 	protected static int MOVE_SPEED = 600;
 	protected static final double MAX_VELOCITY = 950;
 	protected static final double MIN_VELOCITY = -MAX_VELOCITY;
 	protected boolean moved = false;
-	protected int boardWidth;
-	protected int paddleWidth;
-
+	protected int screenWidth;
+	protected int playerWidth;
+	
 	public enum MoveState {
 		STOPPED, LEFT, RIGHT
 	}
 
-	protected MoveState state;
-
-	/**
-	 * PlayerBlock constructor using a color fill
-	 * 
-	 * @param color
-	 * @param xPosition
-	 * @param yPosition
-	 * @param width
-	 * @param height
-	 * @param boardWidth
-	 */
-	public PlayerBlock(Color color, int xPosition, int yPosition, int width, int height, int boardWidth) {
+	MoveState state;
+	
+	public Player(Color color, int xPosition, int yPosition, int width, int height, int boardWidth) {
 		super(color, xPosition, yPosition, width, height);
-		this.boardWidth = boardWidth;
-		this.paddleWidth = width;
+		this.screenWidth = boardWidth;
+		this.playerWidth = width;
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
 		this.rect.setArcHeight(CORNER_RADIUS);
 		this.rect.setArcWidth(CORNER_RADIUS);
 	}
-
-	/**
-	 * PlayerBlock constructor using an image fill
-	 * 
-	 * @param xPosition
-	 * @param yPosition
-	 * @param width
-	 * @param height
-	 * @param boardWidth
-	 */
-	public PlayerBlock(int xPosition, int yPosition, int width, int height, int boardWidth, String image) {
-		super(xPosition, yPosition, width, height, image);
-		this.boardWidth = boardWidth;
-		this.paddleWidth = width;
+	
+	public Player(int xPosition, int yPosition, int width, int height, int screenWidth, String imageLocation) {
+		super(xPosition,yPosition, width, height, imageLocation);
+		this.screenWidth = screenWidth;
+		this.playerWidth = width;
 		this.velocity = new Point2D(0, 0);
 		state = MoveState.STOPPED;
 	}
-
+	
 	/**
-	 * Provides player movement which the user can use to control
+	 * Provides paddle movement which the user can use to control
 	 * 
 	 * @param goRight
 	 * @param elapsedTime 
@@ -70,7 +52,7 @@ public abstract class PlayerBlock extends Block {
 
 		double currentVelocityX = velocity.getX();
 
-		if (goRight && this.getView().getLayoutX() + paddleWidth < boardWidth) {
+		if (goRight && this.getView().getLayoutX() + playerWidth < screenWidth) {
 			double deltaX = checkVelocity();
 			velocity = new Point2D(currentVelocityX * deltaX * elapsedTime, 0);
 
@@ -85,13 +67,13 @@ public abstract class PlayerBlock extends Block {
 			state = MoveState.LEFT;
 		}
 	}
-
+	
 	/**
-	 * Limits the velocity of the player so it can be at a controllable speed
+	 * Limits the velocity of the paddle so it can be at a controllable speed
 	 * 
 	 * @return double
 	 */
-	protected double checkVelocity() {
+	private double checkVelocity() {
 		double deltaX = velocity.getX();
 
 		if (deltaX == 0) {
@@ -105,18 +87,18 @@ public abstract class PlayerBlock extends Block {
 		}
 		return deltaX;
 	}
-
+	
 	/**
-	 * Returns the state that the player is in
+	 * Returns the state that the paddle is in
 	 * 
 	 * @return MoveState
 	 */
 	public MoveState getState() {
-		return this.state;
+		return state;
 	}
 
 	/**
-	 * Returns if the player has been moved
+	 * Returns if the paddle has been moved
 	 * 
 	 * @return MoveState
 	 */
@@ -125,9 +107,15 @@ public abstract class PlayerBlock extends Block {
 	}
 
 	/*
-	 * Stops the player from moving
+	 * Stops the paddle from moving
 	 */
 	public void stop() {
 		state = MoveState.STOPPED;
 	}
+	
+	public int getPlayerWidth() {
+		return playerWidth;
+	}
+	
+
 }
