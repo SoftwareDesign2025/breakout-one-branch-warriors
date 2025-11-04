@@ -63,6 +63,10 @@ public class PlayerController {
 		return false;
 	}
 	
+	public Player getPlayer() {
+		return player;
+	}
+	
 	/**
 	 * returns true if the player has no remaining lives and false if they have at least 1 life
 	 * @return
