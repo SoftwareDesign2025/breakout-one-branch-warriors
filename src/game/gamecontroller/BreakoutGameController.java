@@ -144,7 +144,11 @@ public class BreakoutGameController extends GameController {
 	 
 	@Override
 	protected void gameEnded() {
+		if(!isGameLost) {
+			playerController.addScoreToHighScores();
+		}
 		super.gameEnded();
+		
 		uiController.showGameOverMessage();
 		cleanBalls();
 	}
