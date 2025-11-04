@@ -61,7 +61,6 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 	@Override
 	public void handleCollision(Projectiles projectile, GameController gameController) {
 		if (checkCollision(projectile)) {
-			System.out.println("COLLIDED");
 			manageCollision(gameController);
 		}
 	}

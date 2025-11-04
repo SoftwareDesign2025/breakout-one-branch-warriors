@@ -6,7 +6,7 @@ package projectiles;
 import java.util.Random;
 
 import entities.Entity;
-import entities.blocks.Paddle.MoveState;
+import entities.blocks.PlayerBlock.MoveState;
 import interfaces.IMoveable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;

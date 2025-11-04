@@ -2,6 +2,7 @@
 package game;
 
 import entities.blocks.Paddle;
+import entities.blocks.PlayerBlock;
 import game.gamecontroller.BreakoutGameController;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -20,7 +21,7 @@ public class PlayerController {
 	private String playerName;
 	HighScoreController highScoreController;
 	BreakoutGameController gameController;
-	Paddle paddle;
+	PlayerBlock paddle;
 	
 	public PlayerController() {
 		this.lives = MAX_LIVES;
@@ -28,13 +29,13 @@ public class PlayerController {
 		score = 0;
 	}
 	
-	public PlayerController(Paddle paddle) {
+	public PlayerController(PlayerBlock paddle) {
 		this();
 		this.highScoreController = new HighScoreController();
 		this.paddle = paddle;
 	
 	}
-	public PlayerController(Paddle paddle, BreakoutGameController gameController) {
+	public PlayerController(PlayerBlock paddle, BreakoutGameController gameController) {
 		this(paddle);
 	
 	}
@@ -110,7 +111,7 @@ public class PlayerController {
 		return score;
 	}
 
-	public Paddle getPlayer() {
+	public PlayerBlock getPlayer() {
 		return paddle;
 	}
 	public void setLives(int lives) {
