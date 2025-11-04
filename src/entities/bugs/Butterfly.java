@@ -45,6 +45,10 @@ public class Butterfly extends Bug{
 
 			view.setLayoutX(newX);
 			view.setLayoutY(newY);
+
+			if(getY() > 600) {
+				setY(-50);
+			}
 		}
 	}
 
