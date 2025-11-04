@@ -7,14 +7,14 @@ import javafx.scene.paint.Color;
 
 
 import entities.Entity;
-import entities.blocks.Paddle.MoveState;
+import entities.blocks.PlayerBlock.MoveState;
 import interfaces.IMoveable;
 
 import javafx.scene.Node;
 
 import javafx.scene.shape.Shape;
 
-public class Bullet extends Entity implements IMoveable {
+public class Bullet extends Projectiles implements IMoveable {
 	private Random random = new Random();
 	private Point2D velocity;
 	private Point2D position;
@@ -22,26 +22,14 @@ public class Bullet extends Entity implements IMoveable {
 	private int ballRadius;
 	public boolean inCollision;
 		
-
-	//private static final double HORIZONTAL_KICK = 0.7;
-	private static final double FRICTION_FACTOR = 0.99;
-	//private static final double WOBBLE_FACTOR = 0.5;
-	//private static final double BASE_KICK_FACTOR = 1.5;
-	//private static final double KICK_MULTIPLIER_MAX = 1.3;
 	private static final int CORNER_RADIUS = 100;
-	private static final String BALL_IMAGE = "resources/breakout_ball_fix.png";
+	private static final String BALL_IMAGE = "resources/Boolet3.png";
 
-	private static final int RADIUS_DIVIDER = 3;
-
-	private static final int MAX_VELOCITY_Y = 450;
-	private static final int MIN_VELOCITY_Y = -MAX_VELOCITY_Y;
-	private static final int MAX_VELOCITY_X = 90;
-	private static final int MIN_VELOCITY_X = -MAX_VELOCITY_X;
 	private double startPosition;
 	
-	private static final int RADIUS = 10;
+	private static final int RADIUS = 40;
 
-	private static final Point2D STARTING_VELOCITY = new Point2D(-75, 250);
+	private static final Point2D STARTING_VELOCITY = new Point2D(0, 250);
 
 	public Bullet(int startX, int startY, Point2D velocity, int ballRadius, Color color) {
 		super(startX, startY, ballRadius * 2, ballRadius *2);
@@ -67,10 +55,10 @@ public class Bullet extends Entity implements IMoveable {
 		view.setLayoutX(startX);
 		view.setLayoutY(startY);
 	}
+
 	public Bullet(int startX, int startY) {
-		super(startX, startY, RADIUS * 2, RADIUS * 2, BALL_IMAGE);
+		super(startX, startY, RADIUS / 2, RADIUS, BALL_IMAGE);
 		this.velocity = STARTING_VELOCITY;
-		this.ballRadius = RADIUS;
 		setColor(Color.TRANSPARENT);
 
 		view.setLayoutX(startX);
@@ -131,7 +119,7 @@ public class Bullet extends Entity implements IMoveable {
 		 * 
 		 * @return Node
 		 */
-		public Shape getBullet() {
+		public Shape getBall() {
 			return rect;
 		}
 
@@ -178,6 +166,12 @@ public class Bullet extends Entity implements IMoveable {
 		 */
 		public void setY(double y) {
 			view.setLayoutY(y);
+		}
+
+		@Override
+		public void bounce(boolean b, MoveState moveState) {
+			// TODO Auto-generated method stub
+			
 		}
 
 

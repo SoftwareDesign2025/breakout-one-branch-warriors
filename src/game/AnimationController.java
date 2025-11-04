@@ -6,9 +6,6 @@ package game;
 import interfaces.IMoveable;
 
 import java.util.List;
-
-import projectiles.Ball;
-
 import java.util.ArrayList;
 
 import javafx.scene.Group;

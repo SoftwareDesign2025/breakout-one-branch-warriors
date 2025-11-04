@@ -6,6 +6,7 @@ package layouts;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.Entity;
 import entities.blocks.Brick;
 import entities.blocks.DoubleDamageBrick;
 import entities.blocks.UnbreakableBrick;
@@ -94,9 +95,5 @@ public class BrickLayout extends Layout {
 	public int itemsLeft() {
 		return layoutItems.size() - unbreakableBlockCount;
 
-	}
-
-	public void removeBrick(Collidable brick) {
-		layoutItems.remove(brick);
 	}
 }

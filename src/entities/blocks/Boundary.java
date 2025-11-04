@@ -3,10 +3,11 @@
  */
 package entities.blocks;
 
-import game.GameController;
+import game.gamecontroller.GameController;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import projectiles.Ball;
+import projectiles.Projectiles;
 
 public class Boundary extends Block {
 
@@ -15,18 +16,13 @@ public class Boundary extends Block {
 	}
 
 	@Override
-	public void handleCollision(Ball ball, GameController gameController) {
+	public void handleCollision(Projectiles ball, GameController gameController) {
 		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 
-			if(!gameController.getIsShieldActive()) {
-				gameController.getPlayerController().subtractLife();
-				//lives.setText(playerController.getLives() + " lives");  		Update number of lives text
-			}
-
 			// reset position
-			ball.setX(gameController.getPaddle().getX() + 10);
-			ball.setY(gameController.getPaddle().getY() - 10);
+			ball.setX(gameController.getPlayerController().getPlayer().getX() + 10);
+			ball.setY(gameController.getPlayerController().getPlayer().getY() - 10);
 
 			manageCollision(gameController);
 		}
@@ -34,6 +30,6 @@ public class Boundary extends Block {
 
 	@Override
 	public void manageCollision(GameController gameController) {
-			gameController.removeShield();
+		gameController.handleShield();
 	}
 }

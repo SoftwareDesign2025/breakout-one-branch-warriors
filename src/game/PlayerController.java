@@ -2,6 +2,8 @@
 package game;
 
 import entities.blocks.Paddle;
+import entities.blocks.PlayerBlock;
+import game.gamecontroller.BreakoutGameController;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import projectiles.Bullet;
@@ -18,8 +20,8 @@ public class PlayerController {
 	private int lives;
 	private String playerName;
 	HighScoreController highScoreController;
-	GameController gameController;
-	Paddle paddle;
+	BreakoutGameController gameController;
+	PlayerBlock paddle;
 	
 	public PlayerController() {
 		this.lives = MAX_LIVES;
@@ -27,13 +29,13 @@ public class PlayerController {
 		score = 0;
 	}
 	
-	public PlayerController(Paddle paddle) {
+	public PlayerController(PlayerBlock paddle) {
 		this();
 		this.highScoreController = new HighScoreController();
 		this.paddle = paddle;
 	
 	}
-	public PlayerController(Paddle paddle, GameController gameController) {
+	public PlayerController(PlayerBlock paddle, BreakoutGameController gameController) {
 		this(paddle);
 	
 	}
@@ -43,19 +45,14 @@ public class PlayerController {
 	 * handles the input for moving the paddle left or right
 	 * @param keyCode
 	 */
-	public boolean handleKeyInput(KeyCode keyCode, double elapsedTime) {
+	public void handleKeyInput(KeyCode keyCode, double elapsedTime) {
 		if (keyCode == KeyCode.RIGHT || keyCode == KeyCode.D) {
 			paddle.moveHorizontally(true, elapsedTime);
 			
 		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
 			paddle.moveHorizontally(false, elapsedTime);
-		} 
-		else if(keyCode == KeyCode.SPACE) {
-			return true;
-			
+		} 	
 		}
-		return false;
-	}
 	
 	/**
 	 * returns true if the player has no remaining lives and false if they have at least 1 life
@@ -112,6 +109,10 @@ public class PlayerController {
 	
 	public Integer getScore() {
 		return score;
+	}
+
+	public PlayerBlock getPlayer() {
+		return paddle;
 	}
 	public void setLives(int lives) {
 		this.lives = lives;

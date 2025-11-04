@@ -3,14 +3,16 @@
 package entities.bugs;
 
 import entities.blocks.Paddle;
+import game.gamecontroller.GameController;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
+import projectiles.Projectiles;
 
 public class EnemyShip extends Bug{
 	private static final int POINTS = 50;
 	private static final int STARTING_DURABILITY = 1;
 	private static final Point2D STARTING_VELOCITY = new Point2D(0,0);
 	private static final int HOVER_HEIGHT = 150;
+	private static final String IMAGE = null;
 
 	//private PlayerShip playerShip;
 	private Paddle paddle; // will be switched with playership
@@ -27,23 +29,8 @@ public class EnemyShip extends Bug{
 	 * @param height
 	 * @param paddle
 	 */
-	public EnemyShip(int xPosition, int yPosition, int width, int height, Paddle paddle) {
-		super(xPosition, yPosition, width, height, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
-		rect.setFill(Color.BLUE);
-		this.paddle = paddle;
-	}
-
-	/**
-	 * constructor with sprite
-	 * @param xPosition
-	 * @param yPosition
-	 * @param width
-	 * @param height
-	 * @param image
-	 * @param paddle
-	 */
-	public EnemyShip(int xPosition, int yPosition, int width, int height, String image, Paddle paddle) {
-		super(xPosition, yPosition, width, height, image, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
+	public EnemyShip(int xPosition, int yPosition, int size, Paddle paddle) {
+		super(xPosition, yPosition, size, size, IMAGE, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
 		this.paddle = paddle;
 	}
 
@@ -117,5 +104,17 @@ public class EnemyShip extends Bug{
 	 */
 	private void getHoverLocation() {
 		playerLocation = new Point2D(paddle.getX() + paddle.getPaddleWidth() / 2, paddle.getY() - HOVER_HEIGHT);
+	}
+
+	@Override
+	public void handleCollision(Projectiles projectile, GameController gameController) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void manageCollision(GameController gameController) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,12 +1,15 @@
 package entities.bugs;
 
+import game.gamecontroller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import projectiles.Projectiles;
 
 public class Butterfly extends Bug{
 	private static final int POINTS = 20;
 	private static final int STARTING_DURABILITY = 1;
 	private static final Point2D STARTING_VELOCITY = new Point2D(0,0);
+	private static final String IMAGE = "resources/Bug7.png";
 
 	private boolean isMoving = false;
 	private Point2D playerLocation;
@@ -15,18 +18,6 @@ public class Butterfly extends Bug{
 	private double amplitude = 100;
 	private double startX;
 	private double totalTime;
-	
-	/**
-	 * constructor without sprite
-	 * @param xPosition
-	 * @param yPosition
-	 * @param width
-	 * @param height
-	 */
-	public Butterfly(int xPosition, int yPosition, int width, int height) {
-		super(xPosition, yPosition, width, height, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
-		rect.setFill(Color.GREEN);
-	}
 
 	/**
 	 * constructor with sprite
@@ -36,8 +27,8 @@ public class Butterfly extends Bug{
 	 * @param height
 	 * @param image
 	 */
-	public Butterfly(int xPosition, int yPosition, int width, int height, String image) {
-		super(xPosition, yPosition, width, height, image, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
+	public Butterfly(int xPosition, int yPosition, int size) {
+		super(xPosition, yPosition, size, size, IMAGE, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
 	}
 
 	//The butterfly floats downward in a sine wave (back and forth) pattern.
@@ -54,6 +45,10 @@ public class Butterfly extends Bug{
 
 			view.setLayoutX(newX);
 			view.setLayoutY(newY);
+
+			if(getY() > 600) {
+				setY(-50);
+			}
 		}
 	}
 
@@ -67,4 +62,5 @@ public class Butterfly extends Bug{
 			totalTime = 0;
 		}
 	}
+
 }
