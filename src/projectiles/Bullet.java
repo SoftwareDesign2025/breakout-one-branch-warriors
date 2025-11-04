@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 
 
 import entities.Entity;
-import entities.blocks.Paddle.MoveState;
+import entities.blocks.PlayerBlock.MoveState;
 import interfaces.IMoveable;
 
 import javafx.scene.Node;
