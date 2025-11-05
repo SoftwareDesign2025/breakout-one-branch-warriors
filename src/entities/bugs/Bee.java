@@ -2,7 +2,7 @@
 
 package entities.bugs;
 
-import entities.blocks.Paddle;
+import entities.blocks.Player;
 import game.gamecontroller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -13,13 +13,13 @@ public class Bee extends Bug{
 	private static final int POINTS = 10;
 	private static final int STARTING_DURABILITY = 1;
 	private static final Point2D STARTING_VELOCITY = new Point2D(0,0);
-	private static final String IMAGE = null;
+	private static final String IMAGE = "resources/Bee7.png";
 
 	//private PlayerShip playerShip;
-	private Paddle paddle;
 	private boolean isMoving = false;
 	private Point2D playerLocation;
 	private double movementSpeed = 90;
+	private Player playerShip;
 
 
 	/**
@@ -30,9 +30,9 @@ public class Bee extends Bug{
 	 * @param height
 	 * @param image
 	 */
-	public Bee(int xPosition, int yPosition, int size, Paddle paddle) {
+	public Bee(int xPosition, int yPosition, int size, Player playerShip) {
 		super(xPosition, yPosition, size, size, IMAGE, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
-		this.paddle = paddle;
+		this.playerShip =  playerShip;
 	}
 
 	//The bee will find the location of the player, store it, and then move to that location until it either
@@ -80,7 +80,7 @@ public class Bee extends Bug{
 	 * stores the current location of the player
 	 */
 	private void storePlayerLocation() {
-		playerLocation =  new Point2D(paddle.getX(), paddle.getY());
+		playerLocation =  new Point2D(playerShip.getX(), playerShip.getY());
 	}
 
 	@Override

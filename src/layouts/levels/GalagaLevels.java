@@ -17,8 +17,8 @@ public class GalagaLevels extends Level{
 		private static final String[] LEVEL_3_MAP = {
 		    " SSSSSSS  ",
 		    " BBBBBBB  ",
-		    " XXXXXXX  ",
-		    " XXXXXXX  ",
+//		    " XXXXXXX  ",
+//		    " XXXXXXX  ",
 		};
 	public GalagaLevels() {
 		super();
