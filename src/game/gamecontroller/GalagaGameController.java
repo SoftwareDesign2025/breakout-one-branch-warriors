@@ -13,6 +13,8 @@ import game.PlayerController;
 import game.UIController;
 import interfaces.Collidable;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import layouts.GalagaLayout;
 import projectiles.Bullet;
 
@@ -118,7 +120,7 @@ public class GalagaGameController extends GameController {
 
 	@Override
 	protected void createUI() {
-		uiController = new UIController();
+		uiController = new UIController(Font.font("Arial"), Color.WHITE);
 		ui = uiController.createGroupForUI(screenWidth, screenHeight);
 		animation = animationController.createRootForAnimation(screenWidth, screenHeight);
 		animationController.addToRoot(ui);

@@ -1,4 +1,4 @@
-//Author: Carter Puckett, Aidan Spoerndle, Aidan Jimenez 
+//Author: Carter Puckett, Aidan Spoerndle, Aidan Jimenez  
 package game.gamecontroller;
 
 import entities.blocks.Boundary;
@@ -14,6 +14,8 @@ import projectiles.Ball;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
 import java.util.*;
 
 public class BreakoutGameController extends GameController {
@@ -229,7 +231,7 @@ public class BreakoutGameController extends GameController {
 	}
 
 	protected void createUI() {
-		uiController = new UIController();
+		uiController = new UIController(Font.font("Arial"), Color.BLACK);
 		ui = uiController.createGroupForUI(screenWidth, screenHeight);
 		animation = animationController.createRootForAnimation(screenWidth, screenHeight);
 		animationController.addToRoot(ui);
