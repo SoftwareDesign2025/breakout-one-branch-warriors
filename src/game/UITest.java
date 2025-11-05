@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -30,7 +31,7 @@ public class UITest extends Application{
     private PlayerController player;
 
 	public void start(Stage stage) {
-		uiController = new UIController();
+		uiController = new UIController(Font.font("Arial"), Color.BLACK);
 		player = new PlayerController();
 		uiScene = setupScene(WIDTH, HEIGHT, BACKGROUND);
 		

@@ -1,7 +1,9 @@
-//Author: Carter Puckett
+//Author: Carter Puckett 
 package game;
 
 import javafx.scene.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class UIController {
@@ -27,8 +29,12 @@ public class UIController {
 	private Text gameOverMessage;
 	private Text levelNumber;
 	
-	public UIController() {
-		
+	private Font font;
+	private Color fontColor;
+	
+	public UIController(Font font, Color color) {
+		this.font = font;
+		fontColor = color;
 	}
 	
 	/**
@@ -82,9 +88,22 @@ public class UIController {
 		pauseMessage = new Text(width * 0.5, height * MID_UI_HEIGHT_MULTIPLIER, "PAUSED.");
 		gameOverMessage = new Text(width * 0.5, height * MID_UI_HEIGHT_MULTIPLIER, "GAME OVER");
 		
+		setFont(lives, font, fontColor);
+		setFont(score, font, fontColor);
+		setFont(highScore, font, fontColor);
+		setFont(levelNumber, font, fontColor);
+		setFont(winMessage, font, fontColor);
+		setFont(pauseMessage, font, fontColor);
+		setFont(gameOverMessage, font, fontColor);
+		
 		hideWinMessage();
 		hidePauseMessage();
 		hideGameOverMessage();
+	}
+	
+	public void setFont(Text text, Font font, Color color) {
+		text.setFont(font);
+		text.setFill(color);
 	}
 	
 	/**
