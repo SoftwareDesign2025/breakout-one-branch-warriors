@@ -1,3 +1,5 @@
+//Author: Benji Altmann
+
 package entities.blocks;
 
 import game.gamecontroller.GameController;

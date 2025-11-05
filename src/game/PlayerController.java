@@ -37,11 +37,10 @@ public class PlayerController {
 	
 	}
 	
-	/*
-	 * IDK the point of this one
-	 */
-	public PlayerController(Player player, GameController gameController) {
-		this(player);
+	public PlayerController(Player player, String fileName) {
+		this();
+		this.highScoreController = new HighScoreController(fileName);
+		this.player = player;
 	}
 	
 	
@@ -55,10 +54,6 @@ public class PlayerController {
 			
 		} else if (keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
 			player.moveHorizontally(false, elapsedTime);
-		} 
-		else if(keyCode == KeyCode.SPACE) {
-			return true;
-			
 		}
 		return false;
 	}

@@ -1,15 +1,18 @@
-package game;
+//Author: Benji Altmann
 
-import entities.blocks.Paddle;
+package game;
 import entities.blocks.Player;
 
 public class BreakOutPlayerController extends PlayerController {
+	
+	public static final String HighScoreFileName = "BreakOut";
 	
 	public BreakOutPlayerController() {
 		super();
 	}
 	public BreakOutPlayerController(Player paddle) {
-		super(paddle);
+		super(paddle, HighScoreFileName);
+		
 	}
 	
 	
