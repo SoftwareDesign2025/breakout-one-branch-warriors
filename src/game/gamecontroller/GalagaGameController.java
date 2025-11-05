@@ -22,7 +22,6 @@ public class GalagaGameController extends GameController {
 
 	private List<Bug> movingBugs= new ArrayList<>();
 
-	// TODO: Fix player ship by creating parent class for paddle and ship
 	private GalagaLayout itemLayout;
 
 	
@@ -123,8 +122,8 @@ public class GalagaGameController extends GameController {
 
 	@Override
 	protected void createPlayer() {
-		this.player = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
-		playerController = new PlayerController(player);
+		player = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
+		playerController = new GalagaPlayerController();
 		animationController.addToRoot(player.getView());
 	}
 
