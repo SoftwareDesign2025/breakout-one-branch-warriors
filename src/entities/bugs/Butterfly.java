@@ -1,3 +1,7 @@
+/**
+ * @author Carter Puckett
+ * @author Aidan Jimenez
+ */
 package entities.bugs;
 
 import game.gamecontroller.GameController;

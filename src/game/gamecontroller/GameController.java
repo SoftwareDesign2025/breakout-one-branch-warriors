@@ -1,3 +1,6 @@
+/**
+ * @author Aidan Jimenez
+ */
 package game.gamecontroller;
 
 import java.util.ArrayList;

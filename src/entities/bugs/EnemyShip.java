@@ -1,4 +1,4 @@
-//Author: Carter Puckett
+//Author: Carter Puckett, Aidan Jimenez
 
 package entities.bugs;
 

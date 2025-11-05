@@ -1,3 +1,6 @@
+/**
+ * @author Aidan Spoerndle
+ */
 package game;
 
 import java.io.File;
@@ -11,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-//@Author: Aidan Spoerndle
 public class HighScoreController {
 	/*
 	 * This class holds the functionality of recording, obtaining and managing the

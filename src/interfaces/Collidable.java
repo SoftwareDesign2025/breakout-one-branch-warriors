@@ -1,3 +1,6 @@
+/**
+ * @author Aidan Jimenez
+ */
 package interfaces;
 
 import game.gamecontroller.GameController;

@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 
 /**
  * @Author OneBranchWarriors
+ * @author Aidan Sponerdle, Carter Puckett, Benji Altman
  * 
  * 
  *         This class contains the code to begin the program and define the

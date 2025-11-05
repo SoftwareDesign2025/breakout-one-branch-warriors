@@ -1,3 +1,7 @@
+/**
+ * @author Aidan Jimenez
+ */
+
 package interfaces;
 
 public interface IMoveable {

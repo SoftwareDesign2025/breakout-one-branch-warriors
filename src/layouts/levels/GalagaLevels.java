@@ -1,3 +1,6 @@
+/**
+ * @author Aidan Jimenez
+ */
 package layouts.levels;
 
 public class GalagaLevels extends Level{
