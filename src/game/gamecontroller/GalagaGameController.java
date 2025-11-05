@@ -13,6 +13,8 @@ import game.PlayerController;
 import game.UIController;
 import interfaces.Collidable;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import layouts.GalagaLayout;
 import projectiles.Bullet;
 
@@ -118,7 +120,7 @@ public class GalagaGameController extends GameController {
 
 	@Override
 	protected void createUI() {
-		uiController = new UIController();
+		uiController = new UIController(Font.font("Arial"), Color.WHITE);
 		ui = uiController.createGroupForUI(screenWidth, screenHeight);
 		animation = animationController.createRootForAnimation(screenWidth, screenHeight);
 		animationController.addToRoot(ui);
@@ -150,7 +152,7 @@ public class GalagaGameController extends GameController {
 	public void handleKeyInput(KeyCode code) {
 		super.handleKeyInput(code);
 		if (code == KeyCode.SPACE) {
-			createBullet(ship.getX());
+			createBullet(player.getX());
 		}
 
 	}
@@ -160,14 +162,13 @@ public class GalagaGameController extends GameController {
 		level = STARTING_LEVEL_NUMBER;
 
 		createUI();
-		createLevel();
 		createPlayer();
-
+		createLevel();
 	}
 
 	@Override
 	protected void createLevel() {
-		itemLayout = new GalagaLayout(screenWidth, screenHeight, level);
+		itemLayout = new GalagaLayout(screenWidth, screenHeight, level, this.player);
 		List<Collidable> bugs = itemLayout.getCollidables();
 
 		bugs.forEach(bug -> myCollidables.add(bug));
