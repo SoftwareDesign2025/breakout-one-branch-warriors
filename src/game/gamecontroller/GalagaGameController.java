@@ -8,6 +8,7 @@ import java.util.Random;
 import entities.blocks.Player;
 import entities.blocks.PlayerShip;
 import entities.bugs.Bug;
+import game.GalagaPlayerController;
 import game.PlayerController;
 import game.UIController;
 import interfaces.Collidable;
@@ -23,7 +24,7 @@ public class GalagaGameController extends GameController {
 	private List<Bug> movingBugs= new ArrayList<>();
 
 	// TODO: Fix player ship by creating parent class for paddle and ship
-	private Player ship;
+	private PlayerShip ship;
 
 	private GalagaLayout itemLayout;
 
@@ -126,7 +127,7 @@ public class GalagaGameController extends GameController {
 	@Override
 	protected void createPlayer() {
 		ship = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
-		playerController = new PlayerController(ship);
+		playerController = new GalagaPlayerController(ship);
 		animationController.addToRoot(ship.getView());
 	}
 
