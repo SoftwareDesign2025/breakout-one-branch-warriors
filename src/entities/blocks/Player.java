@@ -113,5 +113,9 @@ public abstract class Player extends Block {
 		state = MoveState.STOPPED;
 	}
 	
+	public int getPlayerWidth() {
+		return playerWidth;
+	}
+	
 
 }
