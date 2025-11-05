@@ -159,12 +159,11 @@ public class GalagaGameController extends GameController {
 		createUI();
 		createPlayer();
 		createLevel();
-
 	}
 
 	@Override
 	protected void createLevel() {
-		itemLayout = new GalagaLayout(screenWidth, screenHeight, level, player);
+		itemLayout = new GalagaLayout(screenWidth, screenHeight, level, this.player);
 		List<Collidable> bugs = itemLayout.getCollidables();
 
 		bugs.forEach(bug -> myCollidables.add(bug));

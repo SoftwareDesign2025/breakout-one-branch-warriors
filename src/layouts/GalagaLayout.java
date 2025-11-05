@@ -27,9 +27,9 @@ public class GalagaLayout extends Layout {
 
 	public GalagaLayout(int screenHeight, int screenWidth, int level, Player playerShip) {
 		super(screenHeight, screenWidth, level);
+		this.playerShip = playerShip;
 		this.levelController = new GalagaLevels();
 		this.layoutItems = createLayout(level);
-		this.playerShip = playerShip;
 	}
 
 	protected List<Collidable> createLayout(int level) {
@@ -72,9 +72,9 @@ public class GalagaLayout extends Layout {
 	protected Bug createItem(char itemType, int xPos, int yPos) {
 		switch (itemType) {
 		case 'S':
-			return new EnemyShip(xPos, yPos, ITEM_SIZE, playerShip);
+			return new EnemyShip(xPos, yPos, ITEM_SIZE, this.playerShip);
 		case 'B':
-			return new Bee(xPos, yPos, ITEM_SIZE, playerShip);
+			return new Bee(xPos, yPos, ITEM_SIZE, this.playerShip);
 		case 'X':
 			return new Butterfly(xPos, yPos, ITEM_SIZE);
 		default:

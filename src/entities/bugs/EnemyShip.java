@@ -19,7 +19,6 @@ public class EnemyShip extends Bug{
 	private Point2D playerLocation;
 	private double movementSpeed = 100;
 	private boolean hasReachedHoverHeight = false;
-	private Player playerShip;
 
 	/**
 	 * constructor without sprite
@@ -59,6 +58,15 @@ public class EnemyShip extends Bug{
 			view.setLayoutX(newX);
 			view.setLayoutY(newY);
 			
+			if(getY() > 600) {
+				setY(-50);
+			}
+			if(getX() > 900) {
+				setX(-50);
+			}
+			if(getX() < 0) {
+				setX(950);
+			}
 			
 		}
 	}
@@ -106,15 +114,4 @@ public class EnemyShip extends Bug{
 		playerLocation = new Point2D(playerShip.getX() + 25 , playerShip.getY() - HOVER_HEIGHT);
 	}
 
-	@Override
-	public void handleCollision(Projectiles projectile, GameController gameController) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void manageCollision(GameController gameController) {
-		// TODO Auto-generated method stub
-		
-	}
 }

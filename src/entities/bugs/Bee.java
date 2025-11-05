@@ -19,7 +19,6 @@ public class Bee extends Bug{
 	private boolean isMoving = false;
 	private Point2D playerLocation;
 	private double movementSpeed = 90;
-	private Player playerShip;
 
 
 	/**
@@ -32,7 +31,7 @@ public class Bee extends Bug{
 	 */
 	public Bee(int xPosition, int yPosition, int size, Player playerShip) {
 		super(xPosition, yPosition, size, size, IMAGE, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
-		this.playerShip =  playerShip;
+		this.playerShip = playerShip;
 	}
 
 	//The bee will find the location of the player, store it, and then move to that location until it either
@@ -52,6 +51,16 @@ public class Bee extends Bug{
 
 			view.setLayoutX(newX);
 			view.setLayoutY(newY);
+
+			if(getY() > 600) {
+				setY(-50);
+			}
+			if(getX() > 900) {
+				setX(-50);
+			}
+			if(getX() < 0) {
+				setX(950);
+			}
 		}
 	}
 
@@ -83,15 +92,4 @@ public class Bee extends Bug{
 		playerLocation =  new Point2D(playerShip.getX(), playerShip.getY());
 	}
 
-	@Override
-	public void handleCollision(Projectiles projectile, GameController gameController) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void manageCollision(GameController gameController) {
-		// TODO Auto-generated method stub
-		
-	}
 }
