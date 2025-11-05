@@ -6,18 +6,20 @@ public class BreakoutLevels extends Level{
 		};
 
 		private static final String[] LEVEL_2_MAP = {
+		    "    X    ",
+		    "  XDDDX  ",
+		    "XXXUUUXXX",
 		    "  XXXXX  ",
-		    "  X   X  ",
-		    "  XXXXX  ",
+		    "    X    ",
 		};
 
 		private static final String[] LEVEL_3_MAP = {
-		    "XXXXXXXXX",
-		    " XXXXXXX ",
-		    "  XXXXX  ",
-		    "    X    ",
-		    "  XXXXX  ",
-		    " XXXXXXX ",
+		    "XXXXDXXXX",
+		    " XXXDXXX ",
+		    "  XXDXX  ",
+		    "    U    ",
+		    "  XXDXX  ",
+		    " XXXDXXX ",
 		    "XXXXXXXXX",
 		};
 
