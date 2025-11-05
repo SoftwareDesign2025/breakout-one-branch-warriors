@@ -2,6 +2,10 @@
 
 package entities.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import entities.bugs.Bug;
 import game.gamecontroller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -54,9 +58,15 @@ public class PlayerShip extends Player {
 
 	@Override
 	public void manageCollision(GameController gameController) {
-		// TODO Auto-generated method stub
-		// could be used to play audio
-		
+			
+			//gameController.getPlayerController().subtractLife();
+			
+			
 	}
-
+	
+	public boolean checkCollisionBug(Bug bug) {
+		Shape intersection = Shape.intersect(bug.getCollisionBox(), getCollisionBox());
+		return !intersection.getBoundsInLocal().isEmpty();
+	}
+	
 }

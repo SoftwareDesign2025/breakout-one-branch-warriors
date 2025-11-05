@@ -3,6 +3,7 @@
 package entities.blocks;
 
 import entities.blocks.Player.MoveState;
+import entities.bugs.Bug;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
@@ -116,6 +117,8 @@ public abstract class Player extends Block {
 	public int getPlayerWidth() {
 		return playerWidth;
 	}
+
+	public abstract boolean checkCollisionBug(Bug bug);
 	
 
 }

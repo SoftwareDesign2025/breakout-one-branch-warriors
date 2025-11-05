@@ -54,7 +54,7 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 		this.points = points;
 		this.durability = durability;
 		this.velocity = velocity;
-		this.rect.setFill(Color.TRANSPARENT);
+		this.rect.setFill(Color.BLACK);
 	}
 	
 	/**
@@ -86,6 +86,7 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 
 		return !intersection.getBoundsInLocal().isEmpty();
 	}
+	
 	
 	/**
 	 * gets point value of bug

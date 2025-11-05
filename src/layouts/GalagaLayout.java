@@ -100,5 +100,13 @@ public class GalagaLayout extends Layout {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	// In GalagaLayout.java
+
+	@Override
+	public void handleRemoval(Collidable bug) {
+	    super.handleRemoval(bug); // Calls the parent method to remove from layoutItems
+	    bugs.remove(bug);         // <-- This is the critical fix
+	    moveables.remove(bug);    // <-- Also remove it from moveables
+	}
 
 }
