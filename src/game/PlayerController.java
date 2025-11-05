@@ -31,7 +31,7 @@ public class PlayerController {
 	
 	public PlayerController(PlayerBlock paddle) {
 		this();
-		this.highScoreController = new HighScoreController();
+		this.highScoreController = new HighScoreController("Breakout");
 		this.paddle = paddle;
 	
 	}

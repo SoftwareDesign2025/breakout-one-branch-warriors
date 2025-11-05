@@ -2,8 +2,10 @@ package game.gamecontroller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import entities.blocks.PlayerBlock;
 import entities.blocks.PlayerShip;
@@ -19,19 +21,19 @@ public class GalagaGameController extends GameController {
 
 	private List<Bullet> bullets = new ArrayList<>();
 
-
-	private List<Bug> movingBugs= new ArrayList<>();
+	private List<Bug> movingBugs = new ArrayList<>();
 
 	// TODO: Fix player ship by creating parent class for paddle and ship
-	private PlayerBlock ship;
+	private PlayerShip ship;
 
 	private GalagaLayout itemLayout;
 
-	
 	private static int BUG_MOVING_LIMIT = 3;
 	private static int BUG_MOVING_TIME = 5;
 	private int bugsMoving = 0;
 	private double totalTime = 0;
+	
+	List<Bug> removedBugs = new ArrayList<>();
 	public GalagaGameController(int screenWidth, int screenHeight) {
 		super(screenWidth, screenHeight);
 	}
@@ -48,10 +50,23 @@ public class GalagaGameController extends GameController {
 			if (itemLayout.itemsLeft() == 0) {
 				progressLevel();
 			}
-
+			
 			List<Collidable> collided = new ArrayList<>();
 			List<Bullet> bulletsForRemoval = new ArrayList<>();
-			
+			Set<Bug> bugsForRemoval = new HashSet<Bug>();
+			for (Bug bug : movingBugs) {
+				if (ship.checkCollisionBug(bug) && removedBugs.contains(bug) == false) {
+					System.out.println("Bug intersected" + bug);
+					
+					ship.manageCollision(this);
+					//ship.setX(450);
+					bugsForRemoval.add(bug);
+
+					break;
+
+				}
+			}
+
 			// TODO: handle bug/player/boundary collision removing a life
 			for (Bullet bullet : bullets) {
 
@@ -64,8 +79,9 @@ public class GalagaGameController extends GameController {
 					if (collidable.checkCollision(bullet)) {
 						collided.add(collidable);
 						bulletsForRemoval.add(bullet);
-						if(movingBugs.contains(collidable)) {
+						if (movingBugs.contains(collidable)) {
 							movingBugs.remove(collidable);
+							
 						}
 					}
 				}
@@ -76,43 +92,49 @@ public class GalagaGameController extends GameController {
 					} else {
 						collided.get(i).manageCollision(this);
 					}
+					
 				}
 
 			}
-
-
-			bulletsForRemoval.forEach(bullet -> removeBullet(bullet));
+			for (Bug bug:bugsForRemoval) {
+				//System.out.println(bugsForRemoval.size());
+				if (!removedBugs.contains(bug)) {
+					getPlayerController().subtractLife();
+					removedBugs.add(bug);
+				}
+			}
 			
-
+			bulletsForRemoval.forEach(bullet -> removeBullet(bullet));
+			bugsForRemoval.forEach(bug -> removeBug(bug));
 			animationController.step(elapsedTime);
 
 			uiController.updateUI(playerController.getLives(), playerController.getScore(),
 					playerController.getHighScore(), level);
 
-			if(BUG_MOVING_LIMIT >= movingBugs.size() && totalTime > BUG_MOVING_TIME) {
+			if (BUG_MOVING_LIMIT >= movingBugs.size() && totalTime > BUG_MOVING_TIME) {
 				chanceToMoveBugs();
 			}
 
 		}
 	}
-	
+
 	private void chanceToMoveBugs() {
-			resetTimer();
-			List<Bug> bugs = itemLayout.getBugs();
+		resetTimer();
+		List<Bug> bugs = itemLayout.getBugs();
 
-			Collections.shuffle(bugs);
+		Collections.shuffle(bugs);
 
-			for (int i = 0; i < BUG_MOVING_LIMIT; i++) {
-			    Bug bug = bugs.get(i);
-			    movingBugs.add(bugs.get(i));
-			    bug.initializeMovement();
-			    bugsMoving++;
-			}
+		for (int i = 0; i < BUG_MOVING_LIMIT; i++) {
+			Bug bug = bugs.get(i);
+			movingBugs.add(bugs.get(i));
+			bug.initializeMovement();
+			bugsMoving++;
+		}
 	}
-	
+
 	private void resetTimer() {
 		totalTime = 0;
-		
+
 	}
 
 	@Override
@@ -137,12 +159,20 @@ public class GalagaGameController extends GameController {
 		animationController.addToMoveables(bullet);
 		animationController.addToRoot(bullet.getView());
 	}
-	
+
 	private void removeBullet(Bullet bullet) {
 		bullets.remove(bullet);
 		moveables.remove(bullet);
 		animationController.removeFromMoveables(bullet);
 		animationController.removeFromRoot(bullet.getView());
+	}
+
+	private void removeBug(Bug bug) {
+		movingBugs.remove(bug);
+		myCollidables.remove(bug);
+		moveables.remove(bug);
+		animationController.removeFromMoveables(bug);
+		animationController.removeFromRoot(bug.getView());
 	}
 
 	@Override

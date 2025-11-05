@@ -5,6 +5,7 @@ package entities.bugs;
 import projectiles.Ball;
 import projectiles.Projectiles;
 import entities.Entity;
+import entities.blocks.PlayerShip;
 import game.gamecontroller.GameController;
 import interfaces.Collidable;
 import interfaces.IMoveable;
@@ -52,7 +53,7 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 		this.points = points;
 		this.durability = durability;
 		this.velocity = velocity;
-		this.rect.setFill(Color.TRANSPARENT);
+		this.rect.setFill(Color.BLACK);
 	}
 	
 	/**
@@ -84,6 +85,7 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 
 		return !intersection.getBoundsInLocal().isEmpty();
 	}
+	
 	
 	/**
 	 * gets point value of bug

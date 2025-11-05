@@ -3,7 +3,7 @@
 package entities.bugs;
 
 import entities.blocks.Paddle;
-import game.gamecontroller.GameController;
+import game.GameController;
 import javafx.geometry.Point2D;
 import projectiles.Projectiles;
 
@@ -116,5 +116,11 @@ public class EnemyShip extends Bug{
 	public void manageCollision(GameController gameController) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean checkCollision(Projectiles ball) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
