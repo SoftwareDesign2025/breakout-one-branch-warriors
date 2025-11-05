@@ -1,0 +1,259 @@
+/**
+ * @author Aidan Jimenez
+ */
+package game.gamecontroller;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import entities.blocks.Player;
+import entities.blocks.PlayerShip;
+import entities.bugs.Bug;
+import game.GalagaPlayerController;
+import game.PlayerController;
+import game.UIController;
+import interfaces.Collidable;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import layouts.GalagaLayout;
+import projectiles.Bullet;
+
+public class GalagaGameController extends GameController {
+
+	private List<Bullet> bullets = new ArrayList<>();
+
+	private List<Bug> movingBugs = new ArrayList<>();
+
+	private GalagaLayout itemLayout;
+
+	private static int BUG_MOVING_LIMIT = 3;
+	private static int BUG_MOVING_TIME = 5;
+	private int bugsMoving = 0;
+	private double totalTime = 0;
+	
+	List<Bug> removedBugs = new ArrayList<>();
+	public GalagaGameController(int screenWidth, int screenHeight) {
+		super(screenWidth, screenHeight);
+	}
+
+	@Override
+	public void step(double elapsedTime) {
+		if (!paused && !isGameLost) {
+			this.elapsedTime = elapsedTime;
+			totalTime += elapsedTime;
+			if (playerController.isPlayerDead()) {
+				gameEnded();
+			}
+
+			if (itemLayout.itemsLeft() == 0) {
+				progressLevel();
+			}
+			
+			List<Collidable> collided = new ArrayList<>();
+			List<Bullet> bulletsForRemoval = new ArrayList<>();
+			Set<Bug> bugsForRemoval = new HashSet<Bug>();
+			for (Bug bug : movingBugs) {
+				if (player.checkCollisionBug(bug) && removedBugs.contains(bug) == false) {
+					System.out.println("Bug intersected" + bug);
+					
+					player.manageCollision(this);
+					bugsForRemoval.add(bug);
+
+					break;
+
+				}
+			}
+
+			// TODO: handle bug/player/boundary collision removing a life
+			for (Bullet bullet : bullets) {
+
+				if (bullet.getY() < 0) {
+					animationController.removeFromRoot(bullet.getView());
+					animationController.removeFromMoveables(bullet);
+				}
+
+				for (Collidable collidable : myCollidables) {
+					if (collidable.checkCollision(bullet)) {
+						collided.add(collidable);
+						bulletsForRemoval.add(bullet);
+						if (movingBugs.contains(collidable)) {
+							movingBugs.remove(collidable);
+							
+						}
+					}
+				}
+
+				for (int i = 0; i < collided.size(); i++) {
+					if (i == 0) {
+						collided.get(i).handleCollision(bullet, this);
+					} else {
+						collided.get(i).manageCollision(this);
+					}
+					
+				}
+
+			}
+			for (Bug bug:bugsForRemoval) {
+				//System.out.println(bugsForRemoval.size());
+				if (!removedBugs.contains(bug)) {
+					getPlayerController().subtractLife();
+					removedBugs.add(bug);
+				}
+			}
+			
+			bulletsForRemoval.forEach(bullet -> removeBullet(bullet));
+			bugsForRemoval.forEach(bug -> removeBug(bug));
+			animationController.step(elapsedTime);
+
+			uiController.updateUI(playerController.getLives(), playerController.getScore(),
+					playerController.getHighScore(), level);
+
+			if (BUG_MOVING_LIMIT >= movingBugs.size() && totalTime > BUG_MOVING_TIME) {
+				chanceToMoveBugs();
+			}
+
+		}
+	}
+
+	private void chanceToMoveBugs() {
+		resetTimer();
+		List<Bug> bugs = itemLayout.getBugs();
+
+		Collections.shuffle(bugs);
+
+		for (int i = 0; i < BUG_MOVING_LIMIT; i++) {
+			Bug bug = bugs.get(i);
+			movingBugs.add(bugs.get(i));
+			bug.initializeMovement();
+			bugsMoving++;
+		}
+	}
+
+	private void resetTimer() {
+		totalTime = 0;
+
+	}
+	
+		
+	protected void gameEnded() {
+		if(!isGameLost) {
+			playerController.addScoreToHighScores();
+		}
+		super.gameEnded();
+		
+		uiController.showGameOverMessage();
+	}
+
+	@Override
+	protected void createUI() {
+		uiController = new UIController(Font.font("Arial"), Color.WHITE);
+		ui = uiController.createGroupForUI(screenWidth, screenHeight);
+		animation = animationController.createRootForAnimation(screenWidth, screenHeight);
+		animationController.addToRoot(ui);
+	}
+
+	@Override
+	protected void createPlayer() {
+		player = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
+		playerController = new GalagaPlayerController(player);
+		animationController.addToRoot(player.getView());
+	}
+
+	private void createBullet(double x) {
+		Bullet bullet = new Bullet((int) x + 10, screenHeight - 125);
+		bullets.add(bullet);
+		moveables.add(bullet);
+		animationController.addToMoveables(bullet);
+		animationController.addToRoot(bullet.getView());
+	}
+
+	private void removeBullet(Bullet bullet) {
+		bullets.remove(bullet);
+		moveables.remove(bullet);
+		animationController.removeFromMoveables(bullet);
+		animationController.removeFromRoot(bullet.getView());
+	}
+
+	private void removeBug(Bug bug) {
+		movingBugs.remove(bug);
+		myCollidables.remove(bug);
+		moveables.remove(bug);
+		animationController.removeFromMoveables(bug);
+		animationController.removeFromRoot(bug.getView());
+	}
+
+	@Override
+	public void handleKeyInput(KeyCode code) {
+		super.handleKeyInput(code);
+		if (code == KeyCode.SPACE) {
+			createBullet(player.getX());
+		}
+
+	}
+
+	@Override
+	protected void initializeGame() {
+		level = STARTING_LEVEL_NUMBER;
+
+		createUI();
+		createPlayer();
+		createLevel();
+	}
+
+	@Override
+	protected void createLevel() {
+		itemLayout = new GalagaLayout(screenWidth, screenHeight, level, this.player);
+		List<Collidable> bugs = itemLayout.getCollidables();
+
+		bugs.forEach(bug -> myCollidables.add(bug));
+		bugs.forEach(bug -> animationController.addToRoot(bug.getView()));
+		itemLayout.getMoveables().forEach(bug -> animationController.addToMoveables(bug));
+	}
+
+	@Override
+	protected void constructLevel() {
+		cleanLevel();
+
+		createLevel();
+	}
+
+	@Override
+	protected void cleanLevel() {
+		cleanBugs();
+		cleanBullets();
+		resetTimer();
+	}
+
+	private void cleanBugs() {
+		movingBugs = new ArrayList<>();
+		List<Collidable> bugs = itemLayout.getCollidables();
+		int listSize = itemLayout.getCollidables().size();
+		for (int i = 0; i < listSize; i++) {
+			animationController.removeFromRoot(bugs.get(i).getView());
+			myCollidables.remove(bugs.get(i));
+		}
+	}
+
+	private void cleanBullets() {
+		bullets.forEach(bullet -> {
+			animationController.removeFromRoot(bullet.getView());
+			animationController.removeFromMoveables(bullet);
+			moveables.remove(bullet);
+		});
+
+		bullets = new ArrayList<>();
+	}
+
+	@Override
+	public void breakItem(Collidable bug) {
+		myCollidables.remove(bug);
+		itemLayout.handleRemoval(bug);
+		animationController.removeFromRoot(bug.getView());
+	}
+
+}
