@@ -1,3 +1,5 @@
+//Author: Benji Altmann
+
 package entities.blocks;
 
 import game.gamecontroller.GameController;
@@ -9,7 +11,7 @@ import projectiles.Projectiles;
 
 public class PlayerShip extends Player {
 	
-	private static final String IMAGE_LOCATION = "resources/GalagaShip.png";
+	private static final String IMAGE_LOCATION = "resources/Ship.png";
 	
 	/**
 	 * Paddle constructor using a color fill

@@ -5,6 +5,7 @@ package entities.bugs;
 import projectiles.Ball;
 import projectiles.Projectiles;
 import entities.Entity;
+import entities.blocks.Player;
 import game.gamecontroller.GameController;
 import interfaces.Collidable;
 import interfaces.IMoveable;
@@ -18,6 +19,7 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 	protected int durability;
 	protected Point2D velocity;
 	protected Ball ball;
+	protected Player playerShip;
 	
 	/**
 	 * constructor for bug without sprite

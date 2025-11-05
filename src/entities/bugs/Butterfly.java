@@ -49,6 +49,12 @@ public class Butterfly extends Bug{
 			if(getY() > 600) {
 				setY(-50);
 			}
+			if(getX() > 900) {
+				setX(-50);
+			}
+			if(getX() < 0) {
+				setX(950);
+			}
 		}
 	}
 

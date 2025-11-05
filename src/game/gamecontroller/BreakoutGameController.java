@@ -5,6 +5,7 @@ import entities.blocks.Boundary;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
 import game.AnimationController;
+import game.BreakOutPlayerController;
 import game.PlayerController;
 import game.UIController;
 import interfaces.Collidable;
@@ -238,7 +239,7 @@ public class BreakoutGameController extends GameController {
 
 	protected void createPlayer() {
 		paddle = new Paddle(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE * 2, ITEM_SIZE / 2, screenWidth);
-		playerController = new PlayerController(paddle);
+		playerController = new BreakOutPlayerController(paddle);
 		animationController.addToRoot(paddle.getView());
 		myCollidables.add(paddle);
 	}

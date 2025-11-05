@@ -2,7 +2,7 @@
 
 package entities.bugs;
 
-import entities.blocks.Paddle;
+import entities.blocks.Player;
 import game.gamecontroller.GameController;
 import javafx.geometry.Point2D;
 import projectiles.Projectiles;
@@ -12,10 +12,9 @@ public class EnemyShip extends Bug{
 	private static final int STARTING_DURABILITY = 1;
 	private static final Point2D STARTING_VELOCITY = new Point2D(0,0);
 	private static final int HOVER_HEIGHT = 150;
-	private static final String IMAGE = null;
+	private static final String IMAGE = "resources/Green7.png";
 
 	//private PlayerShip playerShip;
-	private Paddle paddle; // will be switched with playership
 	private boolean isMoving = false;
 	private Point2D playerLocation;
 	private double movementSpeed = 100;
@@ -29,9 +28,9 @@ public class EnemyShip extends Bug{
 	 * @param height
 	 * @param paddle
 	 */
-	public EnemyShip(int xPosition, int yPosition, int size, Paddle paddle) {
+	public EnemyShip(int xPosition, int yPosition, int size, Player playerShip) {
 		super(xPosition, yPosition, size, size, IMAGE, POINTS, STARTING_DURABILITY, STARTING_VELOCITY);
-		this.paddle = paddle;
+		this.playerShip = playerShip;
 	}
 
 	//The enemy ship will move to a designated point above the player. Once it reaches the height of that point,
@@ -59,6 +58,15 @@ public class EnemyShip extends Bug{
 			view.setLayoutX(newX);
 			view.setLayoutY(newY);
 			
+			if(getY() > 600) {
+				setY(-50);
+			}
+			if(getX() > 900) {
+				setX(-50);
+			}
+			if(getX() < 0) {
+				setX(950);
+			}
 			
 		}
 	}
@@ -77,7 +85,7 @@ public class EnemyShip extends Bug{
 	 * @return
 	 */
 	public boolean checkReachedHoverHeight() {	
-		return (getY() >= paddle.getY() - HOVER_HEIGHT);
+		return (getY() >= playerShip.getY() - HOVER_HEIGHT);
 	}
 
 	/**
@@ -103,18 +111,7 @@ public class EnemyShip extends Bug{
 	 * gets the location above the player that the enemy ship will hover at until reaching the hover height
 	 */
 	private void getHoverLocation() {
-		playerLocation = new Point2D(paddle.getX() + paddle.getPlayerWidth() / 2, paddle.getY() - HOVER_HEIGHT);
+		playerLocation = new Point2D(playerShip.getX() + 25 , playerShip.getY() - HOVER_HEIGHT);
 	}
 
-	@Override
-	public void handleCollision(Projectiles projectile, GameController gameController) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void manageCollision(GameController gameController) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Entity;
+import entities.blocks.Player;
 import game.AnimationController;
 import game.PlayerController;
 import game.UIController;
@@ -26,6 +27,7 @@ public abstract class GameController {
 	protected double elapsedTime = 0;
 	protected Group ui;
 	protected Group animation;
+	protected Player player;
 
 	protected PlayerController playerController;
 	protected AnimationController animationController;
