@@ -40,7 +40,7 @@ public class GalagaGameController extends GameController {
 
 	@Override
 	public void step(double elapsedTime) {
-		if (!paused) {
+		if (!paused && !isGameLost) {
 			this.elapsedTime = elapsedTime;
 			totalTime += elapsedTime;
 			if (playerController.isPlayerDead()) {
@@ -135,6 +135,16 @@ public class GalagaGameController extends GameController {
 		totalTime = 0;
 
 	}
+	
+		
+	protected void gameEnded() {
+		if(!isGameLost) {
+			playerController.addScoreToHighScores();
+		}
+		super.gameEnded();
+		
+		uiController.showGameOverMessage();
+	}
 
 	@Override
 	protected void createUI() {
@@ -147,7 +157,7 @@ public class GalagaGameController extends GameController {
 	@Override
 	protected void createPlayer() {
 		player = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
-		playerController = new GalagaPlayerController();
+		playerController = new GalagaPlayerController(player);
 		animationController.addToRoot(player.getView());
 	}
 
