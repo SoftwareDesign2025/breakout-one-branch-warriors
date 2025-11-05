@@ -28,7 +28,6 @@ public class HighScoreController {
 		} else {
 			readScores();
 		}
-
 	}
 	public HighScoreController(String game) {
 		this.scoreFile = new File("scoreFile"+game+".txt");
