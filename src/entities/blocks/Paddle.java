@@ -3,6 +3,7 @@
  */
 package entities.blocks;
 
+import entities.bugs.Bug;
 import game.gamecontroller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -67,6 +68,12 @@ public class Paddle extends Player {
 		// TODO Auto-generated method stub
 		// could be used to play audio
 		
+	}
+
+	@Override
+	public boolean checkCollisionBug(Bug bug) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

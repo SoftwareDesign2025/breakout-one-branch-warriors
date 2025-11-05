@@ -7,12 +7,12 @@ import entities.blocks.PlayerShip;
 
 public class GalagaPlayerController extends PlayerController {
 	
-	public static final String HighScoreFileName = "Galaga";
+	public static final String HighScoreFileName = "scoreFileGalaga.txt";
 	
 	public GalagaPlayerController() {
 		super();
 	}
-	public GalagaPlayerController(PlayerShip playerShip) {
+	public GalagaPlayerController(Player playerShip) {
 		super(playerShip, HighScoreFileName);
 	}
 }
