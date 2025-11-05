@@ -1,10 +1,11 @@
-//Author: Carter Puckett, Aidan Spoerndle, Aidan Jimenez 
+//Author: Carter Puckett, Aidan Spoerndle, Aidan Jimenez  
 package game.gamecontroller;
 
 import entities.blocks.Boundary;
 import layouts.BrickLayout;
 import entities.blocks.Paddle;
 import game.AnimationController;
+import game.BreakOutPlayerController;
 import game.PlayerController;
 import game.UIController;
 import interfaces.Collidable;
@@ -13,6 +14,8 @@ import projectiles.Ball;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
 import java.util.*;
 
 public class BreakoutGameController extends GameController {
@@ -228,7 +231,7 @@ public class BreakoutGameController extends GameController {
 	}
 
 	protected void createUI() {
-		uiController = new UIController();
+		uiController = new UIController(Font.font("Arial"), Color.BLACK);
 		ui = uiController.createGroupForUI(screenWidth, screenHeight);
 		animation = animationController.createRootForAnimation(screenWidth, screenHeight);
 		animationController.addToRoot(ui);
@@ -236,7 +239,7 @@ public class BreakoutGameController extends GameController {
 
 	protected void createPlayer() {
 		paddle = new Paddle(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE * 2, ITEM_SIZE / 2, screenWidth);
-		playerController = new PlayerController(paddle);
+		playerController = new BreakOutPlayerController(paddle);
 		animationController.addToRoot(paddle.getView());
 		myCollidables.add(paddle);
 	}

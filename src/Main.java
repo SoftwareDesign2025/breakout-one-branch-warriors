@@ -78,7 +78,7 @@ public class Main extends Application {
         if (gameChoice.equals("Galaga")) {
             galagaController = new GalagaGameController(WIDTH, HEIGHT);
             currentGameController = galagaController;
-            background = Color.DARKSEAGREEN;
+            background = Color.BLACK;
             myStage.setTitle("Galaga - " + TITLE);
         } else {
             breakoutController = new BreakoutGameController(WIDTH, HEIGHT);

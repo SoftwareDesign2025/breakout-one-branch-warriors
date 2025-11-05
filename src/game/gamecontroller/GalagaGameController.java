@@ -7,13 +7,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import entities.blocks.PlayerBlock;
+import entities.blocks.Player;
 import entities.blocks.PlayerShip;
 import entities.bugs.Bug;
+import game.GalagaPlayerController;
 import game.PlayerController;
 import game.UIController;
 import interfaces.Collidable;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import layouts.GalagaLayout;
 import projectiles.Bullet;
 
@@ -22,9 +25,6 @@ public class GalagaGameController extends GameController {
 	private List<Bullet> bullets = new ArrayList<>();
 
 	private List<Bug> movingBugs = new ArrayList<>();
-
-	// TODO: Fix player ship by creating parent class for paddle and ship
-	private PlayerShip ship;
 
 	private GalagaLayout itemLayout;
 
@@ -139,7 +139,7 @@ public class GalagaGameController extends GameController {
 
 	@Override
 	protected void createUI() {
-		uiController = new UIController();
+		uiController = new UIController(Font.font("Arial"), Color.WHITE);
 		ui = uiController.createGroupForUI(screenWidth, screenHeight);
 		animation = animationController.createRootForAnimation(screenWidth, screenHeight);
 		animationController.addToRoot(ui);
@@ -147,9 +147,9 @@ public class GalagaGameController extends GameController {
 
 	@Override
 	protected void createPlayer() {
-		ship = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
-		playerController = new PlayerController(ship);
-		animationController.addToRoot(ship.getView());
+		player = new PlayerShip(screenWidth / 2 - ITEM_SIZE, screenHeight - 100, ITEM_SIZE, ITEM_SIZE, screenWidth);
+		playerController = new GalagaPlayerController();
+		animationController.addToRoot(player.getView());
 	}
 
 	private void createBullet(double x) {
@@ -179,7 +179,7 @@ public class GalagaGameController extends GameController {
 	public void handleKeyInput(KeyCode code) {
 		super.handleKeyInput(code);
 		if (code == KeyCode.SPACE) {
-			createBullet(ship.getX());
+			createBullet(player.getX());
 		}
 
 	}
@@ -189,14 +189,13 @@ public class GalagaGameController extends GameController {
 		level = STARTING_LEVEL_NUMBER;
 
 		createUI();
-		createLevel();
 		createPlayer();
-
+		createLevel();
 	}
 
 	@Override
 	protected void createLevel() {
-		itemLayout = new GalagaLayout(screenWidth, screenHeight, level);
+		itemLayout = new GalagaLayout(screenWidth, screenHeight, level, this.player);
 		List<Collidable> bugs = itemLayout.getCollidables();
 
 		bugs.forEach(bug -> myCollidables.add(bug));
