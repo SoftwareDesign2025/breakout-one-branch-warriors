@@ -152,7 +152,7 @@ public class GalagaGameController extends GameController {
 	public void handleKeyInput(KeyCode code) {
 		super.handleKeyInput(code);
 		if (code == KeyCode.SPACE) {
-			createBullet(ship.getX());
+			createBullet(player.getX());
 		}
 
 	}
@@ -162,14 +162,13 @@ public class GalagaGameController extends GameController {
 		level = STARTING_LEVEL_NUMBER;
 
 		createUI();
-		createLevel();
 		createPlayer();
-
+		createLevel();
 	}
 
 	@Override
 	protected void createLevel() {
-		itemLayout = new GalagaLayout(screenWidth, screenHeight, level);
+		itemLayout = new GalagaLayout(screenWidth, screenHeight, level, this.player);
 		List<Collidable> bugs = itemLayout.getCollidables();
 
 		bugs.forEach(bug -> myCollidables.add(bug));

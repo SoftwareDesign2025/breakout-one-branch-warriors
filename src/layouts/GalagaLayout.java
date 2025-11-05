@@ -6,6 +6,7 @@ package layouts;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.blocks.Player;
 import entities.bugs.Bee;
 import entities.bugs.Bug;
 import entities.bugs.Butterfly;
@@ -22,9 +23,11 @@ public class GalagaLayout extends Layout {
 	private GalagaLevels levelController = new GalagaLevels();
 	private List<IMoveable> moveables = new ArrayList<>();
 	private List<Bug> bugs = new ArrayList<>();
+	private Player playerShip;
 
-	public GalagaLayout(int screenHeight, int screenWidth, int level) {
+	public GalagaLayout(int screenHeight, int screenWidth, int level, Player playerShip) {
 		super(screenHeight, screenWidth, level);
+		this.playerShip = playerShip;
 		this.levelController = new GalagaLevels();
 		this.layoutItems = createLayout(level);
 	}
@@ -69,9 +72,9 @@ public class GalagaLayout extends Layout {
 	protected Bug createItem(char itemType, int xPos, int yPos) {
 		switch (itemType) {
 		case 'S':
-			return new Butterfly(xPos, yPos, ITEM_SIZE);
+			return new EnemyShip(xPos, yPos, ITEM_SIZE, this.playerShip);
 		case 'B':
-			return new Butterfly(xPos, yPos, ITEM_SIZE);
+			return new Bee(xPos, yPos, ITEM_SIZE, this.playerShip);
 		case 'X':
 			return new Butterfly(xPos, yPos, ITEM_SIZE);
 		default:
