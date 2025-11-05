@@ -55,11 +55,10 @@ public class GalagaGameController extends GameController {
 			List<Bullet> bulletsForRemoval = new ArrayList<>();
 			Set<Bug> bugsForRemoval = new HashSet<Bug>();
 			for (Bug bug : movingBugs) {
-				if (ship.checkCollisionBug(bug) && removedBugs.contains(bug) == false) {
+				if (player.checkCollisionBug(bug) && removedBugs.contains(bug) == false) {
 					System.out.println("Bug intersected" + bug);
 					
-					ship.manageCollision(this);
-					//ship.setX(450);
+					player.manageCollision(this);
 					bugsForRemoval.add(bug);
 
 					break;

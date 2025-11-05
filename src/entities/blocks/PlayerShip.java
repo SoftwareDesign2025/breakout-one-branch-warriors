@@ -68,13 +68,5 @@ public class PlayerShip extends Player {
 		Shape intersection = Shape.intersect(bug.getCollisionBox(), getCollisionBox());
 		return !intersection.getBoundsInLocal().isEmpty();
 	}
-
-	@Override
-	public void handleCollision(Projectiles ball, GameController gameController) {
-		// TODO Auto-generated method stub
-		// could be used to play audio
-		
-	}
-
 	
 }
