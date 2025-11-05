@@ -18,8 +18,26 @@ public class HighScoreController {
 	 * overall highest scores of the game.
 	 */
 
+	// Class Variables
+	private File scoreFile; // The scoreFile.txt reference
+	private int SCORELIMIT = 10; // The maximum number of scores that can be added to scoreFile
+	private String[] highScores = new String[SCORELIMIT]; // An array of Strings that holds the data of the high scores
+	private String filePath; // The file path of scoreFile.txt
+
 	// Constructor
 	public HighScoreController() {
+		this.filePath = "score.txt";
+		this.scoreFile = new File(this.filePath);
+		if (!doesExist()) {
+			createScoreFile();
+			this.highScores[0] = "Placeholder,0";
+			writeScores();
+		} else {
+			readScores();
+		}
+	}
+	public HighScoreController(String game) {
+		this.filePath = game;
 		this.scoreFile = new File(this.filePath);
 		if (!doesExist()) {
 			createScoreFile();
@@ -30,23 +48,7 @@ public class HighScoreController {
 		}
 
 	}
-	public HighScoreController(String game) {
-		this.scoreFile = new File("scoreFile"+game+".txt");
-		if (!doesExist()) {
-			createScoreFile();
-			this.highScores[0] = "Placeholder,0";
-			writeScores();
-		} else {
-			readScores();
-		}
 
-	}
-
-	// Class Variables
-	private File scoreFile; // The scoreFile.txt reference
-	private int SCORELIMIT = 10; // The maximum number of scores that can be added to scoreFile
-	private String[] highScores = new String[SCORELIMIT]; // An array of Strings that holds the data of the high scores
-	private String filePath = "scoreFileBreakout.txt"; // The file path of scoreFile.txt
 
 	// Getter
 	public String[] getHighScores() {

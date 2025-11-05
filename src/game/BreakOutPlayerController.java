@@ -5,7 +5,7 @@ import entities.blocks.Player;
 
 public class BreakOutPlayerController extends PlayerController {
 	
-	public static final String HighScoreFileName = "BreakOut";
+	public static final String HighScoreFileName = "scoreFileBreakout.txt";
 	
 	public BreakOutPlayerController() {
 		super();
