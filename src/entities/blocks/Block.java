@@ -73,7 +73,7 @@ public abstract class Block extends Entity implements Collidable{
 
 	@Override
 	public boolean checkCollision(Projectiles ball) {
-		Shape intersection = Shape.intersect(ball.getBall(), getCollisionBox());
+		Shape intersection = Shape.intersect(ball.getProjectile(), getCollisionBox());
 
 		return intersection.getBoundsInLocal().isEmpty();
 	}

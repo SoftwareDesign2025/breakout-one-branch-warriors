@@ -15,13 +15,6 @@ import javafx.scene.shape.Shape;
 
 public class Ball extends Projectiles implements IMoveable {
 
-	private Random random = new Random();
-	private Point2D velocity;
-	private Point2D position;
-	private Point2D previousLocation;
-	private int ballRadius;
-	public boolean inCollision;
-
 	private static final double HORIZONTAL_KICK = 0.7;
 	private static final double FRICTION_FACTOR = 0.99;
 	private static final double WOBBLE_FACTOR = 0.5;
@@ -46,12 +39,12 @@ public class Ball extends Projectiles implements IMoveable {
 	 * @param startX
 	 * @param startY
 	 * @param velocity
-	 * @param ballRadius
+	 * @param projectileRadius
 	 * @param color
 	 */
-	public Ball(int startX, int startY, Point2D velocity, int ballRadius, Color color) {
-		super(startX, startY, ballRadius * 2, ballRadius * 2);
-		this.ballRadius = RADIUS;
+	public Ball(int startX, int startY, Point2D velocity, int projectileRadius, Color color) {
+		super(startX, startY, projectileRadius * 2, projectileRadius * 2);
+		this.projectileRadius = RADIUS;
 		this.velocity = velocity;
 		this.rect.setArcHeight(CORNER_RADIUS);
 		this.rect.setArcWidth(CORNER_RADIUS);
@@ -61,10 +54,10 @@ public class Ball extends Projectiles implements IMoveable {
 		this.view.setLayoutY(startY);
 	}
 
-	public Ball(int startX, int startY, Point2D velocity, int ballRadius) {
-		super(startX, startY, ballRadius * 2, ballRadius * 2, BALL_IMAGE);
+	public Ball(int startX, int startY, Point2D velocity, int projectileRadius) {
+		super(startX, startY, projectileRadius * 2, projectileRadius * 2, BALL_IMAGE);
 		this.velocity = velocity;
-		this.ballRadius = ballRadius;
+		this.projectileRadius = projectileRadius;
 
 		setColor(Color.TRANSPARENT);
 
@@ -75,7 +68,7 @@ public class Ball extends Projectiles implements IMoveable {
 	public Ball(int startX, int startY) {
 		super(startX, startY, RADIUS * 2, RADIUS * 2, BALL_IMAGE);
 		this.velocity = STARTING_VELOCITY;
-		this.ballRadius = RADIUS;
+		this.projectileRadius = RADIUS;
 		setColor(Color.TRANSPARENT);
 
 		view.setLayoutX(startX);
@@ -100,14 +93,7 @@ public class Ball extends Projectiles implements IMoveable {
 		view.setLayoutY(newY);
 	}
 
-	/**
-	 * Stops the ball
-	 */
-	public void stop() {
-		velocity = new Point2D(0, 0);
-	}
-
-	/**
+		/**
 	 * This method will change the ball velocity and cause it to bounce off the
 	 * display wall
 	 * 
@@ -120,22 +106,22 @@ public class Ball extends Projectiles implements IMoveable {
 		double y = view.getLayoutY();
 
 		// Horizontal (X-axis) collision
-		if (x - ballRadius < 0) {
-			view.setLayoutX(ballRadius);
+		if (x - projectileRadius < 0) {
+			view.setLayoutX(projectileRadius);
 			velocity = new Point2D(-velocity.getX(), velocity.getY());
-		} else if (x + ballRadius > screenWidth) {
+		} else if (x + projectileRadius > screenWidth) {
 			velocity = new Point2D(-velocity.getX(), velocity.getY());
 		}
 
 		// Vertical (Y-axis) collision
-		if (y - ballRadius < 0) {
+		if (y - projectileRadius < 0) {
 			velocity = new Point2D(velocity.getX(), -velocity.getY());
-		} else if (y + ballRadius > screenHeight) {
+		} else if (y + projectileRadius > screenHeight) {
 			velocity = new Point2D(velocity.getX(), -velocity.getY());
 		}
-		if (y - ballRadius < 0 && x - ballRadius < 0) {
-			view.setLayoutX(-ballRadius);
-			view.setLayoutY(-ballRadius);
+		if (y - projectileRadius < 0 && x - projectileRadius < 0) {
+			view.setLayoutX(-projectileRadius);
+			view.setLayoutY(-projectileRadius);
 			velocity = new Point2D(velocity.getX(), velocity.getY());
 		}
 	}
@@ -169,39 +155,6 @@ public class Ball extends Projectiles implements IMoveable {
 		velocity = new Point2D(newDeltaX, newDeltaY);
 	}
 
-//	public void bounce(double overlapX, double overlapY, double modification) {
-//	    double currentDeltaX = checkDeltaX();
-//	    double currentDeltaY = checkDeltaY();
-//
-//	    boolean horizontalCollision = overlapX < overlapY;
-//
-//	    if (horizontalCollision) {
-//	        if (currentDeltaX > 0) {
-//	            this.setX(getX() - overlapX);  // Moving right, push left
-//	        } else {
-//	            this.setX(getX() + overlapX);  // Moving left, push right
-//	        }
-//	    } else {
-//	        if (currentDeltaY > 0) {
-//	            this.setY(getY() - overlapY);  // Moving down, push up
-//	        } else {
-//	            this.setY(getY() + overlapY);  // Moving up, push down
-//	        }
-//	    }
-//
-//	    double newDeltaX = currentDeltaX;
-//	    double newDeltaY = currentDeltaY;
-//
-//	    if (horizontalCollision) {
-//	        newDeltaX = -currentDeltaX * modification;
-//	        newDeltaX = addRandomWobble(newDeltaX);
-//	    } else {
-//	        newDeltaY = -currentDeltaY * modification;
-//	        newDeltaY = addRandomWobble(newDeltaY);
-//	    }
-//
-//	    velocity = new Point2D(newDeltaX, newDeltaY);
-//	}
 
 	/**
 	 * Bounces the ball off a paddle, applying a kick based on the paddle's
@@ -293,19 +246,6 @@ public class Ball extends Projectiles implements IMoveable {
 		}
 	}
 
-//	private void resetBallPositionAfterCollision(double intersectW, double intersectH) {
-//	    if (velocity.getX() > 0) {
-//	        this.setX(getX() - intersectW);
-//	    } else {
-//	        this.setX(getX() + intersectW);
-//	    }
-//	    
-//	    if (velocity.getY() > 0) {
-//	        this.setY(getY() - intersectH);
-//	    } else {
-//	        this.setY(getY() + intersectH);
-//	    }
-//	}
 
 	/**
 	 * Checks the speed on the Y axis so that it can be limited and not exceed the
@@ -355,53 +295,7 @@ public class Ball extends Projectiles implements IMoveable {
 		return rangeStart + random.nextDouble(rangeEnd - rangeStart) + 1;
 	}
 
-	// GETTERS AND SETTERS //
-
-	/**
-	 * Getter for the view of the ball object
-	 * 
-	 * @return Node
-	 */
-	public Node getView() {
-		return view;
-	}
-
-	/**
-	 * Getter for the Shape object of the ball object
-	 * 
-	 * @return Node
-	 */
-	public Shape getBall() {
-		return rect;
-	}
-
-	/**
-	 * Getter for the ballRadius of the circle
-	 * 
-	 * @return double
-	 */
-	public double getRadius() {
-		return ballRadius;
-	}
-
-	/**
-	 * Getter for the ball position
-	 * 
-	 * @return Point2D
-	 */
-	public Point2D getPosition() {
-		return position;
-	}
-
-	/**
-	 * Setter for the ball color
-	 * 
-	 * @param color
-	 */
-	public void setColor(Color color) {
-		rect.setFill(color);
-	}
-
+	
 	/**
 	 * Setter for the X position of the ball
 	 * 
@@ -411,19 +305,4 @@ public class Ball extends Projectiles implements IMoveable {
 		view.setLayoutX(x);
 	}
 
-	/**
-	 * Setter for the Y position of the ball
-	 * 
-	 * @param y
-	 */
-	public void setY(double y) {
-		view.setLayoutY(y);
-	}
-
-	/*
-	 * NEED TO IMPLEMENT
-	 */
-	public boolean isCollidedWith() {
-		return false;
-	}
 }

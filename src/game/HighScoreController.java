@@ -36,6 +36,7 @@ public class HighScoreController {
 			readScores();
 		}
 	}
+
 	public HighScoreController(String game) {
 		this.filePath = game;
 		this.scoreFile = new File(this.filePath);
@@ -48,7 +49,6 @@ public class HighScoreController {
 		}
 
 	}
-
 
 	// Getter
 	public String[] getHighScores() {
@@ -106,10 +106,10 @@ public class HighScoreController {
 				break;
 			}
 		}
-		if(this.highScores[SCORELIMIT-1] != null) {
-			
-			if(splitScore(highScores[SCORELIMIT-1]) < score) {
-				highScores[SCORELIMIT-1] = name + "," + score;
+		if (this.highScores[SCORELIMIT - 1] != null) {
+
+			if (splitScore(highScores[SCORELIMIT - 1]) < score) {
+				highScores[SCORELIMIT - 1] = name + "," + score;
 			}
 		}
 		sortHighScores();
@@ -121,7 +121,7 @@ public class HighScoreController {
 	public void writeScores() {
 		if (underOrAtSCORELIMIT()) {
 			try {
-				//String file = this.filePath;
+				// String file = this.filePath;
 				FileWriter fWriter = new FileWriter(filePath);
 
 				for (int i = 0; i < this.highScores.length; i++) {

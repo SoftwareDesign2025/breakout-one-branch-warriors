@@ -101,7 +101,7 @@ public class Brick extends Block {
 
 	@Override
 	public void handleCollision(Projectiles projectile, GameController gameController) {
-		Shape intersection = Shape.intersect(projectile.getBall(), getCollisionBox());
+		Shape intersection = Shape.intersect(projectile.getProjectile(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 			double intersectionWidth = intersection.getBoundsInLocal().getWidth();
 			double intersectionHeight = intersection.getBoundsInLocal().getHeight();

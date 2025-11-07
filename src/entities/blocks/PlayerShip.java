@@ -50,7 +50,7 @@ public class PlayerShip extends Player {
 	
 	
 	public void handleCollision(Projectiles projectiles, GameController gameController) {
-		Shape intersection = Shape.intersect(projectiles.getBall(), getCollisionBox());
+		Shape intersection = Shape.intersect(projectiles.getProjectile(), getCollisionBox());
 		if (!intersection.getBoundsInLocal().isEmpty()) {
 			gameController.getPlayerController().subtractLife();
 		}

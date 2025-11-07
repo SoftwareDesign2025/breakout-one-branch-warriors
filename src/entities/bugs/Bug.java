@@ -81,7 +81,7 @@ public abstract class Bug extends Entity implements  IMoveable, Collidable{
 	 */
 	@Override
 	public boolean checkCollision(Projectiles projectile) {
-		Shape intersection = Shape.intersect(projectile.getBall(), getCollisionBox());
+		Shape intersection = Shape.intersect(projectile.getProjectile(), getCollisionBox());
 
 		return !intersection.getBoundsInLocal().isEmpty();
 	}
